@@ -13,7 +13,7 @@ pub struct SecretChat {
     /// Secret chat identifier
     id: i32,
     /// Identifier of the chat partner
-    user_id: i32,
+    user_id: i64,
     /// State of the secret chat
 
     #[serde(skip_serializing_if = "SecretChatState::_is_default")]
@@ -54,7 +54,7 @@ impl SecretChat {
         self.id
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -94,7 +94,7 @@ impl RTDSecretChatBuilder {
         self
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }

@@ -13,7 +13,7 @@ pub struct Users {
     /// Approximate total count of users found
     total_count: i32,
     /// A list of user identifiers
-    user_ids: Vec<i32>,
+    user_ids: Vec<i64>,
 }
 
 impl RObject for Users {
@@ -42,7 +42,7 @@ impl Users {
         self.total_count
     }
 
-    pub fn user_ids(&self) -> &Vec<i32> {
+    pub fn user_ids(&self) -> &Vec<i64> {
         &self.user_ids
     }
 }
@@ -62,7 +62,7 @@ impl RTDUsersBuilder {
         self
     }
 
-    pub fn user_ids(&mut self, user_ids: Vec<i32>) -> &mut Self {
+    pub fn user_ids(&mut self, user_ids: Vec<i64>) -> &mut Self {
         self.inner.user_ids = user_ids;
         self
     }

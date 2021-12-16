@@ -11,9 +11,9 @@ pub struct ChatMember {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier of the chat member
-    user_id: i32,
+    user_id: i64,
     /// Identifier of a user that invited/promoted/banned this member in the chat; 0 if unknown
-    inviter_user_id: i32,
+    inviter_user_id: i64,
     /// Point in time (Unix timestamp) when the user joined the chat
     joined_chat_date: i32,
     /// Status of the member in the chat
@@ -46,11 +46,11 @@ impl ChatMember {
         RTDChatMemberBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
-    pub fn inviter_user_id(&self) -> i32 {
+    pub fn inviter_user_id(&self) -> i64 {
         self.inviter_user_id
     }
 
@@ -77,12 +77,12 @@ impl RTDChatMemberBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }
 
-    pub fn inviter_user_id(&mut self, inviter_user_id: i32) -> &mut Self {
+    pub fn inviter_user_id(&mut self, inviter_user_id: i64) -> &mut Self {
         self.inner.inviter_user_id = inviter_user_id;
         self
     }

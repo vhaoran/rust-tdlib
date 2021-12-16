@@ -11,7 +11,7 @@ pub struct CreatePrivateChat {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier
-    user_id: i32,
+    user_id: i64,
     /// If true, the chat will be created without network request. In this case all information about the chat except its type, title and photo can be incorrect
     force: bool,
 
@@ -45,7 +45,7 @@ impl CreatePrivateChat {
         RTDCreatePrivateChatBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -64,7 +64,7 @@ impl RTDCreatePrivateChatBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }

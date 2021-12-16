@@ -26,7 +26,7 @@ pub struct ChatInviteLinkInfo {
     /// Number of members in the chat
     member_count: i32,
     /// User identifiers of some chat members that may be known to the current user
-    member_user_ids: Vec<i32>,
+    member_user_ids: Vec<i64>,
     /// True, if the chat is a public supergroup or channel, i.e. it has a username or it is a location-based supergroup
     is_public: bool,
 }
@@ -77,7 +77,7 @@ impl ChatInviteLinkInfo {
         self.member_count
     }
 
-    pub fn member_user_ids(&self) -> &Vec<i32> {
+    pub fn member_user_ids(&self) -> &Vec<i64> {
         &self.member_user_ids
     }
 
@@ -126,7 +126,7 @@ impl RTDChatInviteLinkInfoBuilder {
         self
     }
 
-    pub fn member_user_ids(&mut self, member_user_ids: Vec<i32>) -> &mut Self {
+    pub fn member_user_ids(&mut self, member_user_ids: Vec<i64>) -> &mut Self {
         self.inner.member_user_ids = member_user_ids;
         self
     }

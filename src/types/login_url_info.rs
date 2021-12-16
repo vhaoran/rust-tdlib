@@ -165,7 +165,7 @@ pub struct LoginUrlInfoRequestConfirmation {
     /// A domain of the URL
     domain: String,
     /// User identifier of a bot linked with the website
-    bot_user_id: i32,
+    bot_user_id: i64,
     /// True, if the user needs to be requested to give the permission to the bot to send them messages
     request_write_access: bool,
 }
@@ -202,7 +202,7 @@ impl LoginUrlInfoRequestConfirmation {
         &self.domain
     }
 
-    pub fn bot_user_id(&self) -> i32 {
+    pub fn bot_user_id(&self) -> i64 {
         self.bot_user_id
     }
 
@@ -231,7 +231,7 @@ impl RTDLoginUrlInfoRequestConfirmationBuilder {
         self
     }
 
-    pub fn bot_user_id(&mut self, bot_user_id: i32) -> &mut Self {
+    pub fn bot_user_id(&mut self, bot_user_id: i64) -> &mut Self {
         self.inner.bot_user_id = bot_user_id;
         self
     }

@@ -152,7 +152,7 @@ pub struct ChatTypePrivate {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier
-    user_id: i32,
+    user_id: i64,
 }
 
 impl RObject for ChatTypePrivate {
@@ -179,7 +179,7 @@ impl ChatTypePrivate {
         RTDChatTypePrivateBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 }
@@ -194,7 +194,7 @@ impl RTDChatTypePrivateBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }
@@ -223,7 +223,7 @@ pub struct ChatTypeSecret {
     /// Secret chat identifier
     secret_chat_id: i32,
     /// User identifier of the secret chat peer
-    user_id: i32,
+    user_id: i64,
 }
 
 impl RObject for ChatTypeSecret {
@@ -254,7 +254,7 @@ impl ChatTypeSecret {
         self.secret_chat_id
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 }
@@ -274,7 +274,7 @@ impl RTDChatTypeSecretBuilder {
         self
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }

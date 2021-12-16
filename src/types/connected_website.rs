@@ -17,7 +17,7 @@ pub struct ConnectedWebsite {
     /// The domain name of the website
     domain_name: String,
     /// User identifier of a bot linked with the website
-    bot_user_id: i32,
+    bot_user_id: i64,
     /// The version of a browser used to log in
     browser: String,
     /// Operating system the browser is running on
@@ -62,7 +62,7 @@ impl ConnectedWebsite {
         &self.domain_name
     }
 
-    pub fn bot_user_id(&self) -> i32 {
+    pub fn bot_user_id(&self) -> i64 {
         self.bot_user_id
     }
 
@@ -111,7 +111,7 @@ impl RTDConnectedWebsiteBuilder {
         self
     }
 
-    pub fn bot_user_id(&mut self, bot_user_id: i32) -> &mut Self {
+    pub fn bot_user_id(&mut self, bot_user_id: i64) -> &mut Self {
         self.inner.bot_user_id = bot_user_id;
         self
     }

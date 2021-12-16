@@ -61,7 +61,7 @@ pub struct Message {
     /// Time left before the message expires, in seconds
     ttl_expires_in: f32,
     /// If non-zero, the user identifier of the bot through which this message was sent
-    via_bot_user_id: i32,
+    via_bot_user_id: i64,
     /// For channel posts and anonymous group messages, optional author signature
     author_signature: String,
     /// Unique identifier of an album this message belongs to. Only photos and videos can be grouped together in albums
@@ -196,7 +196,7 @@ impl Message {
         self.ttl_expires_in
     }
 
-    pub fn via_bot_user_id(&self) -> i32 {
+    pub fn via_bot_user_id(&self) -> i64 {
         self.via_bot_user_id
     }
 
@@ -363,7 +363,7 @@ impl RTDMessageBuilder {
         self
     }
 
-    pub fn via_bot_user_id(&mut self, via_bot_user_id: i32) -> &mut Self {
+    pub fn via_bot_user_id(&mut self, via_bot_user_id: i64) -> &mut Self {
         self.inner.via_bot_user_id = via_bot_user_id;
         self
     }

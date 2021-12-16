@@ -15,7 +15,7 @@ pub struct BasicGroupFullInfo {
     /// Contains full information about a basic group
     description: String,
     /// User identifier of the creator of the group; 0 if unknown
-    creator_user_id: i32,
+    creator_user_id: i64,
     /// Group members
     members: Vec<ChatMember>,
     /// Invite link for this group; available only after it has been generated at least once and only for the group creator
@@ -52,7 +52,7 @@ impl BasicGroupFullInfo {
         &self.description
     }
 
-    pub fn creator_user_id(&self) -> i32 {
+    pub fn creator_user_id(&self) -> i64 {
         self.creator_user_id
     }
 
@@ -85,7 +85,7 @@ impl RTDBasicGroupFullInfoBuilder {
         self
     }
 
-    pub fn creator_user_id(&mut self, creator_user_id: i32) -> &mut Self {
+    pub fn creator_user_id(&mut self, creator_user_id: i64) -> &mut Self {
         self.inner.creator_user_id = creator_user_id;
         self
     }

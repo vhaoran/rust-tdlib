@@ -4335,7 +4335,7 @@ pub struct UpdateNewCallbackQuery {
     #[serde(deserialize_with = "super::_common::number_from_string")]
     id: i64,
     /// Identifier of the user who sent the query
-    sender_user_id: i32,
+    sender_user_id: i64,
     /// Identifier of the chat where the query was sent
     chat_id: i64,
     /// Identifier of the message, from which the query originated
@@ -4378,7 +4378,7 @@ impl UpdateNewCallbackQuery {
         self.id
     }
 
-    pub fn sender_user_id(&self) -> i32 {
+    pub fn sender_user_id(&self) -> i64 {
         self.sender_user_id
     }
 
@@ -4414,7 +4414,7 @@ impl RTDUpdateNewCallbackQueryBuilder {
         self
     }
 
-    pub fn sender_user_id(&mut self, sender_user_id: i32) -> &mut Self {
+    pub fn sender_user_id(&mut self, sender_user_id: i64) -> &mut Self {
         self.inner.sender_user_id = sender_user_id;
         self
     }
@@ -4530,7 +4530,7 @@ pub struct UpdateNewChosenInlineResult {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Identifier of the user who sent the query
-    sender_user_id: i32,
+    sender_user_id: i64,
     /// User location; may be null
     user_location: Option<Location>,
     /// Text of the query
@@ -4565,7 +4565,7 @@ impl UpdateNewChosenInlineResult {
         RTDUpdateNewChosenInlineResultBuilder { inner }
     }
 
-    pub fn sender_user_id(&self) -> i32 {
+    pub fn sender_user_id(&self) -> i64 {
         self.sender_user_id
     }
 
@@ -4596,7 +4596,7 @@ impl RTDUpdateNewChosenInlineResultBuilder {
         self.inner.clone()
     }
 
-    pub fn sender_user_id(&mut self, sender_user_id: i32) -> &mut Self {
+    pub fn sender_user_id(&mut self, sender_user_id: i64) -> &mut Self {
         self.inner.sender_user_id = sender_user_id;
         self
     }
@@ -4809,7 +4809,7 @@ pub struct UpdateNewInlineCallbackQuery {
     #[serde(deserialize_with = "super::_common::number_from_string")]
     id: i64,
     /// Identifier of the user who sent the query
-    sender_user_id: i32,
+    sender_user_id: i64,
     /// Identifier of the inline message, from which the query originated
     inline_message_id: String,
     /// An identifier uniquely corresponding to the chat a message was sent to
@@ -4850,7 +4850,7 @@ impl UpdateNewInlineCallbackQuery {
         self.id
     }
 
-    pub fn sender_user_id(&self) -> i32 {
+    pub fn sender_user_id(&self) -> i64 {
         self.sender_user_id
     }
 
@@ -4882,7 +4882,7 @@ impl RTDUpdateNewInlineCallbackQueryBuilder {
         self
     }
 
-    pub fn sender_user_id(&mut self, sender_user_id: i32) -> &mut Self {
+    pub fn sender_user_id(&mut self, sender_user_id: i64) -> &mut Self {
         self.inner.sender_user_id = sender_user_id;
         self
     }
@@ -4928,7 +4928,7 @@ pub struct UpdateNewInlineQuery {
     #[serde(deserialize_with = "super::_common::number_from_string")]
     id: i64,
     /// Identifier of the user who sent the query
-    sender_user_id: i32,
+    sender_user_id: i64,
     /// User location; may be null
     user_location: Option<Location>,
     /// Text of the query
@@ -4965,7 +4965,7 @@ impl UpdateNewInlineQuery {
         self.id
     }
 
-    pub fn sender_user_id(&self) -> i32 {
+    pub fn sender_user_id(&self) -> i64 {
         self.sender_user_id
     }
 
@@ -4997,7 +4997,7 @@ impl RTDUpdateNewInlineQueryBuilder {
         self
     }
 
-    pub fn sender_user_id(&mut self, sender_user_id: i32) -> &mut Self {
+    pub fn sender_user_id(&mut self, sender_user_id: i64) -> &mut Self {
         self.inner.sender_user_id = sender_user_id;
         self
     }
@@ -5112,7 +5112,7 @@ pub struct UpdateNewPreCheckoutQuery {
     #[serde(deserialize_with = "super::_common::number_from_string")]
     id: i64,
     /// Identifier of the user who sent the query
-    sender_user_id: i32,
+    sender_user_id: i64,
     /// Currency for the product price
     currency: String,
     /// Total price for the product, in the minimal quantity of the currency
@@ -5153,7 +5153,7 @@ impl UpdateNewPreCheckoutQuery {
         self.id
     }
 
-    pub fn sender_user_id(&self) -> i32 {
+    pub fn sender_user_id(&self) -> i64 {
         self.sender_user_id
     }
 
@@ -5193,7 +5193,7 @@ impl RTDUpdateNewPreCheckoutQueryBuilder {
         self
     }
 
-    pub fn sender_user_id(&mut self, sender_user_id: i32) -> &mut Self {
+    pub fn sender_user_id(&mut self, sender_user_id: i64) -> &mut Self {
         self.inner.sender_user_id = sender_user_id;
         self
     }
@@ -5249,7 +5249,7 @@ pub struct UpdateNewShippingQuery {
     #[serde(deserialize_with = "super::_common::number_from_string")]
     id: i64,
     /// Identifier of the user who sent the query
-    sender_user_id: i32,
+    sender_user_id: i64,
     /// Invoice payload
     invoice_payload: String,
     /// User shipping address
@@ -5284,7 +5284,7 @@ impl UpdateNewShippingQuery {
         self.id
     }
 
-    pub fn sender_user_id(&self) -> i32 {
+    pub fn sender_user_id(&self) -> i64 {
         self.sender_user_id
     }
 
@@ -5312,7 +5312,7 @@ impl RTDUpdateNewShippingQueryBuilder {
         self
     }
 
-    pub fn sender_user_id(&mut self, sender_user_id: i32) -> &mut Self {
+    pub fn sender_user_id(&mut self, sender_user_id: i64) -> &mut Self {
         self.inner.sender_user_id = sender_user_id;
         self
     }
@@ -5736,7 +5736,7 @@ pub struct UpdatePollAnswer {
     #[serde(deserialize_with = "super::_common::number_from_string")]
     poll_id: i64,
     /// The user, who changed the answer to the poll
-    user_id: i32,
+    user_id: i64,
     /// 0-based identifiers of answer options, chosen by the user
     option_ids: Vec<i32>,
 }
@@ -5769,7 +5769,7 @@ impl UpdatePollAnswer {
         self.poll_id
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -5793,7 +5793,7 @@ impl RTDUpdatePollAnswerBuilder {
         self
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }
@@ -7037,7 +7037,7 @@ pub struct UpdateUserChatAction {
     /// If not 0, a message thread identifier in which the action was performed
     message_thread_id: i64,
     /// Identifier of a user performing an action
-    user_id: i32,
+    user_id: i64,
     /// The action description
 
     #[serde(skip_serializing_if = "ChatAction::_is_default")]
@@ -7076,7 +7076,7 @@ impl UpdateUserChatAction {
         self.message_thread_id
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -7105,7 +7105,7 @@ impl RTDUpdateUserChatActionBuilder {
         self
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }
@@ -7137,7 +7137,7 @@ pub struct UpdateUserFullInfo {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier
-    user_id: i32,
+    user_id: i64,
     /// New full information about the user
     user_full_info: UserFullInfo,
 }
@@ -7166,7 +7166,7 @@ impl UpdateUserFullInfo {
         RTDUpdateUserFullInfoBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -7185,7 +7185,7 @@ impl RTDUpdateUserFullInfoBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }
@@ -7299,7 +7299,7 @@ pub struct UpdateUserStatus {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier
-    user_id: i32,
+    user_id: i64,
     /// New status of the user
 
     #[serde(skip_serializing_if = "UserStatus::_is_default")]
@@ -7330,7 +7330,7 @@ impl UpdateUserStatus {
         RTDUpdateUserStatusBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -7349,7 +7349,7 @@ impl RTDUpdateUserStatusBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }

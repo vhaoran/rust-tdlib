@@ -10,7 +10,7 @@ pub struct User {
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
-    /// User identifier
+    /// User   identifier
     id: i64,
     /// First name of the user
     first_name: String,
@@ -71,7 +71,7 @@ impl User {
         RTDUserBuilder { inner }
     }
 
-    pub fn id(&self) -> i32 {
+    pub fn id(&self) -> i64 {
         self.id
     }
 
@@ -146,7 +146,7 @@ impl RTDUserBuilder {
         self.inner.clone()
     }
 
-    pub fn id(&mut self, id: i32) -> &mut Self {
+    pub fn id(&mut self, id: i64) -> &mut Self {
         self.inner.id = id;
         self
     }

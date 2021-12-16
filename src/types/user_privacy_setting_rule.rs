@@ -314,7 +314,7 @@ pub struct UserPrivacySettingRuleAllowUsers {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// The user identifiers, total number of users in all rules must not exceed 1000
-    user_ids: Vec<i32>,
+    user_ids: Vec<i64>,
 }
 
 impl RObject for UserPrivacySettingRuleAllowUsers {
@@ -341,7 +341,7 @@ impl UserPrivacySettingRuleAllowUsers {
         RTDUserPrivacySettingRuleAllowUsersBuilder { inner }
     }
 
-    pub fn user_ids(&self) -> &Vec<i32> {
+    pub fn user_ids(&self) -> &Vec<i64> {
         &self.user_ids
     }
 }
@@ -356,7 +356,7 @@ impl RTDUserPrivacySettingRuleAllowUsersBuilder {
         self.inner.clone()
     }
 
-    pub fn user_ids(&mut self, user_ids: Vec<i32>) -> &mut Self {
+    pub fn user_ids(&mut self, user_ids: Vec<i64>) -> &mut Self {
         self.inner.user_ids = user_ids;
         self
     }
@@ -574,7 +574,7 @@ pub struct UserPrivacySettingRuleRestrictUsers {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// The user identifiers, total number of users in all rules must not exceed 1000
-    user_ids: Vec<i32>,
+    user_ids: Vec<i64>,
 }
 
 impl RObject for UserPrivacySettingRuleRestrictUsers {
@@ -601,7 +601,7 @@ impl UserPrivacySettingRuleRestrictUsers {
         RTDUserPrivacySettingRuleRestrictUsersBuilder { inner }
     }
 
-    pub fn user_ids(&self) -> &Vec<i32> {
+    pub fn user_ids(&self) -> &Vec<i64> {
         &self.user_ids
     }
 }
@@ -616,7 +616,7 @@ impl RTDUserPrivacySettingRuleRestrictUsersBuilder {
         self.inner.clone()
     }
 
-    pub fn user_ids(&mut self, user_ids: Vec<i32>) -> &mut Self {
+    pub fn user_ids(&mut self, user_ids: Vec<i64>) -> &mut Self {
         self.inner.user_ids = user_ids;
         self
     }

@@ -503,7 +503,7 @@ pub struct MessageBasicGroupChatCreate {
     /// Title of the basic group
     title: String,
     /// User identifiers of members in the basic group
-    member_user_ids: Vec<i32>,
+    member_user_ids: Vec<i64>,
 }
 
 impl RObject for MessageBasicGroupChatCreate {
@@ -534,7 +534,7 @@ impl MessageBasicGroupChatCreate {
         &self.title
     }
 
-    pub fn member_user_ids(&self) -> &Vec<i32> {
+    pub fn member_user_ids(&self) -> &Vec<i64> {
         &self.member_user_ids
     }
 }
@@ -554,7 +554,7 @@ impl RTDMessageBasicGroupChatCreateBuilder {
         self
     }
 
-    pub fn member_user_ids(&mut self, member_user_ids: Vec<i32>) -> &mut Self {
+    pub fn member_user_ids(&mut self, member_user_ids: Vec<i64>) -> &mut Self {
         self.inner.member_user_ids = member_user_ids;
         self
     }
@@ -674,7 +674,7 @@ pub struct MessageChatAddMembers {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifiers of the new members
-    member_user_ids: Vec<i32>,
+    member_user_ids: Vec<i64>,
 }
 
 impl RObject for MessageChatAddMembers {
@@ -701,7 +701,7 @@ impl MessageChatAddMembers {
         RTDMessageChatAddMembersBuilder { inner }
     }
 
-    pub fn member_user_ids(&self) -> &Vec<i32> {
+    pub fn member_user_ids(&self) -> &Vec<i64> {
         &self.member_user_ids
     }
 }
@@ -716,7 +716,7 @@ impl RTDMessageChatAddMembersBuilder {
         self.inner.clone()
     }
 
-    pub fn member_user_ids(&mut self, member_user_ids: Vec<i32>) -> &mut Self {
+    pub fn member_user_ids(&mut self, member_user_ids: Vec<i64>) -> &mut Self {
         self.inner.member_user_ids = member_user_ids;
         self
     }
@@ -881,7 +881,7 @@ pub struct MessageChatDeleteMember {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier of the deleted chat member
-    user_id: i32,
+    user_id: i64,
 }
 
 impl RObject for MessageChatDeleteMember {
@@ -908,7 +908,7 @@ impl MessageChatDeleteMember {
         RTDMessageChatDeleteMemberBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 }
@@ -923,7 +923,7 @@ impl RTDMessageChatDeleteMemberBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }

@@ -335,7 +335,7 @@ pub struct MessageForwardOriginUser {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Identifier of the user that originally sent the message
-    sender_user_id: i32,
+    sender_user_id: i64,
 }
 
 impl RObject for MessageForwardOriginUser {
@@ -362,7 +362,7 @@ impl MessageForwardOriginUser {
         RTDMessageForwardOriginUserBuilder { inner }
     }
 
-    pub fn sender_user_id(&self) -> i32 {
+    pub fn sender_user_id(&self) -> i64 {
         self.sender_user_id
     }
 }
@@ -377,7 +377,7 @@ impl RTDMessageForwardOriginUserBuilder {
         self.inner.clone()
     }
 
-    pub fn sender_user_id(&mut self, sender_user_id: i32) -> &mut Self {
+    pub fn sender_user_id(&mut self, sender_user_id: i64) -> &mut Self {
         self.inner.sender_user_id = sender_user_id;
         self
     }

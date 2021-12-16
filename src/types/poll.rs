@@ -21,7 +21,7 @@ pub struct Poll {
     /// Total number of voters, participating in the poll
     total_voter_count: i32,
     /// User identifiers of recent voters, if the poll is non-anonymous
-    recent_voter_user_ids: Vec<i32>,
+    recent_voter_user_ids: Vec<i64>,
     /// True, if the poll is anonymous
     is_anonymous: bool,
     /// Type of the poll
@@ -75,7 +75,7 @@ impl Poll {
         self.total_voter_count
     }
 
-    pub fn recent_voter_user_ids(&self) -> &Vec<i32> {
+    pub fn recent_voter_user_ids(&self) -> &Vec<i64> {
         &self.recent_voter_user_ids
     }
 
@@ -130,7 +130,7 @@ impl RTDPollBuilder {
         self
     }
 
-    pub fn recent_voter_user_ids(&mut self, recent_voter_user_ids: Vec<i32>) -> &mut Self {
+    pub fn recent_voter_user_ids(&mut self, recent_voter_user_ids: Vec<i64>) -> &mut Self {
         self.inner.recent_voter_user_ids = recent_voter_user_ids;
         self
     }

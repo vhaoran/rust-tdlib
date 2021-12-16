@@ -616,7 +616,7 @@ pub struct ChatEventMemberInvited {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// New member user identifier
-    user_id: i32,
+    user_id: i64,
     /// New member status
 
     #[serde(skip_serializing_if = "ChatMemberStatus::_is_default")]
@@ -647,7 +647,7 @@ impl ChatEventMemberInvited {
         RTDChatEventMemberInvitedBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -666,7 +666,7 @@ impl RTDChatEventMemberInvitedBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }
@@ -814,7 +814,7 @@ pub struct ChatEventMemberPromoted {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Chat member user identifier
-    user_id: i32,
+    user_id: i64,
     /// Previous status of the chat member
 
     #[serde(skip_serializing_if = "ChatMemberStatus::_is_default")]
@@ -849,7 +849,7 @@ impl ChatEventMemberPromoted {
         RTDChatEventMemberPromotedBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -872,7 +872,7 @@ impl RTDChatEventMemberPromotedBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }
@@ -909,7 +909,7 @@ pub struct ChatEventMemberRestricted {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Chat member user identifier
-    user_id: i32,
+    user_id: i64,
     /// Previous status of the chat member
 
     #[serde(skip_serializing_if = "ChatMemberStatus::_is_default")]
@@ -944,7 +944,7 @@ impl ChatEventMemberRestricted {
         RTDChatEventMemberRestrictedBuilder { inner }
     }
 
-    pub fn user_id(&self) -> i32 {
+    pub fn user_id(&self) -> i64 {
         self.user_id
     }
 
@@ -967,7 +967,7 @@ impl RTDChatEventMemberRestrictedBuilder {
         self.inner.clone()
     }
 
-    pub fn user_id(&mut self, user_id: i32) -> &mut Self {
+    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
         self
     }
