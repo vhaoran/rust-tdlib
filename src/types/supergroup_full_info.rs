@@ -47,7 +47,7 @@ pub struct SupergroupFullInfo {
     /// Location to which the supergroup is connected; may be null
     location: Option<ChatLocation>,
     /// Invite link for this chat
-    invite_link: String,
+    // invite_link: String,
     /// Identifier of the basic group from which supergroup was upgraded; 0 if none
     upgraded_from_basic_group_id: i32,
     /// Identifier of the last message in the basic group from which supergroup was upgraded; 0 if none
@@ -144,9 +144,9 @@ impl SupergroupFullInfo {
         &self.location
     }
 
-    pub fn invite_link(&self) -> &String {
-        &self.invite_link
-    }
+    // pub fn invite_link(&self) -> &String {
+    //     &self.invite_link
+    // }
 
     pub fn upgraded_from_basic_group_id(&self) -> i32 {
         self.upgraded_from_basic_group_id
@@ -252,10 +252,10 @@ impl RTDSupergroupFullInfoBuilder {
         self
     }
 
-    pub fn invite_link<T: AsRef<str>>(&mut self, invite_link: T) -> &mut Self {
-        self.inner.invite_link = invite_link.as_ref().to_string();
-        self
-    }
+    // pub fn invite_link<T: AsRef<str>>(&mut self, invite_link: T) -> &mut Self {
+    //     self.inner.invite_link = invite_link.as_ref().to_string();
+    //     self
+    // }
 
     pub fn upgraded_from_basic_group_id(&mut self, upgraded_from_basic_group_id: i32) -> &mut Self {
         self.inner.upgraded_from_basic_group_id = upgraded_from_basic_group_id;
