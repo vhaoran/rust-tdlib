@@ -369,9 +369,15 @@ where
                     .await
                     .unwrap()
                 {
-                    log::trace!("received json from tdlib: {}", json);
+                    log::debug!("received_json_of_tdlib: {}", json);
                     match from_json::<TdType>(&json) {
-                        Err(e) => log::error!("can't deserialize tdlib data: {}", e),
+                        Err(e) => {
+                            log::error!(
+                                "can't deserialize tdlib data: {},\njson for prefrence:{}",
+                                e,
+                                json
+                            );
+                        }
                         Ok(t) => {
                             if let Some(TdType::Update(update)) = OBSERVER.notify(t) {
                                 if let Update::AuthorizationState(auth_state) = update {
