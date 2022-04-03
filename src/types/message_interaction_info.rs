@@ -4,6 +4,7 @@ use uuid::Uuid;
 
 /// Contains information about interactions with a message
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(tag = "@type")]
 pub struct MessageInteractionInfo {
     #[doc(hidden)]
     #[serde(rename(serialize = "@extra", deserialize = "@extra"))]

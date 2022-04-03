@@ -15,7 +15,7 @@ pub struct Message {
     /// The sender of the message
 
     #[serde(skip_serializing_if = "MessageSender::_is_default")]
-    sender: MessageSender,
+    sender_id: MessageSender,
     /// Chat identifier
     chat_id: i64,
     /// Information about the sending state of the message; may be null
@@ -104,8 +104,8 @@ impl Message {
         self.id
     }
 
-    pub fn sender(&self) -> &MessageSender {
-        &self.sender
+    pub fn sender_id(&self) -> &MessageSender {
+        &self.sender_id
     }
 
     pub fn chat_id(&self) -> i64 {
@@ -236,8 +236,8 @@ impl RTDMessageBuilder {
         self
     }
 
-    pub fn sender<T: AsRef<MessageSender>>(&mut self, sender: T) -> &mut Self {
-        self.inner.sender = sender.as_ref().clone();
+    pub fn sender_id<T: AsRef<MessageSender>>(&mut self, sender: T) -> &mut Self {
+        self.inner.sender_id = sender.as_ref().clone();
         self
     }
 

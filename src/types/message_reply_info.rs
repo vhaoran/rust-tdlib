@@ -4,6 +4,7 @@ use uuid::Uuid;
 
 /// Contains information about replies to a message
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(tag = "@type")]
 pub struct MessageReplyInfo {
     #[doc(hidden)]
     #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
@@ -13,7 +14,7 @@ pub struct MessageReplyInfo {
     /// Number of times the message was directly or indirectly replied
     reply_count: i32,
     /// Recent repliers to the message; available in channels with a discussion supergroup
-    recent_repliers: Vec<MessageSender>,
+    recent_replier_ids: Vec<MessageSender>,
     /// Identifier of the last read incoming reply to the message
     last_read_inbox_message_id: i64,
     /// Identifier of the last read outgoing reply to the message
@@ -48,8 +49,8 @@ impl MessageReplyInfo {
         self.reply_count
     }
 
-    pub fn recent_repliers(&self) -> &Vec<MessageSender> {
-        &self.recent_repliers
+    pub fn recent_replier_ids(&self) -> &Vec<MessageSender> {
+        &self.recent_replier_ids
     }
 
     pub fn last_read_inbox_message_id(&self) -> i64 {
@@ -80,8 +81,8 @@ impl RTDMessageReplyInfoBuilder {
         self
     }
 
-    pub fn recent_repliers(&mut self, recent_repliers: Vec<MessageSender>) -> &mut Self {
-        self.inner.recent_repliers = recent_repliers;
+    pub fn recent_replier_ids(&mut self, recent_replier_ids: Vec<MessageSender>) -> &mut Self {
+        self.inner.recent_replier_ids = recent_replier_ids;
         self
     }
 
