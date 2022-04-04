@@ -46,6 +46,11 @@ pub enum Update {
     /// New call was created or information about a call was updated
     #[serde(rename(serialize = "updateCall", deserialize = "updateCall"))]
     Call(UpdateCall),
+
+    //for tdlib1.8
+    #[serde(rename(serialize = "updateChatAction", deserialize = "updateChatAction"))]
+    ChatAction(UpdateChatAction),
+
     /// The chat action bar was changed
     #[serde(rename(serialize = "updateChatActionBar", deserialize = "updateChatActionBar"))]
     ChatActionBar(UpdateChatActionBar),
@@ -124,6 +129,14 @@ pub enum Update {
         deserialize = "updateChatReplyMarkup"
     ))]
     ChatReplyMarkup(UpdateChatReplyMarkup),
+    //
+    /// The chat theme was changed
+    #[serde(rename(serialize = "updateChatTheme", deserialize = "updateChatTheme"))]
+    ChatTheme(UpdateChatTheme),
+    /// The list of available chat themes has changed
+    #[serde(rename(serialize = "updateChatThemes", deserialize = "updateChatThemes"))]
+    ChatThemes(UpdateChatThemes),
+
     /// The title of a chat was changed
     #[serde(rename(serialize = "updateChatTitle", deserialize = "updateChatTitle"))]
     ChatTitle(UpdateChatTitle),
@@ -7440,3 +7453,160 @@ impl AsRef<UpdateUsersNearby> for RTDUpdateUsersNearbyBuilder {
         &self.inner
     }
 }
+
+//-----------add by whr tdlib1.8.0--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatTheme {
+    // #[doc(hidden)]
+    // #[serde(rename(serialize = "@type", deserialize = "@type"))]
+    // td_name: String,
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// Chat identifier
+    chat_id: i64,
+    /// The new name of the chat theme; may be empty if theme was reset to default
+    theme_name: String,
+}
+
+impl RObject for UpdateChatTheme {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl RFunction for UpdateChatTheme {}
+
+impl UpdateChatTheme {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateChatThemeBuilder {
+        let mut inner = UpdateChatTheme::default();
+        // inner.td_name = "updateChatTheme".to_string();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateChatThemeBuilder { inner }
+    }
+
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+
+    pub fn theme_name(&self) -> &String {
+        &self.theme_name
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateChatThemeBuilder {
+    inner: UpdateChatTheme,
+}
+
+impl RTDUpdateChatThemeBuilder {
+    pub fn build(&self) -> UpdateChatTheme {
+        self.inner.clone()
+    }
+
+    pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
+        self.inner.chat_id = chat_id;
+        self
+    }
+
+    pub fn theme_name<T: AsRef<str>>(&mut self, theme_name: T) -> &mut Self {
+        self.inner.theme_name = theme_name.as_ref().to_string();
+        self
+    }
+}
+
+impl AsRef<UpdateChatTheme> for UpdateChatTheme {
+    fn as_ref(&self) -> &UpdateChatTheme {
+        self
+    }
+}
+
+impl AsRef<UpdateChatTheme> for RTDUpdateChatThemeBuilder {
+    fn as_ref(&self) -> &UpdateChatTheme {
+        &self.inner
+    }
+}
+//-----------end updateChatTheme--------------------------
+
+//-----------updateChatThemes------begin--------------------
+/// The list of available chat themes has changed
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatThemes {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// The new list of chat themes
+    chat_themes: Vec<ChatTheme>,
+}
+
+impl RObject for UpdateChatThemes {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl RFunction for UpdateChatThemes {}
+
+impl UpdateChatThemes {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateChatThemesBuilder {
+        let mut inner = UpdateChatThemes::default();
+        // inner.td_name = "updateChatThemes".to_string();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateChatThemesBuilder { inner }
+    }
+
+    pub fn chat_themes(&self) -> &Vec<ChatTheme> {
+        &self.chat_themes
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateChatThemesBuilder {
+    inner: UpdateChatThemes,
+}
+
+impl RTDUpdateChatThemesBuilder {
+    pub fn build(&self) -> UpdateChatThemes {
+        self.inner.clone()
+    }
+
+    pub fn chat_themes(&mut self, chat_themes: Vec<ChatTheme>) -> &mut Self {
+        self.inner.chat_themes = chat_themes;
+        self
+    }
+}
+
+impl AsRef<UpdateChatThemes> for UpdateChatThemes {
+    fn as_ref(&self) -> &UpdateChatThemes {
+        self
+    }
+}
+
+impl AsRef<UpdateChatThemes> for RTDUpdateChatThemesBuilder {
+    fn as_ref(&self) -> &UpdateChatThemes {
+        &self.inner
+    }
+}
+//-----------updateChatThemes------end--------------------

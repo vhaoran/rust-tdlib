@@ -100,6 +100,11 @@ pub use self::chat_statistics_administrator_actions_info::*;
 pub use self::chat_statistics_inviter_info::*;
 pub use self::chat_statistics_message_interaction_info::*;
 pub use self::chat_statistics_message_sender_info::*;
+//add by whr tdlib1.8
+pub use self::chat_theme::*;
+pub use self::theme_settings::*;
+
+//
 pub use self::chat_type::*;
 pub use self::chats::*;
 pub use self::chats_nearby::*;
@@ -647,6 +652,7 @@ pub use self::transfer_chat_ownership::*;
 pub use self::unpin_all_chat_messages::*;
 pub use self::unpin_chat_message::*;
 pub use self::update::*;
+pub use self::update_chat_action::*;
 pub use self::updates::*;
 pub use self::upgrade_basic_group_chat_to_supergroup_chat::*;
 pub use self::upload_file::*;
@@ -1335,6 +1341,10 @@ mod voice_note;
 mod web_page;
 mod web_page_instant_view;
 mod write_generated_file_part;
+//
+mod update_chat_action;
 
 //
 mod a_test;
+mod chat_theme;
+mod theme_settings;
