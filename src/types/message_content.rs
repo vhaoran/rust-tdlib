@@ -13,6 +13,14 @@ pub trait TDMessageContent: Debug + RObject {}
 pub enum MessageContent {
     #[doc(hidden)]
     _Default,
+
+    //for tdlib1.8
+    #[serde(rename(
+        serialize = "messageAnimatedEmoji",
+        deserialize = "messageAnimatedEmoji"
+    ))]
+    MessageAnimatedEmoji(MessageAnimatedEmoji),
+
     /// An animation message (GIF-style).
     #[serde(rename(serialize = "messageAnimation", deserialize = "messageAnimation"))]
     MessageAnimation(MessageAnimation),
@@ -3675,3 +3683,88 @@ impl AsRef<MessageWebsiteConnected> for RTDMessageWebsiteConnectedBuilder {
         &self.inner
     }
 }
+
+//---------tdlib1.8 begin----------------------------
+/// A message with an animated emoji
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MessageAnimatedEmoji {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// The animated emoji
+    animated_emoji: AnimatedEmoji,
+    /// The corresponding emoji
+    emoji: String,
+}
+
+impl RObject for MessageAnimatedEmoji {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDMessageContent for MessageAnimatedEmoji {}
+
+impl MessageAnimatedEmoji {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDMessageAnimatedEmojiBuilder {
+        let mut inner = MessageAnimatedEmoji::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDMessageAnimatedEmojiBuilder { inner }
+    }
+
+    pub fn animated_emoji(&self) -> &AnimatedEmoji {
+        &self.animated_emoji
+    }
+
+    pub fn emoji(&self) -> &String {
+        &self.emoji
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDMessageAnimatedEmojiBuilder {
+    inner: MessageAnimatedEmoji,
+}
+
+impl RTDMessageAnimatedEmojiBuilder {
+    pub fn build(&self) -> MessageAnimatedEmoji {
+        self.inner.clone()
+    }
+
+    pub fn animated_emoji<T: AsRef<AnimatedEmoji>>(&mut self, animated_emoji: T) -> &mut Self {
+        self.inner.animated_emoji = animated_emoji.as_ref().clone();
+        self
+    }
+
+    pub fn emoji<T: AsRef<str>>(&mut self, emoji: T) -> &mut Self {
+        self.inner.emoji = emoji.as_ref().to_string();
+        self
+    }
+}
+
+impl AsRef<MessageAnimatedEmoji> for MessageAnimatedEmoji {
+    fn as_ref(&self) -> &MessageAnimatedEmoji {
+        self
+    }
+}
+
+impl AsRef<MessageAnimatedEmoji> for RTDMessageAnimatedEmojiBuilder {
+    fn as_ref(&self) -> &MessageAnimatedEmoji {
+        &self.inner
+    }
+}
+
+//---------tdlib1.8 end----------------------------
+
+//-------------------------------------

@@ -373,7 +373,7 @@ where
                     match from_json::<TdType>(&json) {
                         Err(e) => {
                             log::error!(
-                                "can't deserialize tdlib data: {},\njson for prefrence:{}",
+                                "can't deserialize tdlib data: {},json for prefrence:{}",
                                 e,
                                 json
                             );

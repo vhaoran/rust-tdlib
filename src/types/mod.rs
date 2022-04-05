@@ -101,6 +101,7 @@ pub use self::chat_statistics_inviter_info::*;
 pub use self::chat_statistics_message_interaction_info::*;
 pub use self::chat_statistics_message_sender_info::*;
 //add by whr tdlib1.8
+pub use self::animated_emoji::*;
 pub use self::chat_theme::*;
 pub use self::theme_settings::*;
 
@@ -1346,5 +1347,6 @@ mod update_chat_action;
 
 //
 mod a_test;
+mod animated_emoji;
 mod chat_theme;
 mod theme_settings;

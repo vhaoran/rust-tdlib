@@ -57,6 +57,12 @@ pub enum TextEntityType {
     Italic(TextEntityTypeItalic),
     /// A mention of a user by their username
     #[serde(rename(
+        serialize = "textEntityTypeMediaTimestamp",
+        deserialize = "textEntityTypeMediaTimestamp"
+    ))]
+    MediaTimestamp(TextEntityTypeMediaTimestamp),
+
+    #[serde(rename(
         serialize = "textEntityTypeMention",
         deserialize = "textEntityTypeMention"
     ))]
@@ -1196,3 +1202,75 @@ impl AsRef<TextEntityTypeUrl> for RTDTextEntityTypeUrlBuilder {
         &self.inner
     }
 }
+
+//-----------tdlib1.8 begin--------------------------
+/// A media timestamp
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct TextEntityTypeMediaTimestamp {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// Timestamp from which a video/audio/video note/voice note playing must start, in seconds. The media can be in the content or the web page preview of the current message, or in the same places in the replied message
+    media_timestamp: i64,
+}
+
+impl RObject for TextEntityTypeMediaTimestamp {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDTextEntityType for TextEntityTypeMediaTimestamp {}
+
+impl TextEntityTypeMediaTimestamp {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDTextEntityTypeMediaTimestampBuilder {
+        let mut inner = TextEntityTypeMediaTimestamp::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDTextEntityTypeMediaTimestampBuilder { inner }
+    }
+
+    pub fn media_timestamp(&self) -> i64 {
+        self.media_timestamp
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDTextEntityTypeMediaTimestampBuilder {
+    inner: TextEntityTypeMediaTimestamp,
+}
+
+impl RTDTextEntityTypeMediaTimestampBuilder {
+    pub fn build(&self) -> TextEntityTypeMediaTimestamp {
+        self.inner.clone()
+    }
+
+    pub fn media_timestamp(&mut self, media_timestamp: i64) -> &mut Self {
+        self.inner.media_timestamp = media_timestamp;
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeMediaTimestamp> for TextEntityTypeMediaTimestamp {
+    fn as_ref(&self) -> &TextEntityTypeMediaTimestamp {
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeMediaTimestamp> for RTDTextEntityTypeMediaTimestampBuilder {
+    fn as_ref(&self) -> &TextEntityTypeMediaTimestamp {
+        &self.inner
+    }
+}
+
+//-----------tdlib1.8 end--------------------------

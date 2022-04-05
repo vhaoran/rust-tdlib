@@ -1144,6 +1144,11 @@ const UPDATE_MEMBERS: &[&str] = &[
     "updateBasicGroup",
     "updateBasicGroupFullInfo",
     "updateCall",
+    //----------------------
+    //add from tdlib1.8
+    "updateChatAction",
+    //end tdlib1.8
+    //----------------------
     "updateChatActionBar",
     "updateChatDefaultDisableNotification",
     "updateChatDraftMessage",
@@ -1210,6 +1215,10 @@ const UPDATE_MEMBERS: &[&str] = &[
     "updateSupergroupFullInfo",
     "updateTermsOfService",
     "updateTrendingStickerSets",
+    //start tdlib1.8
+    "updateChatThemes",
+    "updateChatTheme",
+    //end tdlib1.8
     "updateUnreadChatCount",
     "updateUnreadMessageCount",
     "updateUser",
