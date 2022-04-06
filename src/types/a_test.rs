@@ -2690,3 +2690,104 @@ fn a_3() {
     let src: TdType = serde_json::from_str(s).unwrap();
     println!("-----------src: {:?}-----------", src);
 }
+
+#[test]
+fn a_m_4() {
+    //---------------------
+    let s = r#"
+    {
+ "@type": "updateChatVideoChat",
+ "chat_id": -1001587868058,
+ "video_chat": {
+  "@type": "videoChat",
+  "group_call_id": 3,
+  "has_participants": true
+ },
+ "@client_id": 1
+}
+    "#;
+
+    let src: TdType = serde_json::from_str(s).unwrap();
+    println!("-----------src: {:?}-----------", src);
+}
+
+#[test]
+fn a_5() {
+    //---------------------
+    let s = r#"
+    {
+ "@type": "updateGroupCall",
+ "group_call": {
+  "@type": "groupCall",
+  "id": 3,
+  "title": "",
+  "scheduled_start_date": 0,
+  "enabled_start_notification": false,
+  "is_active": true,
+  "is_joined": false,
+  "need_rejoin": false,
+  "can_be_managed": false,
+  "participant_count": 1,
+  "loaded_all_participants": false,
+  "recent_speakers": [
+   {
+    "@type": "groupCallRecentSpeaker",
+    "participant_id": {
+     "@type": "messageSenderUser",
+     "user_id": 1555806518
+    },
+    "is_speaking": false
+   }
+  ],
+  "is_my_video_enabled": false,
+  "is_my_video_paused": false,
+  "can_enable_video": true,
+  "mute_new_participants": false,
+  "can_toggle_mute_new_participants": false,
+  "record_duration": 0,
+  "is_video_recorded": false,
+  "duration": 0
+ },
+ "@client_id": 1
+}
+    "#;
+
+    let src: TdType = serde_json::from_str(s).unwrap();
+    println!("-----------src: {:?}-----------", src);
+}
+
+#[test]
+fn a_6() {
+    let s = r#"
+    {
+ "@type": "updateChatMessageTtl" ,
+ "chat_id": -1001401975183 ,
+ "message_ttl": 2678400 ,
+ "@client_id": 1
+}
+
+    "#;
+    let src: TdType = serde_json::from_str(s).unwrap();
+    println!("-----------src: {:?}-----------", src);
+}
+
+#[test]
+fn a_7() {
+    let s = r#"
+    {
+         "@type": "updateChatAction" ,
+         "chat_id": -1001682824094 ,
+         "message_thread_id": 0 ,
+         "sender_id": {
+              "@type": "messageSenderUser" ,
+              "user_id": 1666120241
+         } ,
+         "action": {
+            "@type": "chatActionChoosingSticker"
+         } ,
+         "@client_id": 1
+    }
+    "#;
+    let src: TdType = serde_json::from_str(s).unwrap();
+    println!("-----------src: {:?}-----------", src);
+}

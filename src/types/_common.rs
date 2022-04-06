@@ -1147,6 +1147,11 @@ const UPDATE_MEMBERS: &[&str] = &[
     //----------------------
     //add from tdlib1.8
     "updateChatAction",
+    "updateChatVideoChat",
+    "updateGroupCall",
+    "updateChatMessageTtl",
+    "updateChatMember",
+    "updateChatNotificationSettings",
     //end tdlib1.8
     //----------------------
     "updateChatActionBar",

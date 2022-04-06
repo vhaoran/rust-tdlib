@@ -102,8 +102,12 @@ pub use self::chat_statistics_message_interaction_info::*;
 pub use self::chat_statistics_message_sender_info::*;
 //add by whr tdlib1.8
 pub use self::animated_emoji::*;
+pub use self::chat_join_requests_info::*;
 pub use self::chat_theme::*;
+pub use self::group_call::*;
+pub use self::group_call_recent_speaker::*;
 pub use self::theme_settings::*;
+pub use self::video_chat::*;
 
 //
 pub use self::chat_type::*;
@@ -1348,5 +1352,9 @@ mod update_chat_action;
 //
 mod a_test;
 mod animated_emoji;
+mod chat_join_requests_info;
 mod chat_theme;
+mod group_call;
+mod group_call_recent_speaker;
 mod theme_settings;
+mod video_chat;

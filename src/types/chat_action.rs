@@ -30,9 +30,11 @@ pub enum ChatAction {
     ChoosingLocation(ChatActionChoosingLocation),
     /// The user is recording a video
     #[serde(rename(
-        serialize = "chatActionRecordingVideo",
-        deserialize = "chatActionRecordingVideo"
+        serialize = "chatActionChoosingSticker",
+        deserialize = "chatActionChoosingSticker"
     ))]
+    ChoosingSticker(ChatActionChoosingSticker),
+
     RecordingVideo(ChatActionRecordingVideo),
     /// The user is recording a video note
     #[serde(rename(
@@ -960,3 +962,63 @@ impl AsRef<ChatActionUploadingVoiceNote> for RTDChatActionUploadingVoiceNoteBuil
         &self.inner
     }
 }
+
+//--------------tdlib1.8 begin-----------------------
+/// The user is picking a sticker to send
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ChatActionChoosingSticker {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+}
+
+impl RObject for ChatActionChoosingSticker {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDChatAction for ChatActionChoosingSticker {}
+
+impl ChatActionChoosingSticker {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDChatActionChoosingStickerBuilder {
+        let mut inner = ChatActionChoosingSticker::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDChatActionChoosingStickerBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDChatActionChoosingStickerBuilder {
+    inner: ChatActionChoosingSticker,
+}
+
+impl RTDChatActionChoosingStickerBuilder {
+    pub fn build(&self) -> ChatActionChoosingSticker {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<ChatActionChoosingSticker> for ChatActionChoosingSticker {
+    fn as_ref(&self) -> &ChatActionChoosingSticker {
+        self
+    }
+}
+
+impl AsRef<ChatActionChoosingSticker> for RTDChatActionChoosingStickerBuilder {
+    fn as_ref(&self) -> &ChatActionChoosingSticker {
+        &self.inner
+    }
+}
+
+//--------------tdlib1.8 end-----------------------

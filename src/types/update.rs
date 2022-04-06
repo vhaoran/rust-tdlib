@@ -90,12 +90,30 @@ pub enum Update {
         deserialize = "updateChatLastMessage"
     ))]
     ChatLastMessage(UpdateChatLastMessage),
+
+    //tdlib1.8
+    #[serde(rename(serialize = "updateChatMember", deserialize = "updateChatMember"))]
+    ChatMember(UpdateChatMember),
+
+    #[serde(rename(
+        serialize = "updateChatMessageTtl",
+        deserialize = "updateChatMessageTtl"
+    ))]
+    ChatMessageTtl(UpdateChatMessageTtl),
+
     /// Notification settings for a chat were changed
     #[serde(rename(
         serialize = "updateChatNotificationSettings",
         deserialize = "updateChatNotificationSettings"
     ))]
     ChatNotificationSettings(UpdateChatNotificationSettings),
+
+    #[serde(rename(
+        serialize = "updateChatPendingJoinRequests",
+        deserialize = "updateChatPendingJoinRequests"
+    ))]
+    ChatPendingJoinRequests(UpdateChatPendingJoinRequests),
+    //tdlib1.8 end
     /// The number of online group members has changed. This update with non-zero count is sent only for currently opened chats. There is no guarantee that it will be sent just after the count has changed
     #[serde(rename(
         serialize = "updateChatOnlineMemberCount",
@@ -137,15 +155,20 @@ pub enum Update {
     #[serde(rename(serialize = "updateChatThemes", deserialize = "updateChatThemes"))]
     ChatThemes(UpdateChatThemes),
 
+    //
     /// The title of a chat was changed
     #[serde(rename(serialize = "updateChatTitle", deserialize = "updateChatTitle"))]
     ChatTitle(UpdateChatTitle),
+
     /// The chat unread_mention_count has changed
     #[serde(rename(
         serialize = "updateChatUnreadMentionCount",
         deserialize = "updateChatUnreadMentionCount"
     ))]
     ChatUnreadMentionCount(UpdateChatUnreadMentionCount),
+
+    #[serde(rename(serialize = "updateChatVideoChat", deserialize = "updateChatVideoChat"))]
+    ChatVideoChat(UpdateChatVideoChat),
     /// The connection state has changed. This update must be used only to show a human-readable description of the connection state
     #[serde(rename(
         serialize = "updateConnectionState",
@@ -182,6 +205,10 @@ pub enum Update {
         deserialize = "updateFileGenerationStop"
     ))]
     FileGenerationStop(UpdateFileGenerationStop),
+
+    //====tdlib1.8-----
+    #[serde(rename(serialize = "updateGroupCall", deserialize = "updateGroupCall"))]
+    GroupCall(UpdateGroupCall),
     /// Describes whether there are some pending notification updates. Can be used to prevent application from killing, while there are some pending notifications
     #[serde(rename(
         serialize = "updateHavePendingNotifications",
@@ -7610,3 +7637,441 @@ impl AsRef<UpdateChatThemes> for RTDUpdateChatThemesBuilder {
     }
 }
 //-----------updateChatThemes------end--------------------
+
+//-----------tdlib18.begin--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatVideoChat {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// Chat identifier
+    chat_id: i64,
+    /// New value of video_chat
+    video_chat: VideoChat,
+}
+
+impl RObject for UpdateChatVideoChat {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatVideoChat {}
+
+impl UpdateChatVideoChat {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateChatVideoChatBuilder {
+        let mut inner = UpdateChatVideoChat::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateChatVideoChatBuilder { inner }
+    }
+
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+
+    pub fn video_chat(&self) -> &VideoChat {
+        &self.video_chat
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateChatVideoChatBuilder {
+    inner: UpdateChatVideoChat,
+}
+
+impl RTDUpdateChatVideoChatBuilder {
+    pub fn build(&self) -> UpdateChatVideoChat {
+        self.inner.clone()
+    }
+
+    pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
+        self.inner.chat_id = chat_id;
+        self
+    }
+
+    pub fn video_chat<T: AsRef<VideoChat>>(&mut self, video_chat: T) -> &mut Self {
+        self.inner.video_chat = video_chat.as_ref().clone();
+        self
+    }
+}
+
+impl AsRef<UpdateChatVideoChat> for UpdateChatVideoChat {
+    fn as_ref(&self) -> &UpdateChatVideoChat {
+        self
+    }
+}
+
+impl AsRef<UpdateChatVideoChat> for RTDUpdateChatVideoChatBuilder {
+    fn as_ref(&self) -> &UpdateChatVideoChat {
+        &self.inner
+    }
+}
+
+//-----------tdlib18.end--------------------------
+/// Information about a group call was updated
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateGroupCall {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// New data about a group call
+    group_call: GroupCall,
+}
+
+impl RObject for UpdateGroupCall {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateGroupCall {}
+
+impl UpdateGroupCall {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateGroupCallBuilder {
+        let mut inner = UpdateGroupCall::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateGroupCallBuilder { inner }
+    }
+
+    pub fn group_call(&self) -> &GroupCall {
+        &self.group_call
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateGroupCallBuilder {
+    inner: UpdateGroupCall,
+}
+
+impl RTDUpdateGroupCallBuilder {
+    pub fn build(&self) -> UpdateGroupCall {
+        self.inner.clone()
+    }
+
+    pub fn group_call<T: AsRef<GroupCall>>(&mut self, group_call: T) -> &mut Self {
+        self.inner.group_call = group_call.as_ref().clone();
+        self
+    }
+}
+
+impl AsRef<UpdateGroupCall> for UpdateGroupCall {
+    fn as_ref(&self) -> &UpdateGroupCall {
+        self
+    }
+}
+
+impl AsRef<UpdateGroupCall> for RTDUpdateGroupCallBuilder {
+    fn as_ref(&self) -> &UpdateGroupCall {
+        &self.inner
+    }
+}
+
+//-------------------------------------
+/// User rights changed in a chat; for bots only
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatMember {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// Chat identifier
+    chat_id: i64,
+    /// Identifier of the user, changing the rights
+    actor_user_id: i64,
+    /// Point in time (Unix timestamp) when the user rights was changed
+    date: i64,
+    /// If user has joined the chat using an invite link, the invite link; may be null
+    invite_link: Option<ChatInviteLink>,
+    /// Previous chat member
+    old_chat_member: ChatMember,
+    /// New chat member
+    new_chat_member: ChatMember,
+}
+
+impl RObject for UpdateChatMember {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatMember {}
+
+impl UpdateChatMember {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateChatMemberBuilder {
+        let mut inner = UpdateChatMember::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateChatMemberBuilder { inner }
+    }
+
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+
+    pub fn actor_user_id(&self) -> i64 {
+        self.actor_user_id
+    }
+
+    pub fn date(&self) -> i64 {
+        self.date
+    }
+
+    pub fn invite_link(&self) -> &Option<ChatInviteLink> {
+        &self.invite_link
+    }
+
+    pub fn old_chat_member(&self) -> &ChatMember {
+        &self.old_chat_member
+    }
+
+    pub fn new_chat_member(&self) -> &ChatMember {
+        &self.new_chat_member
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateChatMemberBuilder {
+    inner: UpdateChatMember,
+}
+
+impl RTDUpdateChatMemberBuilder {
+    pub fn build(&self) -> UpdateChatMember {
+        self.inner.clone()
+    }
+
+    pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
+        self.inner.chat_id = chat_id;
+        self
+    }
+
+    pub fn actor_user_id(&mut self, actor_user_id: i64) -> &mut Self {
+        self.inner.actor_user_id = actor_user_id;
+        self
+    }
+
+    pub fn date(&mut self, date: i64) -> &mut Self {
+        self.inner.date = date;
+        self
+    }
+
+    pub fn invite_link<T: AsRef<ChatInviteLink>>(&mut self, invite_link: T) -> &mut Self {
+        self.inner.invite_link = Some(invite_link.as_ref().clone());
+        self
+    }
+
+    pub fn old_chat_member<T: AsRef<ChatMember>>(&mut self, old_chat_member: T) -> &mut Self {
+        self.inner.old_chat_member = old_chat_member.as_ref().clone();
+        self
+    }
+
+    pub fn new_chat_member<T: AsRef<ChatMember>>(&mut self, new_chat_member: T) -> &mut Self {
+        self.inner.new_chat_member = new_chat_member.as_ref().clone();
+        self
+    }
+}
+
+impl AsRef<UpdateChatMember> for UpdateChatMember {
+    fn as_ref(&self) -> &UpdateChatMember {
+        self
+    }
+}
+
+impl AsRef<UpdateChatMember> for RTDUpdateChatMemberBuilder {
+    fn as_ref(&self) -> &UpdateChatMember {
+        &self.inner
+    }
+}
+//-------------------------------------
+/// The message Time To Live setting for a chat was changed
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatMessageTtl {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// Chat identifier
+    chat_id: i64,
+    /// New value of message_ttl
+    message_ttl: i64,
+}
+
+impl RObject for UpdateChatMessageTtl {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatMessageTtl {}
+
+impl UpdateChatMessageTtl {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateChatMessageTtlBuilder {
+        let mut inner = UpdateChatMessageTtl::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateChatMessageTtlBuilder { inner }
+    }
+
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+
+    pub fn message_ttl(&self) -> i64 {
+        self.message_ttl
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateChatMessageTtlBuilder {
+    inner: UpdateChatMessageTtl,
+}
+
+impl RTDUpdateChatMessageTtlBuilder {
+    pub fn build(&self) -> UpdateChatMessageTtl {
+        self.inner.clone()
+    }
+
+    pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
+        self.inner.chat_id = chat_id;
+        self
+    }
+
+    pub fn message_ttl(&mut self, message_ttl: i64) -> &mut Self {
+        self.inner.message_ttl = message_ttl;
+        self
+    }
+}
+
+impl AsRef<UpdateChatMessageTtl> for UpdateChatMessageTtl {
+    fn as_ref(&self) -> &UpdateChatMessageTtl {
+        self
+    }
+}
+
+impl AsRef<UpdateChatMessageTtl> for RTDUpdateChatMessageTtlBuilder {
+    fn as_ref(&self) -> &UpdateChatMessageTtl {
+        &self.inner
+    }
+}
+//-------------------------------------
+/// The chat pending join requests were changed
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatPendingJoinRequests {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    /// Chat identifier
+    chat_id: i64,
+    /// The new data about pending join requests; may be null
+    pending_join_requests: Option<ChatJoinRequestsInfo>,
+}
+
+impl RObject for UpdateChatPendingJoinRequests {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatPendingJoinRequests {}
+
+impl UpdateChatPendingJoinRequests {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateChatPendingJoinRequestsBuilder {
+        let mut inner = UpdateChatPendingJoinRequests::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateChatPendingJoinRequestsBuilder { inner }
+    }
+
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+
+    pub fn pending_join_requests(&self) -> &Option<ChatJoinRequestsInfo> {
+        &self.pending_join_requests
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateChatPendingJoinRequestsBuilder {
+    inner: UpdateChatPendingJoinRequests,
+}
+
+impl RTDUpdateChatPendingJoinRequestsBuilder {
+    pub fn build(&self) -> UpdateChatPendingJoinRequests {
+        self.inner.clone()
+    }
+
+    pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
+        self.inner.chat_id = chat_id;
+        self
+    }
+
+    pub fn pending_join_requests<T: AsRef<ChatJoinRequestsInfo>>(
+        &mut self,
+        pending_join_requests: T,
+    ) -> &mut Self {
+        self.inner.pending_join_requests = Some(pending_join_requests.as_ref().clone());
+        self
+    }
+}
+
+impl AsRef<UpdateChatPendingJoinRequests> for UpdateChatPendingJoinRequests {
+    fn as_ref(&self) -> &UpdateChatPendingJoinRequests {
+        self
+    }
+}
+
+impl AsRef<UpdateChatPendingJoinRequests> for RTDUpdateChatPendingJoinRequestsBuilder {
+    fn as_ref(&self) -> &UpdateChatPendingJoinRequests {
+        &self.inner
+    }
+}
