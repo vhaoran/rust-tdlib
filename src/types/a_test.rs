@@ -2791,3 +2791,39 @@ fn a_7() {
     let src: TdType = serde_json::from_str(s).unwrap();
     println!("-----------src: {:?}-----------", src);
 }
+
+#[test]
+fn a_9() {
+    //---------------------
+    // `suggestedActionCheckPassword`
+    let s = r#"
+    {
+     "@type": "updateSuggestedActions" ,
+     "added_actions": [
+      {
+       "@type": "suggestedActionCheckPassword"
+      }
+     ] ,
+     "removed_actions": [ ] ,
+     "@client_id": 1
+    }
+    "#;
+    let src: TdType = serde_json::from_str(s).unwrap();
+    println!("-----------src: {:?}-----------", src);
+}
+
+#[test]
+fn a_10() {
+    //---------------------
+    // updateChatHasProtectedContent
+    let s = r#"
+        {
+         "@type": "updateChatHasProtectedContent" ,
+         "chat_id": -1001284752833 ,
+         "has_protected_content": false ,
+         "@client_id": 1
+        }
+    "#;
+    let src: TdType = serde_json::from_str(s).unwrap();
+    println!("-----------src: {:?}-----------", src);
+}

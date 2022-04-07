@@ -22,6 +22,10 @@ pub enum Update {
         deserialize = "updateActiveNotifications"
     ))]
     ActiveNotifications(UpdateActiveNotifications),
+
+    //tdlib1.8
+    AnimatedEmojiMessageClicked(UpdateAnimatedEmojiMessageClicked),
+    //
     /// The parameters of animation search through GetOption("animation_search_bot_username") bot has changed
     #[serde(rename(
         serialize = "updateAnimationSearchParameters",
@@ -69,6 +73,14 @@ pub enum Update {
     /// The list of chat filters or a chat filter has changed
     #[serde(rename(serialize = "updateChatFilters", deserialize = "updateChatFilters"))]
     ChatFilters(UpdateChatFilters),
+
+    //---tdlib1.8--begin----
+    #[serde(rename(
+        serialize = "updateChatHasProtectedContent",
+        deserialize = "updateChatHasProtectedContent"
+    ))]
+    ChatHasProtectedContent(UpdateChatHasProtectedContent),
+    //---tdlib1.8--end----
     /// A chat's has_scheduled_messages field has changed
     #[serde(rename(
         serialize = "updateChatHasScheduledMessages",
@@ -95,6 +107,7 @@ pub enum Update {
     #[serde(rename(serialize = "updateChatMember", deserialize = "updateChatMember"))]
     ChatMember(UpdateChatMember),
 
+    // ChatMessageSender(UpdateChatMessageSender),
     #[serde(rename(
         serialize = "updateChatMessageTtl",
         deserialize = "updateChatMessageTtl"
@@ -107,7 +120,6 @@ pub enum Update {
         deserialize = "updateChatNotificationSettings"
     ))]
     ChatNotificationSettings(UpdateChatNotificationSettings),
-
     #[serde(rename(
         serialize = "updateChatPendingJoinRequests",
         deserialize = "updateChatPendingJoinRequests"
@@ -210,6 +222,13 @@ pub enum Update {
     #[serde(rename(serialize = "updateGroupCall", deserialize = "updateGroupCall"))]
     GroupCall(UpdateGroupCall),
     /// Describes whether there are some pending notification updates. Can be used to prevent application from killing, while there are some pending notifications
+    //tdlib1.8
+    #[serde(rename(
+        serialize = "updateGroupCallParticipant",
+        deserialize = "updateGroupCallParticipant"
+    ))]
+    GroupCallParticipant(UpdateGroupCallParticipant),
+
     #[serde(rename(
         serialize = "updateHavePendingNotifications",
         deserialize = "updateHavePendingNotifications"
@@ -7518,7 +7537,6 @@ impl UpdateChatTheme {
     }
     pub fn builder() -> RTDUpdateChatThemeBuilder {
         let mut inner = UpdateChatTheme::default();
-        // inner.td_name = "updateChatTheme".to_string();
         inner.extra = Some(Uuid::new_v4().to_string());
         RTDUpdateChatThemeBuilder { inner }
     }
@@ -7599,7 +7617,6 @@ impl UpdateChatThemes {
     }
     pub fn builder() -> RTDUpdateChatThemesBuilder {
         let mut inner = UpdateChatThemes::default();
-        // inner.td_name = "updateChatThemes".to_string();
         inner.extra = Some(Uuid::new_v4().to_string());
         RTDUpdateChatThemesBuilder { inner }
     }
@@ -8072,6 +8089,258 @@ impl AsRef<UpdateChatPendingJoinRequests> for UpdateChatPendingJoinRequests {
 
 impl AsRef<UpdateChatPendingJoinRequests> for RTDUpdateChatPendingJoinRequestsBuilder {
     fn as_ref(&self) -> &UpdateChatPendingJoinRequests {
+        &self.inner
+    }
+}
+
+//---tdlib1.8------
+/// A chat content was allowed or restricted for saving
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatHasProtectedContent {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// Chat identifier
+    chat_id: i64,
+    /// New value of has_protected_content
+    has_protected_content: bool,
+}
+
+impl RObject for UpdateChatHasProtectedContent {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatHasProtectedContent {}
+
+impl UpdateChatHasProtectedContent {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateChatHasProtectedContentBuilder {
+        let mut inner = UpdateChatHasProtectedContent::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateChatHasProtectedContentBuilder { inner }
+    }
+
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+
+    pub fn has_protected_content(&self) -> bool {
+        self.has_protected_content
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateChatHasProtectedContentBuilder {
+    inner: UpdateChatHasProtectedContent,
+}
+
+impl RTDUpdateChatHasProtectedContentBuilder {
+    pub fn build(&self) -> UpdateChatHasProtectedContent {
+        self.inner.clone()
+    }
+
+    pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
+        self.inner.chat_id = chat_id;
+        self
+    }
+
+    pub fn has_protected_content(&mut self, has_protected_content: bool) -> &mut Self {
+        self.inner.has_protected_content = has_protected_content;
+        self
+    }
+}
+
+impl AsRef<UpdateChatHasProtectedContent> for UpdateChatHasProtectedContent {
+    fn as_ref(&self) -> &UpdateChatHasProtectedContent {
+        self
+    }
+}
+
+impl AsRef<UpdateChatHasProtectedContent> for RTDUpdateChatHasProtectedContentBuilder {
+    fn as_ref(&self) -> &UpdateChatHasProtectedContent {
+        &self.inner
+    }
+}
+
+//---tdlib1.8------
+/// Some animated emoji message was clicked and a big animated sticker must be played if the message is visible on the screen. chatActionWatchingAnimations with the text of the message needs to be sent if the sticker is played
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateAnimatedEmojiMessageClicked {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    /// Chat identifier
+    chat_id: i64,
+    /// Message identifier
+    message_id: i64,
+    /// The animated sticker to be played
+    sticker: Sticker,
+}
+
+impl RObject for UpdateAnimatedEmojiMessageClicked {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateAnimatedEmojiMessageClicked {}
+
+impl UpdateAnimatedEmojiMessageClicked {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateAnimatedEmojiMessageClickedBuilder {
+        let mut inner = UpdateAnimatedEmojiMessageClicked::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateAnimatedEmojiMessageClickedBuilder { inner }
+    }
+
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+
+    pub fn message_id(&self) -> i64 {
+        self.message_id
+    }
+
+    pub fn sticker(&self) -> &Sticker {
+        &self.sticker
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateAnimatedEmojiMessageClickedBuilder {
+    inner: UpdateAnimatedEmojiMessageClicked,
+}
+
+impl RTDUpdateAnimatedEmojiMessageClickedBuilder {
+    pub fn build(&self) -> UpdateAnimatedEmojiMessageClicked {
+        self.inner.clone()
+    }
+
+    pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
+        self.inner.chat_id = chat_id;
+        self
+    }
+
+    pub fn message_id(&mut self, message_id: i64) -> &mut Self {
+        self.inner.message_id = message_id;
+        self
+    }
+
+    pub fn sticker<T: AsRef<Sticker>>(&mut self, sticker: T) -> &mut Self {
+        self.inner.sticker = sticker.as_ref().clone();
+        self
+    }
+}
+
+impl AsRef<UpdateAnimatedEmojiMessageClicked> for UpdateAnimatedEmojiMessageClicked {
+    fn as_ref(&self) -> &UpdateAnimatedEmojiMessageClicked {
+        self
+    }
+}
+
+impl AsRef<UpdateAnimatedEmojiMessageClicked> for RTDUpdateAnimatedEmojiMessageClickedBuilder {
+    fn as_ref(&self) -> &UpdateAnimatedEmojiMessageClicked {
+        &self.inner
+    }
+}
+
+//---tdlib1.8------
+/// Information about a group call participant was changed. The updates are sent only after the group call is received through getGroupCall and only if the call is joined or being joined
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateGroupCallParticipant {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    /// Identifier of group call
+    group_call_id: i64,
+    /// New data about a participant
+    participant: GroupCallParticipant,
+}
+
+impl RObject for UpdateGroupCallParticipant {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateGroupCallParticipant {}
+
+impl UpdateGroupCallParticipant {
+    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> RTDUpdateGroupCallParticipantBuilder {
+        let mut inner = UpdateGroupCallParticipant::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+        RTDUpdateGroupCallParticipantBuilder { inner }
+    }
+
+    pub fn group_call_id(&self) -> i64 {
+        self.group_call_id
+    }
+
+    pub fn participant(&self) -> &GroupCallParticipant {
+        &self.participant
+    }
+}
+
+#[doc(hidden)]
+pub struct RTDUpdateGroupCallParticipantBuilder {
+    inner: UpdateGroupCallParticipant,
+}
+
+impl RTDUpdateGroupCallParticipantBuilder {
+    pub fn build(&self) -> UpdateGroupCallParticipant {
+        self.inner.clone()
+    }
+
+    pub fn group_call_id(&mut self, group_call_id: i64) -> &mut Self {
+        self.inner.group_call_id = group_call_id;
+        self
+    }
+
+    pub fn participant<T: AsRef<GroupCallParticipant>>(&mut self, participant: T) -> &mut Self {
+        self.inner.participant = participant.as_ref().clone();
+        self
+    }
+}
+
+impl AsRef<UpdateGroupCallParticipant> for UpdateGroupCallParticipant {
+    fn as_ref(&self) -> &UpdateGroupCallParticipant {
+        self
+    }
+}
+
+impl AsRef<UpdateGroupCallParticipant> for RTDUpdateGroupCallParticipantBuilder {
+    fn as_ref(&self) -> &UpdateGroupCallParticipant {
         &self.inner
     }
 }

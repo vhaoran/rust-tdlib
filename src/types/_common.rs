@@ -1151,6 +1151,7 @@ const UPDATE_MEMBERS: &[&str] = &[
     "updateGroupCall",
     "updateChatMessageTtl",
     "updateChatMember",
+    "updateChatHasProtectedContent",
     "updateChatNotificationSettings",
     //end tdlib1.8
     //----------------------
