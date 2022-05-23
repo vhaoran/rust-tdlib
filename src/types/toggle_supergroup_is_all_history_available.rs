@@ -11,7 +11,7 @@ pub struct ToggleSupergroupIsAllHistoryAvailable {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// The identifier of the supergroup
-    supergroup_id: i32,
+    supergroup_id: i64,
     /// The new value of is_all_history_available
     is_all_history_available: bool,
 
@@ -45,7 +45,7 @@ impl ToggleSupergroupIsAllHistoryAvailable {
         RTDToggleSupergroupIsAllHistoryAvailableBuilder { inner }
     }
 
-    pub fn supergroup_id(&self) -> i32 {
+    pub fn supergroup_id(&self) -> i64{
         self.supergroup_id
     }
 
@@ -64,7 +64,7 @@ impl RTDToggleSupergroupIsAllHistoryAvailableBuilder {
         self.inner.clone()
     }
 
-    pub fn supergroup_id(&mut self, supergroup_id: i32) -> &mut Self {
+    pub fn supergroup_id(&mut self, supergroup_id: i64) -> &mut Self {
         self.inner.supergroup_id = supergroup_id;
         self
     }

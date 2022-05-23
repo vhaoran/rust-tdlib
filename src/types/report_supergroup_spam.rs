@@ -11,7 +11,7 @@ pub struct ReportSupergroupSpam {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Supergroup identifier
-    supergroup_id: i32,
+    supergroup_id: i64,
     /// User identifier
     user_id: i64,
     /// Identifiers of messages sent in the supergroup by the user. This list must be non-empty
@@ -47,7 +47,7 @@ impl ReportSupergroupSpam {
         RTDReportSupergroupSpamBuilder { inner }
     }
 
-    pub fn supergroup_id(&self) -> i32 {
+    pub fn supergroup_id(&self) -> i64{
         self.supergroup_id
     }
 
@@ -70,7 +70,7 @@ impl RTDReportSupergroupSpamBuilder {
         self.inner.clone()
     }
 
-    pub fn supergroup_id(&mut self, supergroup_id: i32) -> &mut Self {
+    pub fn supergroup_id(&mut self, supergroup_id: i64) -> &mut Self {
         self.inner.supergroup_id = supergroup_id;
         self
     }

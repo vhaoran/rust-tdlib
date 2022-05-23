@@ -301,7 +301,7 @@ pub struct ChatTypeSupergroup {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Supergroup or channel identifier
-    supergroup_id: i32,
+    supergroup_id: i64,
     /// True, if the supergroup is a channel
     is_channel: bool,
 }
@@ -330,7 +330,7 @@ impl ChatTypeSupergroup {
         RTDChatTypeSupergroupBuilder { inner }
     }
 
-    pub fn supergroup_id(&self) -> i32 {
+    pub fn supergroup_id(&self) -> i64{
         self.supergroup_id
     }
 
@@ -349,7 +349,7 @@ impl RTDChatTypeSupergroupBuilder {
         self.inner.clone()
     }
 
-    pub fn supergroup_id(&mut self, supergroup_id: i32) -> &mut Self {
+    pub fn supergroup_id(&mut self, supergroup_id: i64) -> &mut Self {
         self.inner.supergroup_id = supergroup_id;
         self
     }

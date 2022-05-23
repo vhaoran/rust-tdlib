@@ -6569,7 +6569,7 @@ pub struct UpdateSupergroupFullInfo {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Identifier of the supergroup or channel
-    supergroup_id: i32,
+    supergroup_id: i64,
     /// New full information about the supergroup
     supergroup_full_info: SupergroupFullInfo,
 }
@@ -6598,7 +6598,7 @@ impl UpdateSupergroupFullInfo {
         RTDUpdateSupergroupFullInfoBuilder { inner }
     }
 
-    pub fn supergroup_id(&self) -> i32 {
+    pub fn supergroup_id(&self) -> i64 {
         self.supergroup_id
     }
 
@@ -6617,7 +6617,7 @@ impl RTDUpdateSupergroupFullInfoBuilder {
         self.inner.clone()
     }
 
-    pub fn supergroup_id(&mut self, supergroup_id: i32) -> &mut Self {
+    pub fn supergroup_id(&mut self, supergroup_id: i64) -> &mut Self {
         self.inner.supergroup_id = supergroup_id;
         self
     }

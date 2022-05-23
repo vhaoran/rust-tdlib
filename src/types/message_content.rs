@@ -1223,7 +1223,7 @@ pub struct MessageChatUpgradeTo {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Identifier of the supergroup to which the basic group was upgraded
-    supergroup_id: i32,
+    supergroup_id: i64,
 }
 
 impl RObject for MessageChatUpgradeTo {
@@ -1250,7 +1250,7 @@ impl MessageChatUpgradeTo {
         RTDMessageChatUpgradeToBuilder { inner }
     }
 
-    pub fn supergroup_id(&self) -> i32 {
+    pub fn supergroup_id(&self) -> i64 {
         self.supergroup_id
     }
 }
@@ -1265,7 +1265,7 @@ impl RTDMessageChatUpgradeToBuilder {
         self.inner.clone()
     }
 
-    pub fn supergroup_id(&mut self, supergroup_id: i32) -> &mut Self {
+    pub fn supergroup_id(&mut self, supergroup_id: i64) -> &mut Self {
         self.inner.supergroup_id = supergroup_id;
         self
     }
