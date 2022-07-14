@@ -23,6 +23,11 @@ impl Default for TdJson {
 impl TdLibClient for TdJson {
     fn send<Fnc: RFunction>(&self, client_id: tdjson::ClientId, fnc: Fnc) -> RTDResult<()> {
         let json = fnc.to_json()?;
+
+        //
+        // log::debug!("json  of source: {:?}", json);
+
+        //
         tdjson::send(client_id, &json[..]);
         Ok(())
     }

@@ -14,6 +14,7 @@ pub struct SetChatMemberStatus {
     chat_id: i64,
     /// User identifier
     user_id: i64,
+    member_id: MessageSender,
     /// The new status of the member in the chat
 
     #[serde(skip_serializing_if = "ChatMemberStatus::_is_default")]
@@ -79,6 +80,11 @@ impl RTDSetChatMemberStatusBuilder {
 
     pub fn user_id(&mut self, user_id: i64) -> &mut Self {
         self.inner.user_id = user_id;
+        self
+    }
+
+    pub fn member_id(&mut self, member_id: MessageSender) -> &mut Self {
+        self.inner.member_id = member_id;
         self
     }
 

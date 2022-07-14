@@ -8155,16 +8155,24 @@ where
         set_chat_member_status: C,
     ) -> RTDResult<Ok> {
         let extra = set_chat_member_status.as_ref().extra().ok_or(NO_EXTRA)?;
+        log::debug!("--after set_chat_member_status of source-- ");
+
         let signal = OBSERVER.subscribe(&extra);
         self.tdlib_client
             .send(self.get_client_id()?, set_chat_member_status.as_ref())?;
+
+        log::debug!("--after send of source--");
+
         let received = signal.await;
         OBSERVER.unsubscribe(&extra);
         match received {
             Err(_) => Err(CLOSED_RECEIVER_ERROR),
             Ok(v) => match v {
                 TdType::Ok(v) => Ok(v),
-                TdType::Error(v) => Err(RTDError::TDLibError(v)),
+                TdType::Error(v) => {
+                    log::debug!("--after TdType::Error of source- {:?}-", v);
+                    Err(RTDError::TDLibError(v))
+                }
                 _ => {
                     log::error!("invalid response received: {:?}", v);
                     Err(INVALID_RESPONSE_ERROR)

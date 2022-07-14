@@ -369,7 +369,7 @@ where
                     .await
                     .unwrap()
                 {
-                    log::debug!("received_json_of_tdlib: {}", json);
+                    // log::debug!("received_json_of_tdlib: {}", json);
                     match from_json::<TdType>(&json) {
                         Err(e) => {
                             log::error!(
