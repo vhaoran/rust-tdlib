@@ -2,7 +2,7 @@ use crate::errors::*;
 use crate::types::*;
 use uuid::Uuid;
 
-use serde::de::{Deserialize, Deserializer};
+// use serde::de::{Deserialize, Deserializer};
 use std::fmt::Debug;
 
 /// TRAIT | Describes the quality of a group call video
