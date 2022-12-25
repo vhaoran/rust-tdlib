@@ -1,0 +1,37 @@
+{
+ "@type": "updateNewMessage" ,
+ "message": {
+  "@type": "message" ,
+  "id": 1747481264128 ,
+  "sender_id": {
+       "@type": "messageSenderUser","user_id":1607726842
+  },
+  "chat_id":-1001425415720,
+  "is_outgoing":true,"is_pinned":false,
+  "can_be_edited":true,
+  "can_be_forwarded":true,
+  "can_be_saved":true,
+  "can_be_deleted_only_for_self":false ,
+  "can_be_deleted_for_all_users": true ,
+  "can_get_statistics": false ,
+  "can_get_message_thread":false,
+  "can_get_viewers":false,
+  "can_get_media_timestamp_links":true,
+  "has_timestamped_media":false,
+  "is_channel_post":false,
+  "contains_unread_mention":false,
+  "date":1671950357,"edit_date":0,
+  "reply_in_chat_id":-1001425415720,
+  "reply_to_message_id": 1719787323392 ,
+  "message_thread_id": 1719787323392 ,
+  "ttl": 0 ,
+  "ttl_expires_in":0.000000,
+  "via_bot_user_id":0,
+  "author_signature":"",
+  "mediaalbum_id":"0",
+  "restriction_reason":"",
+  "content":{"@type":"messageText",
+   "text":{"@type":"formattedText",
+    "text":"uuuuuuuuuuuuuu","entities":[]}}},
+ "@client_id":1
+}
