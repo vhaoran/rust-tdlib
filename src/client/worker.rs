@@ -5,7 +5,7 @@ use super::{
     observer::OBSERVER,
     tdlib_client::{TdJson, TdLibClient},
 };
-use crate::types::GetAuthorizationState;
+use crate::types::{GetAuthorizationState, TdlibParameters};
 use crate::{
     errors::{RTDError, RTDResult},
     tdjson::ClientId,
@@ -272,7 +272,7 @@ where
         // Otherwise client can't be authorized: no `UpdateAuthorizationState` send by TDLib.
         first_internal_request(&client.get_tdlib_client(), client_id).await;
 
-        log::trace!("received first internal response");
+        log::debug!("received first internal response");
 
         Ok(client)
     }
@@ -608,15 +608,40 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
             log::debug!("handled register user");
             Ok(())
         }
-        AuthorizationState::WaitTdlibParameters(_) => {
+        AuthorizationState::WaitTdlibParameters(p) => {
             log::debug!("going to set tdlib parameters");
+            log::debug!("--tdlib_param: {p:?}-------");
+
+            // client
+            //     .set_tdlib_parameters(
+            //         SetTdlibParameters::builder()
+            //             .parameters(client.tdlib_parameters())
+            //             .build(),
+            //     )
+            //     .await?;
+            let api_id = "16885094".to_string();
+            let api_hash = "8b49d3dd18b0aaf826f1ad3e9a840149".to_string();
+
+            let params = TdlibParameters::builder()
+                .database_directory("./data/")
+                .use_test_dc(false)
+                .api_id(api_id.parse::<i32>().unwrap())
+                .api_hash(api_hash)
+                .system_language_code("cn_hans")
+                .device_model("server")
+                .system_version("web")
+                .application_version("1.0.0")
+                .use_message_database(true)
+                .use_chat_info_database(true)
+                .use_file_database(true)
+                .use_secret_chats(false)
+                .enable_storage_optimizer(true)
+                .build();
+
             client
-                .set_tdlib_parameters(
-                    SetTdlibParameters::builder()
-                        .parameters(client.tdlib_parameters())
-                        .build(),
-                )
+                .set_tdlib_parameters(SetTdlibParameters::builder().parameters(params).build())
                 .await?;
+
             log::debug!("tdlib parameters set");
             Ok(())
         }
@@ -666,6 +691,9 @@ async fn first_internal_request<S: TdLibClient>(tdlib_client: &S, client_id: Cli
             return;
         }
     };
+
+    log::debug!("--extra: {extra:?}-------");
+
     let signal = OBSERVER.subscribe(&extra);
     if let Err(err) = tdlib_client.send(client_id, req.as_ref()) {
         log::error!("{}", err);
@@ -677,7 +705,9 @@ async fn first_internal_request<S: TdLibClient>(tdlib_client: &S, client_id: Cli
     match received {
         Err(_) => log::error!("receiver already closed"),
         Ok(v) => match v {
-            TdType::JsonValue(_) => {}
+            TdType::JsonValue(v) => {
+                log::debug!("-json_value: {v:?}-------");
+            }
             TdType::Error(v) => log::error!("{}", v.message()),
             _ => {
                 log::error!("invalid response received: {:?}", v);
