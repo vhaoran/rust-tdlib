@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -11,9 +11,13 @@ pub struct GroupCallVideoSourceGroup {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// The semantics of sources, one of "SIM" or "FID"
+
+    #[serde(default)]
     semantics: String,
     /// The list of synchronization source identifiers
-    source_ids: Vec<i64>,
+
+    #[serde(default)]
+    source_ids: Vec<i32>,
 }
 
 impl RObject for GroupCallVideoSourceGroup {
@@ -28,30 +32,34 @@ impl RObject for GroupCallVideoSourceGroup {
 }
 
 impl GroupCallVideoSourceGroup {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDGroupCallVideoSourceGroupBuilder {
+    pub fn builder() -> GroupCallVideoSourceGroupBuilder {
         let mut inner = GroupCallVideoSourceGroup::default();
         inner.extra = Some(Uuid::new_v4().to_string());
-        RTDGroupCallVideoSourceGroupBuilder { inner }
+
+        GroupCallVideoSourceGroupBuilder { inner }
     }
 
     pub fn semantics(&self) -> &String {
         &self.semantics
     }
 
-    pub fn source_ids(&self) -> &Vec<i64> {
+    pub fn source_ids(&self) -> &Vec<i32> {
         &self.source_ids
     }
 }
 
 #[doc(hidden)]
-pub struct RTDGroupCallVideoSourceGroupBuilder {
+pub struct GroupCallVideoSourceGroupBuilder {
     inner: GroupCallVideoSourceGroup,
 }
 
-impl RTDGroupCallVideoSourceGroupBuilder {
+#[deprecated]
+pub type RTDGroupCallVideoSourceGroupBuilder = GroupCallVideoSourceGroupBuilder;
+
+impl GroupCallVideoSourceGroupBuilder {
     pub fn build(&self) -> GroupCallVideoSourceGroup {
         self.inner.clone()
     }
@@ -61,7 +69,7 @@ impl RTDGroupCallVideoSourceGroupBuilder {
         self
     }
 
-    pub fn source_ids(&mut self, source_ids: Vec<i64>) -> &mut Self {
+    pub fn source_ids(&mut self, source_ids: Vec<i32>) -> &mut Self {
         self.inner.source_ids = source_ids;
         self
     }
@@ -73,7 +81,7 @@ impl AsRef<GroupCallVideoSourceGroup> for GroupCallVideoSourceGroup {
     }
 }
 
-impl AsRef<GroupCallVideoSourceGroup> for RTDGroupCallVideoSourceGroupBuilder {
+impl AsRef<GroupCallVideoSourceGroup> for GroupCallVideoSourceGroupBuilder {
     fn as_ref(&self) -> &GroupCallVideoSourceGroup {
         &self.inner
     }

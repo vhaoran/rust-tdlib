@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -11,10 +11,16 @@ pub struct GetUserProfilePhotos {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier
+
+    #[serde(default)]
     user_id: i64,
     /// The number of photos to skip; must be non-negative
+
+    #[serde(default)]
     offset: i32,
     /// The maximum number of photos to be returned; up to 100
+
+    #[serde(default)]
     limit: i32,
 
     #[serde(rename(serialize = "@type"))]
@@ -35,16 +41,16 @@ impl RObject for GetUserProfilePhotos {
 impl RFunction for GetUserProfilePhotos {}
 
 impl GetUserProfilePhotos {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDGetUserProfilePhotosBuilder {
+    pub fn builder() -> GetUserProfilePhotosBuilder {
         let mut inner = GetUserProfilePhotos::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
         inner.td_type = "getUserProfilePhotos".to_string();
 
-        RTDGetUserProfilePhotosBuilder { inner }
+        GetUserProfilePhotosBuilder { inner }
     }
 
     pub fn user_id(&self) -> i64 {
@@ -61,11 +67,14 @@ impl GetUserProfilePhotos {
 }
 
 #[doc(hidden)]
-pub struct RTDGetUserProfilePhotosBuilder {
+pub struct GetUserProfilePhotosBuilder {
     inner: GetUserProfilePhotos,
 }
 
-impl RTDGetUserProfilePhotosBuilder {
+#[deprecated]
+pub type RTDGetUserProfilePhotosBuilder = GetUserProfilePhotosBuilder;
+
+impl GetUserProfilePhotosBuilder {
     pub fn build(&self) -> GetUserProfilePhotos {
         self.inner.clone()
     }
@@ -92,7 +101,7 @@ impl AsRef<GetUserProfilePhotos> for GetUserProfilePhotos {
     }
 }
 
-impl AsRef<GetUserProfilePhotos> for RTDGetUserProfilePhotosBuilder {
+impl AsRef<GetUserProfilePhotos> for GetUserProfilePhotosBuilder {
     fn as_ref(&self) -> &GetUserProfilePhotos {
         &self.inner
     }

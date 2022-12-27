@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -11,6 +11,8 @@ pub struct GetUserFullInfo {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier
+
+    #[serde(default)]
     user_id: i64,
 
     #[serde(rename(serialize = "@type"))]
@@ -31,16 +33,16 @@ impl RObject for GetUserFullInfo {
 impl RFunction for GetUserFullInfo {}
 
 impl GetUserFullInfo {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDGetUserFullInfoBuilder {
+    pub fn builder() -> GetUserFullInfoBuilder {
         let mut inner = GetUserFullInfo::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
         inner.td_type = "getUserFullInfo".to_string();
 
-        RTDGetUserFullInfoBuilder { inner }
+        GetUserFullInfoBuilder { inner }
     }
 
     pub fn user_id(&self) -> i64 {
@@ -49,11 +51,14 @@ impl GetUserFullInfo {
 }
 
 #[doc(hidden)]
-pub struct RTDGetUserFullInfoBuilder {
+pub struct GetUserFullInfoBuilder {
     inner: GetUserFullInfo,
 }
 
-impl RTDGetUserFullInfoBuilder {
+#[deprecated]
+pub type RTDGetUserFullInfoBuilder = GetUserFullInfoBuilder;
+
+impl GetUserFullInfoBuilder {
     pub fn build(&self) -> GetUserFullInfo {
         self.inner.clone()
     }
@@ -70,7 +75,7 @@ impl AsRef<GetUserFullInfo> for GetUserFullInfo {
     }
 }
 
-impl AsRef<GetUserFullInfo> for RTDGetUserFullInfoBuilder {
+impl AsRef<GetUserFullInfo> for GetUserFullInfoBuilder {
     fn as_ref(&self) -> &GetUserFullInfo {
         &self.inner
     }

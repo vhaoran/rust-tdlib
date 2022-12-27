@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -12,23 +12,43 @@ pub struct ConnectedWebsite {
     client_id: Option<i32>,
     /// Website identifier
 
-    #[serde(deserialize_with = "super::_common::number_from_string")]
+    #[serde(
+        deserialize_with = "super::_common::number_from_string",
+        serialize_with = "super::_common::string_to_number"
+    )]
+    #[serde(default)]
     id: i64,
     /// The domain name of the website
+
+    #[serde(default)]
     domain_name: String,
     /// User identifier of a bot linked with the website
+
+    #[serde(default)]
     bot_user_id: i64,
     /// The version of a browser used to log in
+
+    #[serde(default)]
     browser: String,
     /// Operating system the browser is running on
+
+    #[serde(default)]
     platform: String,
     /// Point in time (Unix timestamp) when the user was logged in
+
+    #[serde(default)]
     log_in_date: i32,
     /// Point in time (Unix timestamp) when obtained authorization was last used
+
+    #[serde(default)]
     last_active_date: i32,
     /// IP address from which the user was logged in, in human-readable format
+
+    #[serde(default)]
     ip: String,
     /// Human-readable description of a country and a region, from which the user was logged in, based on the IP address
+
+    #[serde(default)]
     location: String,
 }
 
@@ -44,14 +64,14 @@ impl RObject for ConnectedWebsite {
 }
 
 impl ConnectedWebsite {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDConnectedWebsiteBuilder {
+    pub fn builder() -> ConnectedWebsiteBuilder {
         let mut inner = ConnectedWebsite::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDConnectedWebsiteBuilder { inner }
+        ConnectedWebsiteBuilder { inner }
     }
 
     pub fn id(&self) -> i64 {
@@ -92,11 +112,14 @@ impl ConnectedWebsite {
 }
 
 #[doc(hidden)]
-pub struct RTDConnectedWebsiteBuilder {
+pub struct ConnectedWebsiteBuilder {
     inner: ConnectedWebsite,
 }
 
-impl RTDConnectedWebsiteBuilder {
+#[deprecated]
+pub type RTDConnectedWebsiteBuilder = ConnectedWebsiteBuilder;
+
+impl ConnectedWebsiteBuilder {
     pub fn build(&self) -> ConnectedWebsite {
         self.inner.clone()
     }
@@ -153,7 +176,7 @@ impl AsRef<ConnectedWebsite> for ConnectedWebsite {
     }
 }
 
-impl AsRef<ConnectedWebsite> for RTDConnectedWebsiteBuilder {
+impl AsRef<ConnectedWebsite> for ConnectedWebsiteBuilder {
     fn as_ref(&self) -> &ConnectedWebsite {
         &self.inner
     }

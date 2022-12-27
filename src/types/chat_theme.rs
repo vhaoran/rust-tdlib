@@ -1,21 +1,18 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
 /// Describes a chat theme
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-#[serde(tag = "@type")]
 pub struct ChatTheme {
-    // #[doc(hidden)]
-    // #[serde(rename(serialize = "@type", deserialize = "@type"))]
-    // td_name: String,
     #[doc(hidden)]
     #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
-
     /// Theme name
+
+    #[serde(default)]
     name: String,
     /// Theme settings for a light chat theme
     light_settings: ThemeSettings,
@@ -24,10 +21,6 @@ pub struct ChatTheme {
 }
 
 impl RObject for ChatTheme {
-    // #[doc(hidden)]
-    // fn td_name(&self) -> &'static str {
-    //     "chatTheme"
-    // }
     #[doc(hidden)]
     fn extra(&self) -> Option<&str> {
         self.extra.as_deref()
@@ -39,14 +32,14 @@ impl RObject for ChatTheme {
 }
 
 impl ChatTheme {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatThemeBuilder {
+    pub fn builder() -> ChatThemeBuilder {
         let mut inner = ChatTheme::default();
-        // inner.td_name = "chatTheme".to_string();
         inner.extra = Some(Uuid::new_v4().to_string());
-        RTDChatThemeBuilder { inner }
+
+        ChatThemeBuilder { inner }
     }
 
     pub fn name(&self) -> &String {
@@ -63,11 +56,14 @@ impl ChatTheme {
 }
 
 #[doc(hidden)]
-pub struct RTDChatThemeBuilder {
+pub struct ChatThemeBuilder {
     inner: ChatTheme,
 }
 
-impl RTDChatThemeBuilder {
+#[deprecated]
+pub type RTDChatThemeBuilder = ChatThemeBuilder;
+
+impl ChatThemeBuilder {
     pub fn build(&self) -> ChatTheme {
         self.inner.clone()
     }
@@ -94,7 +90,7 @@ impl AsRef<ChatTheme> for ChatTheme {
     }
 }
 
-impl AsRef<ChatTheme> for RTDChatThemeBuilder {
+impl AsRef<ChatTheme> for ChatThemeBuilder {
     fn as_ref(&self) -> &ChatTheme {
         &self.inner
     }

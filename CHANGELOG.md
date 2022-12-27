@@ -1,5 +1,15 @@
 CHANGELOG
 ===
+## 0.4.1
+* Fix serde rename for all types instead of just deserialize [#17](https://github.com/aCLr/rust-tdlib/pull/17)
+
+## 0.4.0
+* Support for tdlib 1.8.0.
+* `errors::RTDError` and `errors::RTDResult` are deprecated, use `errors::Error` and `errors::Result` instead.
+* `RTD{Type}Builder` types are deprecated, use `{Type}Builder` instead.
+* Several enum variants (for example `Update::NewChat`) are boxed now to reduce total size of enums.
+* A lot of internal optimizations.
+
 ## 0.3.0
 * New methods to handle and observe client state changes: `Worker::get_client_state`, `Worker::reset_auth`, `Worker::wait_auth_state_change`, `Worker::wait_client_state`. See `examples/handle_auth_state.rs` for details.
 * `JoinHandle` returned by `Worker::start` now yields empty tuple.  

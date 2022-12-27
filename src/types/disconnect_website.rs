@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -12,7 +12,11 @@ pub struct DisconnectWebsite {
     client_id: Option<i32>,
     /// Website identifier
 
-    #[serde(deserialize_with = "super::_common::number_from_string")]
+    #[serde(
+        deserialize_with = "super::_common::number_from_string",
+        serialize_with = "super::_common::string_to_number"
+    )]
+    #[serde(default)]
     website_id: i64,
 
     #[serde(rename(serialize = "@type"))]
@@ -33,16 +37,16 @@ impl RObject for DisconnectWebsite {
 impl RFunction for DisconnectWebsite {}
 
 impl DisconnectWebsite {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDDisconnectWebsiteBuilder {
+    pub fn builder() -> DisconnectWebsiteBuilder {
         let mut inner = DisconnectWebsite::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
         inner.td_type = "disconnectWebsite".to_string();
 
-        RTDDisconnectWebsiteBuilder { inner }
+        DisconnectWebsiteBuilder { inner }
     }
 
     pub fn website_id(&self) -> i64 {
@@ -51,11 +55,14 @@ impl DisconnectWebsite {
 }
 
 #[doc(hidden)]
-pub struct RTDDisconnectWebsiteBuilder {
+pub struct DisconnectWebsiteBuilder {
     inner: DisconnectWebsite,
 }
 
-impl RTDDisconnectWebsiteBuilder {
+#[deprecated]
+pub type RTDDisconnectWebsiteBuilder = DisconnectWebsiteBuilder;
+
+impl DisconnectWebsiteBuilder {
     pub fn build(&self) -> DisconnectWebsite {
         self.inner.clone()
     }
@@ -72,7 +79,7 @@ impl AsRef<DisconnectWebsite> for DisconnectWebsite {
     }
 }
 
-impl AsRef<DisconnectWebsite> for RTDDisconnectWebsiteBuilder {
+impl AsRef<DisconnectWebsite> for DisconnectWebsiteBuilder {
     fn as_ref(&self) -> &DisconnectWebsite {
         &self.inner
     }

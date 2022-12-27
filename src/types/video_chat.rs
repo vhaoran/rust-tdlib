@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -10,10 +10,13 @@ pub struct VideoChat {
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
-
     /// Group call identifier of an active video chat; 0 if none. Full information about the video chat can be received through the method getGroupCall
-    group_call_id: i64,
+
+    #[serde(default)]
+    group_call_id: i32,
     /// True, if the video chat has participants
+
+    #[serde(default)]
     has_participants: bool,
     /// Default group call participant identifier to join the video chat; may be null
     default_participant_id: Option<MessageSender>,
@@ -31,16 +34,17 @@ impl RObject for VideoChat {
 }
 
 impl VideoChat {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDVideoChatBuilder {
+    pub fn builder() -> VideoChatBuilder {
         let mut inner = VideoChat::default();
         inner.extra = Some(Uuid::new_v4().to_string());
-        RTDVideoChatBuilder { inner }
+
+        VideoChatBuilder { inner }
     }
 
-    pub fn group_call_id(&self) -> i64 {
+    pub fn group_call_id(&self) -> i32 {
         self.group_call_id
     }
 
@@ -54,16 +58,19 @@ impl VideoChat {
 }
 
 #[doc(hidden)]
-pub struct RTDVideoChatBuilder {
+pub struct VideoChatBuilder {
     inner: VideoChat,
 }
 
-impl RTDVideoChatBuilder {
+#[deprecated]
+pub type RTDVideoChatBuilder = VideoChatBuilder;
+
+impl VideoChatBuilder {
     pub fn build(&self) -> VideoChat {
         self.inner.clone()
     }
 
-    pub fn group_call_id(&mut self, group_call_id: i64) -> &mut Self {
+    pub fn group_call_id(&mut self, group_call_id: i32) -> &mut Self {
         self.inner.group_call_id = group_call_id;
         self
     }
@@ -88,7 +95,7 @@ impl AsRef<VideoChat> for VideoChat {
     }
 }
 
-impl AsRef<VideoChat> for RTDVideoChatBuilder {
+impl AsRef<VideoChat> for VideoChatBuilder {
     fn as_ref(&self) -> &VideoChat {
         &self.inner
     }

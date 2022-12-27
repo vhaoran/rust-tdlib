@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -11,8 +11,12 @@ pub struct ChatStatisticsInviterInfo {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// User identifier
+
+    #[serde(default)]
     user_id: i64,
     /// Number of new members invited by the user
+
+    #[serde(default)]
     added_member_count: i32,
 }
 
@@ -28,14 +32,14 @@ impl RObject for ChatStatisticsInviterInfo {
 }
 
 impl ChatStatisticsInviterInfo {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatStatisticsInviterInfoBuilder {
+    pub fn builder() -> ChatStatisticsInviterInfoBuilder {
         let mut inner = ChatStatisticsInviterInfo::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatStatisticsInviterInfoBuilder { inner }
+        ChatStatisticsInviterInfoBuilder { inner }
     }
 
     pub fn user_id(&self) -> i64 {
@@ -48,11 +52,14 @@ impl ChatStatisticsInviterInfo {
 }
 
 #[doc(hidden)]
-pub struct RTDChatStatisticsInviterInfoBuilder {
+pub struct ChatStatisticsInviterInfoBuilder {
     inner: ChatStatisticsInviterInfo,
 }
 
-impl RTDChatStatisticsInviterInfoBuilder {
+#[deprecated]
+pub type RTDChatStatisticsInviterInfoBuilder = ChatStatisticsInviterInfoBuilder;
+
+impl ChatStatisticsInviterInfoBuilder {
     pub fn build(&self) -> ChatStatisticsInviterInfo {
         self.inner.clone()
     }
@@ -74,7 +81,7 @@ impl AsRef<ChatStatisticsInviterInfo> for ChatStatisticsInviterInfo {
     }
 }
 
-impl AsRef<ChatStatisticsInviterInfo> for RTDChatStatisticsInviterInfoBuilder {
+impl AsRef<ChatStatisticsInviterInfo> for ChatStatisticsInviterInfoBuilder {
     fn as_ref(&self) -> &ChatStatisticsInviterInfo {
         &self.inner
     }

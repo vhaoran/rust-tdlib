@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -12,17 +12,31 @@ pub struct Poll {
     client_id: Option<i32>,
     /// Unique poll identifier
 
-    #[serde(deserialize_with = "super::_common::number_from_string")]
+    #[serde(
+        deserialize_with = "super::_common::number_from_string",
+        serialize_with = "super::_common::string_to_number"
+    )]
+    #[serde(default)]
     id: i64,
-    /// Poll question, 1-300 characters
+    /// Poll question; 1-300 characters
+
+    #[serde(default)]
     question: String,
     /// List of poll answer options
+
+    #[serde(default)]
     options: Vec<PollOption>,
     /// Total number of voters, participating in the poll
+
+    #[serde(default)]
     total_voter_count: i32,
     /// User identifiers of recent voters, if the poll is non-anonymous
+
+    #[serde(default)]
     recent_voter_user_ids: Vec<i64>,
     /// True, if the poll is anonymous
+
+    #[serde(default)]
     is_anonymous: bool,
     /// Type of the poll
 
@@ -30,10 +44,16 @@ pub struct Poll {
     #[serde(skip_serializing_if = "PollType::_is_default")]
     type_: PollType,
     /// Amount of time the poll will be active after creation, in seconds
+
+    #[serde(default)]
     open_period: i32,
-    /// Point in time (Unix timestamp) when the poll will be automatically closed
+    /// Point in time (Unix timestamp) when the poll will automatically be closed
+
+    #[serde(default)]
     close_date: i32,
     /// True, if the poll is closed
+
+    #[serde(default)]
     is_closed: bool,
 }
 
@@ -49,14 +69,14 @@ impl RObject for Poll {
 }
 
 impl Poll {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDPollBuilder {
+    pub fn builder() -> PollBuilder {
         let mut inner = Poll::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDPollBuilder { inner }
+        PollBuilder { inner }
     }
 
     pub fn id(&self) -> i64 {
@@ -101,11 +121,14 @@ impl Poll {
 }
 
 #[doc(hidden)]
-pub struct RTDPollBuilder {
+pub struct PollBuilder {
     inner: Poll,
 }
 
-impl RTDPollBuilder {
+#[deprecated]
+pub type RTDPollBuilder = PollBuilder;
+
+impl PollBuilder {
     pub fn build(&self) -> Poll {
         self.inner.clone()
     }
@@ -167,7 +190,7 @@ impl AsRef<Poll> for Poll {
     }
 }
 
-impl AsRef<Poll> for RTDPollBuilder {
+impl AsRef<Poll> for PollBuilder {
     fn as_ref(&self) -> &Poll {
         &self.inner
     }

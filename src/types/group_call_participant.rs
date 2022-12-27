@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -11,40 +11,72 @@ pub struct GroupCallParticipant {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Identifier of the group call participant
+
+    #[serde(skip_serializing_if = "MessageSender::_is_default")]
     participant_id: MessageSender,
     /// User's audio channel synchronization source identifier
-    audio_source_id: i64,
+
+    #[serde(default)]
+    audio_source_id: i32,
     /// User's screen sharing audio channel synchronization source identifier
-    screen_sharing_audio_source_id: i64,
+
+    #[serde(default)]
+    screen_sharing_audio_source_id: i32,
     /// Information about user's video channel; may be null if there is no active video
     video_info: Option<GroupCallParticipantVideoInfo>,
     /// Information about user's screen sharing video channel; may be null if there is no active screen sharing video
     screen_sharing_video_info: Option<GroupCallParticipantVideoInfo>,
     /// The participant user's bio or the participant chat's description
+
+    #[serde(default)]
     bio: String,
     /// True, if the participant is the current user
+
+    #[serde(default)]
     is_current_user: bool,
     /// True, if the participant is speaking as set by setGroupCallParticipantIsSpeaking
+
+    #[serde(default)]
     is_speaking: bool,
     /// True, if the participant hand is raised
+
+    #[serde(default)]
     is_hand_raised: bool,
     /// True, if the current user can mute the participant for all other group call participants
+
+    #[serde(default)]
     can_be_muted_for_all_users: bool,
     /// True, if the current user can allow the participant to unmute themselves or unmute the participant (if the participant is the current user)
+
+    #[serde(default)]
     can_be_unmuted_for_all_users: bool,
     /// True, if the current user can mute the participant only for self
+
+    #[serde(default)]
     can_be_muted_for_current_user: bool,
     /// True, if the current user can unmute the participant for self
+
+    #[serde(default)]
     can_be_unmuted_for_current_user: bool,
     /// True, if the participant is muted for all users
+
+    #[serde(default)]
     is_muted_for_all_users: bool,
     /// True, if the participant is muted for the current user
+
+    #[serde(default)]
     is_muted_for_current_user: bool,
     /// True, if the participant is muted for all users, but can unmute themselves
+
+    #[serde(default)]
     can_unmute_self: bool,
     /// Participant's volume level; 1-20000 in hundreds of percents
-    volume_level: i64,
+
+    #[serde(default)]
+    volume_level: i32,
     /// User's order in the group call participant list. Orders must be compared lexicographically. The bigger is order, the higher is user in the list. If order is empty, the user must be removed from the participant list
+
+    #[serde(default)]
     order: String,
 }
 
@@ -60,24 +92,25 @@ impl RObject for GroupCallParticipant {
 }
 
 impl GroupCallParticipant {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDGroupCallParticipantBuilder {
+    pub fn builder() -> GroupCallParticipantBuilder {
         let mut inner = GroupCallParticipant::default();
         inner.extra = Some(Uuid::new_v4().to_string());
-        RTDGroupCallParticipantBuilder { inner }
+
+        GroupCallParticipantBuilder { inner }
     }
 
     pub fn participant_id(&self) -> &MessageSender {
         &self.participant_id
     }
 
-    pub fn audio_source_id(&self) -> i64 {
+    pub fn audio_source_id(&self) -> i32 {
         self.audio_source_id
     }
 
-    pub fn screen_sharing_audio_source_id(&self) -> i64 {
+    pub fn screen_sharing_audio_source_id(&self) -> i32 {
         self.screen_sharing_audio_source_id
     }
 
@@ -133,7 +166,7 @@ impl GroupCallParticipant {
         self.can_unmute_self
     }
 
-    pub fn volume_level(&self) -> i64 {
+    pub fn volume_level(&self) -> i32 {
         self.volume_level
     }
 
@@ -143,11 +176,14 @@ impl GroupCallParticipant {
 }
 
 #[doc(hidden)]
-pub struct RTDGroupCallParticipantBuilder {
+pub struct GroupCallParticipantBuilder {
     inner: GroupCallParticipant,
 }
 
-impl RTDGroupCallParticipantBuilder {
+#[deprecated]
+pub type RTDGroupCallParticipantBuilder = GroupCallParticipantBuilder;
+
+impl GroupCallParticipantBuilder {
     pub fn build(&self) -> GroupCallParticipant {
         self.inner.clone()
     }
@@ -157,14 +193,14 @@ impl RTDGroupCallParticipantBuilder {
         self
     }
 
-    pub fn audio_source_id(&mut self, audio_source_id: i64) -> &mut Self {
+    pub fn audio_source_id(&mut self, audio_source_id: i32) -> &mut Self {
         self.inner.audio_source_id = audio_source_id;
         self
     }
 
     pub fn screen_sharing_audio_source_id(
         &mut self,
-        screen_sharing_audio_source_id: i64,
+        screen_sharing_audio_source_id: i32,
     ) -> &mut Self {
         self.inner.screen_sharing_audio_source_id = screen_sharing_audio_source_id;
         self
@@ -250,7 +286,7 @@ impl RTDGroupCallParticipantBuilder {
         self
     }
 
-    pub fn volume_level(&mut self, volume_level: i64) -> &mut Self {
+    pub fn volume_level(&mut self, volume_level: i32) -> &mut Self {
         self.inner.volume_level = volume_level;
         self
     }
@@ -267,10 +303,8 @@ impl AsRef<GroupCallParticipant> for GroupCallParticipant {
     }
 }
 
-impl AsRef<GroupCallParticipant> for RTDGroupCallParticipantBuilder {
+impl AsRef<GroupCallParticipant> for GroupCallParticipantBuilder {
     fn as_ref(&self) -> &GroupCallParticipant {
         &self.inner
     }
 }
-
-//---tdlib1.8------

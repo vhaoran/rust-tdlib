@@ -1,6 +1,6 @@
 [package]
 name = "rust-tdlib"
-version = "0.3.0"
+version = "0.4.1"
 authors = ["aCLr <a.ch.clr@gmail.com>"]
 description = "TDlib (Telegram Database library) client"
 homepage = "https://github.com/aCLr/rust-tdlib"
@@ -30,16 +30,11 @@ default = ["client"]
 [dependencies]
 futures = "0.3"
 
-uuid = { version = "0.8", features = ["v4","serde"] }
+uuid = { version = "0.8", features = ["v4"] }
 
-#serde = "1"
-#serde_derive = "1"
-#serde_json = "1"
-
-serde = "~1.0.136"
-serde_json = "~1.0.79"
-serde_derive = "~1.0.136"
-
+serde = "1"
+serde_derive = "1"
+serde_json = "1"
 
 log = { version = "0.4", optional = true }
 lazy_static = { version = "1.4", optional = true }

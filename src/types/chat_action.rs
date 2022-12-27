@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -13,80 +13,51 @@ pub trait TDChatAction: Debug + RObject {}
 pub enum ChatAction {
     #[doc(hidden)]
     _Default,
-    /// The user has cancelled the previous action
-    #[serde(rename(serialize = "chatActionCancel", deserialize = "chatActionCancel"))]
+    /// The user has canceled the previous action
+    #[serde(rename = "chatActionCancel")]
     Cancel(ChatActionCancel),
     /// The user is picking a contact to send
-    #[serde(rename(
-        serialize = "chatActionChoosingContact",
-        deserialize = "chatActionChoosingContact"
-    ))]
+    #[serde(rename = "chatActionChoosingContact")]
     ChoosingContact(ChatActionChoosingContact),
     /// The user is picking a location or venue to send
-    #[serde(rename(
-        serialize = "chatActionChoosingLocation",
-        deserialize = "chatActionChoosingLocation"
-    ))]
+    #[serde(rename = "chatActionChoosingLocation")]
     ChoosingLocation(ChatActionChoosingLocation),
-    /// The user is recording a video
-    #[serde(rename(
-        serialize = "chatActionChoosingSticker",
-        deserialize = "chatActionChoosingSticker"
-    ))]
+    /// The user is picking a sticker to send
+    #[serde(rename = "chatActionChoosingSticker")]
     ChoosingSticker(ChatActionChoosingSticker),
-
+    /// The user is recording a video
+    #[serde(rename = "chatActionRecordingVideo")]
     RecordingVideo(ChatActionRecordingVideo),
     /// The user is recording a video note
-    #[serde(rename(
-        serialize = "chatActionRecordingVideoNote",
-        deserialize = "chatActionRecordingVideoNote"
-    ))]
+    #[serde(rename = "chatActionRecordingVideoNote")]
     RecordingVideoNote(ChatActionRecordingVideoNote),
     /// The user is recording a voice note
-    #[serde(rename(
-        serialize = "chatActionRecordingVoiceNote",
-        deserialize = "chatActionRecordingVoiceNote"
-    ))]
+    #[serde(rename = "chatActionRecordingVoiceNote")]
     RecordingVoiceNote(ChatActionRecordingVoiceNote),
     /// The user has started to play a game
-    #[serde(rename(
-        serialize = "chatActionStartPlayingGame",
-        deserialize = "chatActionStartPlayingGame"
-    ))]
+    #[serde(rename = "chatActionStartPlayingGame")]
     StartPlayingGame(ChatActionStartPlayingGame),
     /// The user is typing a message
-    #[serde(rename(serialize = "chatActionTyping", deserialize = "chatActionTyping"))]
+    #[serde(rename = "chatActionTyping")]
     Typing(ChatActionTyping),
     /// The user is uploading a document
-    #[serde(rename(
-        serialize = "chatActionUploadingDocument",
-        deserialize = "chatActionUploadingDocument"
-    ))]
+    #[serde(rename = "chatActionUploadingDocument")]
     UploadingDocument(ChatActionUploadingDocument),
     /// The user is uploading a photo
-    #[serde(rename(
-        serialize = "chatActionUploadingPhoto",
-        deserialize = "chatActionUploadingPhoto"
-    ))]
+    #[serde(rename = "chatActionUploadingPhoto")]
     UploadingPhoto(ChatActionUploadingPhoto),
     /// The user is uploading a video
-    #[serde(rename(
-        serialize = "chatActionUploadingVideo",
-        deserialize = "chatActionUploadingVideo"
-    ))]
+    #[serde(rename = "chatActionUploadingVideo")]
     UploadingVideo(ChatActionUploadingVideo),
     /// The user is uploading a video note
-    #[serde(rename(
-        serialize = "chatActionUploadingVideoNote",
-        deserialize = "chatActionUploadingVideoNote"
-    ))]
+    #[serde(rename = "chatActionUploadingVideoNote")]
     UploadingVideoNote(ChatActionUploadingVideoNote),
     /// The user is uploading a voice note
-    #[serde(rename(
-        serialize = "chatActionUploadingVoiceNote",
-        deserialize = "chatActionUploadingVoiceNote"
-    ))]
+    #[serde(rename = "chatActionUploadingVoiceNote")]
     UploadingVoiceNote(ChatActionUploadingVoiceNote),
+    /// The user is watching animations sent by the other party by clicking on an animated emoji
+    #[serde(rename = "chatActionWatchingAnimations")]
+    WatchingAnimations(ChatActionWatchingAnimations),
 }
 
 impl Default for ChatAction {
@@ -102,6 +73,7 @@ impl RObject for ChatAction {
             ChatAction::Cancel(t) => t.extra(),
             ChatAction::ChoosingContact(t) => t.extra(),
             ChatAction::ChoosingLocation(t) => t.extra(),
+            ChatAction::ChoosingSticker(t) => t.extra(),
             ChatAction::RecordingVideo(t) => t.extra(),
             ChatAction::RecordingVideoNote(t) => t.extra(),
             ChatAction::RecordingVoiceNote(t) => t.extra(),
@@ -112,6 +84,7 @@ impl RObject for ChatAction {
             ChatAction::UploadingVideo(t) => t.extra(),
             ChatAction::UploadingVideoNote(t) => t.extra(),
             ChatAction::UploadingVoiceNote(t) => t.extra(),
+            ChatAction::WatchingAnimations(t) => t.extra(),
 
             _ => None,
         }
@@ -122,6 +95,7 @@ impl RObject for ChatAction {
             ChatAction::Cancel(t) => t.client_id(),
             ChatAction::ChoosingContact(t) => t.client_id(),
             ChatAction::ChoosingLocation(t) => t.client_id(),
+            ChatAction::ChoosingSticker(t) => t.client_id(),
             ChatAction::RecordingVideo(t) => t.client_id(),
             ChatAction::RecordingVideoNote(t) => t.client_id(),
             ChatAction::RecordingVoiceNote(t) => t.client_id(),
@@ -132,6 +106,7 @@ impl RObject for ChatAction {
             ChatAction::UploadingVideo(t) => t.client_id(),
             ChatAction::UploadingVideoNote(t) => t.client_id(),
             ChatAction::UploadingVoiceNote(t) => t.client_id(),
+            ChatAction::WatchingAnimations(t) => t.client_id(),
 
             _ => None,
         }
@@ -139,7 +114,7 @@ impl RObject for ChatAction {
 }
 
 impl ChatAction {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
     #[doc(hidden)]
@@ -154,7 +129,7 @@ impl AsRef<ChatAction> for ChatAction {
     }
 }
 
-/// The user has cancelled the previous action
+/// The user has canceled the previous action
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ChatActionCancel {
     #[doc(hidden)]
@@ -178,23 +153,26 @@ impl RObject for ChatActionCancel {
 impl TDChatAction for ChatActionCancel {}
 
 impl ChatActionCancel {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionCancelBuilder {
+    pub fn builder() -> ChatActionCancelBuilder {
         let mut inner = ChatActionCancel::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionCancelBuilder { inner }
+        ChatActionCancelBuilder { inner }
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionCancelBuilder {
+pub struct ChatActionCancelBuilder {
     inner: ChatActionCancel,
 }
 
-impl RTDChatActionCancelBuilder {
+#[deprecated]
+pub type RTDChatActionCancelBuilder = ChatActionCancelBuilder;
+
+impl ChatActionCancelBuilder {
     pub fn build(&self) -> ChatActionCancel {
         self.inner.clone()
     }
@@ -206,7 +184,7 @@ impl AsRef<ChatActionCancel> for ChatActionCancel {
     }
 }
 
-impl AsRef<ChatActionCancel> for RTDChatActionCancelBuilder {
+impl AsRef<ChatActionCancel> for ChatActionCancelBuilder {
     fn as_ref(&self) -> &ChatActionCancel {
         &self.inner
     }
@@ -236,23 +214,26 @@ impl RObject for ChatActionChoosingContact {
 impl TDChatAction for ChatActionChoosingContact {}
 
 impl ChatActionChoosingContact {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionChoosingContactBuilder {
+    pub fn builder() -> ChatActionChoosingContactBuilder {
         let mut inner = ChatActionChoosingContact::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionChoosingContactBuilder { inner }
+        ChatActionChoosingContactBuilder { inner }
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionChoosingContactBuilder {
+pub struct ChatActionChoosingContactBuilder {
     inner: ChatActionChoosingContact,
 }
 
-impl RTDChatActionChoosingContactBuilder {
+#[deprecated]
+pub type RTDChatActionChoosingContactBuilder = ChatActionChoosingContactBuilder;
+
+impl ChatActionChoosingContactBuilder {
     pub fn build(&self) -> ChatActionChoosingContact {
         self.inner.clone()
     }
@@ -264,7 +245,7 @@ impl AsRef<ChatActionChoosingContact> for ChatActionChoosingContact {
     }
 }
 
-impl AsRef<ChatActionChoosingContact> for RTDChatActionChoosingContactBuilder {
+impl AsRef<ChatActionChoosingContact> for ChatActionChoosingContactBuilder {
     fn as_ref(&self) -> &ChatActionChoosingContact {
         &self.inner
     }
@@ -294,23 +275,26 @@ impl RObject for ChatActionChoosingLocation {
 impl TDChatAction for ChatActionChoosingLocation {}
 
 impl ChatActionChoosingLocation {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionChoosingLocationBuilder {
+    pub fn builder() -> ChatActionChoosingLocationBuilder {
         let mut inner = ChatActionChoosingLocation::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionChoosingLocationBuilder { inner }
+        ChatActionChoosingLocationBuilder { inner }
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionChoosingLocationBuilder {
+pub struct ChatActionChoosingLocationBuilder {
     inner: ChatActionChoosingLocation,
 }
 
-impl RTDChatActionChoosingLocationBuilder {
+#[deprecated]
+pub type RTDChatActionChoosingLocationBuilder = ChatActionChoosingLocationBuilder;
+
+impl ChatActionChoosingLocationBuilder {
     pub fn build(&self) -> ChatActionChoosingLocation {
         self.inner.clone()
     }
@@ -322,8 +306,69 @@ impl AsRef<ChatActionChoosingLocation> for ChatActionChoosingLocation {
     }
 }
 
-impl AsRef<ChatActionChoosingLocation> for RTDChatActionChoosingLocationBuilder {
+impl AsRef<ChatActionChoosingLocation> for ChatActionChoosingLocationBuilder {
     fn as_ref(&self) -> &ChatActionChoosingLocation {
+        &self.inner
+    }
+}
+
+/// The user is picking a sticker to send
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ChatActionChoosingSticker {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+}
+
+impl RObject for ChatActionChoosingSticker {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDChatAction for ChatActionChoosingSticker {}
+
+impl ChatActionChoosingSticker {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> ChatActionChoosingStickerBuilder {
+        let mut inner = ChatActionChoosingSticker::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        ChatActionChoosingStickerBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct ChatActionChoosingStickerBuilder {
+    inner: ChatActionChoosingSticker,
+}
+
+#[deprecated]
+pub type RTDChatActionChoosingStickerBuilder = ChatActionChoosingStickerBuilder;
+
+impl ChatActionChoosingStickerBuilder {
+    pub fn build(&self) -> ChatActionChoosingSticker {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<ChatActionChoosingSticker> for ChatActionChoosingSticker {
+    fn as_ref(&self) -> &ChatActionChoosingSticker {
+        self
+    }
+}
+
+impl AsRef<ChatActionChoosingSticker> for ChatActionChoosingStickerBuilder {
+    fn as_ref(&self) -> &ChatActionChoosingSticker {
         &self.inner
     }
 }
@@ -352,23 +397,26 @@ impl RObject for ChatActionRecordingVideo {
 impl TDChatAction for ChatActionRecordingVideo {}
 
 impl ChatActionRecordingVideo {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionRecordingVideoBuilder {
+    pub fn builder() -> ChatActionRecordingVideoBuilder {
         let mut inner = ChatActionRecordingVideo::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionRecordingVideoBuilder { inner }
+        ChatActionRecordingVideoBuilder { inner }
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionRecordingVideoBuilder {
+pub struct ChatActionRecordingVideoBuilder {
     inner: ChatActionRecordingVideo,
 }
 
-impl RTDChatActionRecordingVideoBuilder {
+#[deprecated]
+pub type RTDChatActionRecordingVideoBuilder = ChatActionRecordingVideoBuilder;
+
+impl ChatActionRecordingVideoBuilder {
     pub fn build(&self) -> ChatActionRecordingVideo {
         self.inner.clone()
     }
@@ -380,7 +428,7 @@ impl AsRef<ChatActionRecordingVideo> for ChatActionRecordingVideo {
     }
 }
 
-impl AsRef<ChatActionRecordingVideo> for RTDChatActionRecordingVideoBuilder {
+impl AsRef<ChatActionRecordingVideo> for ChatActionRecordingVideoBuilder {
     fn as_ref(&self) -> &ChatActionRecordingVideo {
         &self.inner
     }
@@ -410,23 +458,26 @@ impl RObject for ChatActionRecordingVideoNote {
 impl TDChatAction for ChatActionRecordingVideoNote {}
 
 impl ChatActionRecordingVideoNote {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionRecordingVideoNoteBuilder {
+    pub fn builder() -> ChatActionRecordingVideoNoteBuilder {
         let mut inner = ChatActionRecordingVideoNote::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionRecordingVideoNoteBuilder { inner }
+        ChatActionRecordingVideoNoteBuilder { inner }
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionRecordingVideoNoteBuilder {
+pub struct ChatActionRecordingVideoNoteBuilder {
     inner: ChatActionRecordingVideoNote,
 }
 
-impl RTDChatActionRecordingVideoNoteBuilder {
+#[deprecated]
+pub type RTDChatActionRecordingVideoNoteBuilder = ChatActionRecordingVideoNoteBuilder;
+
+impl ChatActionRecordingVideoNoteBuilder {
     pub fn build(&self) -> ChatActionRecordingVideoNote {
         self.inner.clone()
     }
@@ -438,7 +489,7 @@ impl AsRef<ChatActionRecordingVideoNote> for ChatActionRecordingVideoNote {
     }
 }
 
-impl AsRef<ChatActionRecordingVideoNote> for RTDChatActionRecordingVideoNoteBuilder {
+impl AsRef<ChatActionRecordingVideoNote> for ChatActionRecordingVideoNoteBuilder {
     fn as_ref(&self) -> &ChatActionRecordingVideoNote {
         &self.inner
     }
@@ -468,23 +519,26 @@ impl RObject for ChatActionRecordingVoiceNote {
 impl TDChatAction for ChatActionRecordingVoiceNote {}
 
 impl ChatActionRecordingVoiceNote {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionRecordingVoiceNoteBuilder {
+    pub fn builder() -> ChatActionRecordingVoiceNoteBuilder {
         let mut inner = ChatActionRecordingVoiceNote::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionRecordingVoiceNoteBuilder { inner }
+        ChatActionRecordingVoiceNoteBuilder { inner }
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionRecordingVoiceNoteBuilder {
+pub struct ChatActionRecordingVoiceNoteBuilder {
     inner: ChatActionRecordingVoiceNote,
 }
 
-impl RTDChatActionRecordingVoiceNoteBuilder {
+#[deprecated]
+pub type RTDChatActionRecordingVoiceNoteBuilder = ChatActionRecordingVoiceNoteBuilder;
+
+impl ChatActionRecordingVoiceNoteBuilder {
     pub fn build(&self) -> ChatActionRecordingVoiceNote {
         self.inner.clone()
     }
@@ -496,7 +550,7 @@ impl AsRef<ChatActionRecordingVoiceNote> for ChatActionRecordingVoiceNote {
     }
 }
 
-impl AsRef<ChatActionRecordingVoiceNote> for RTDChatActionRecordingVoiceNoteBuilder {
+impl AsRef<ChatActionRecordingVoiceNote> for ChatActionRecordingVoiceNoteBuilder {
     fn as_ref(&self) -> &ChatActionRecordingVoiceNote {
         &self.inner
     }
@@ -526,23 +580,26 @@ impl RObject for ChatActionStartPlayingGame {
 impl TDChatAction for ChatActionStartPlayingGame {}
 
 impl ChatActionStartPlayingGame {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionStartPlayingGameBuilder {
+    pub fn builder() -> ChatActionStartPlayingGameBuilder {
         let mut inner = ChatActionStartPlayingGame::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionStartPlayingGameBuilder { inner }
+        ChatActionStartPlayingGameBuilder { inner }
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionStartPlayingGameBuilder {
+pub struct ChatActionStartPlayingGameBuilder {
     inner: ChatActionStartPlayingGame,
 }
 
-impl RTDChatActionStartPlayingGameBuilder {
+#[deprecated]
+pub type RTDChatActionStartPlayingGameBuilder = ChatActionStartPlayingGameBuilder;
+
+impl ChatActionStartPlayingGameBuilder {
     pub fn build(&self) -> ChatActionStartPlayingGame {
         self.inner.clone()
     }
@@ -554,7 +611,7 @@ impl AsRef<ChatActionStartPlayingGame> for ChatActionStartPlayingGame {
     }
 }
 
-impl AsRef<ChatActionStartPlayingGame> for RTDChatActionStartPlayingGameBuilder {
+impl AsRef<ChatActionStartPlayingGame> for ChatActionStartPlayingGameBuilder {
     fn as_ref(&self) -> &ChatActionStartPlayingGame {
         &self.inner
     }
@@ -584,23 +641,26 @@ impl RObject for ChatActionTyping {
 impl TDChatAction for ChatActionTyping {}
 
 impl ChatActionTyping {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionTypingBuilder {
+    pub fn builder() -> ChatActionTypingBuilder {
         let mut inner = ChatActionTyping::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionTypingBuilder { inner }
+        ChatActionTypingBuilder { inner }
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionTypingBuilder {
+pub struct ChatActionTypingBuilder {
     inner: ChatActionTyping,
 }
 
-impl RTDChatActionTypingBuilder {
+#[deprecated]
+pub type RTDChatActionTypingBuilder = ChatActionTypingBuilder;
+
+impl ChatActionTypingBuilder {
     pub fn build(&self) -> ChatActionTyping {
         self.inner.clone()
     }
@@ -612,7 +672,7 @@ impl AsRef<ChatActionTyping> for ChatActionTyping {
     }
 }
 
-impl AsRef<ChatActionTyping> for RTDChatActionTypingBuilder {
+impl AsRef<ChatActionTyping> for ChatActionTypingBuilder {
     fn as_ref(&self) -> &ChatActionTyping {
         &self.inner
     }
@@ -627,6 +687,8 @@ pub struct ChatActionUploadingDocument {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Upload progress, as a percentage
+
+    #[serde(default)]
     progress: i32,
 }
 
@@ -644,14 +706,14 @@ impl RObject for ChatActionUploadingDocument {
 impl TDChatAction for ChatActionUploadingDocument {}
 
 impl ChatActionUploadingDocument {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionUploadingDocumentBuilder {
+    pub fn builder() -> ChatActionUploadingDocumentBuilder {
         let mut inner = ChatActionUploadingDocument::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionUploadingDocumentBuilder { inner }
+        ChatActionUploadingDocumentBuilder { inner }
     }
 
     pub fn progress(&self) -> i32 {
@@ -660,11 +722,14 @@ impl ChatActionUploadingDocument {
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionUploadingDocumentBuilder {
+pub struct ChatActionUploadingDocumentBuilder {
     inner: ChatActionUploadingDocument,
 }
 
-impl RTDChatActionUploadingDocumentBuilder {
+#[deprecated]
+pub type RTDChatActionUploadingDocumentBuilder = ChatActionUploadingDocumentBuilder;
+
+impl ChatActionUploadingDocumentBuilder {
     pub fn build(&self) -> ChatActionUploadingDocument {
         self.inner.clone()
     }
@@ -681,7 +746,7 @@ impl AsRef<ChatActionUploadingDocument> for ChatActionUploadingDocument {
     }
 }
 
-impl AsRef<ChatActionUploadingDocument> for RTDChatActionUploadingDocumentBuilder {
+impl AsRef<ChatActionUploadingDocument> for ChatActionUploadingDocumentBuilder {
     fn as_ref(&self) -> &ChatActionUploadingDocument {
         &self.inner
     }
@@ -696,6 +761,8 @@ pub struct ChatActionUploadingPhoto {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Upload progress, as a percentage
+
+    #[serde(default)]
     progress: i32,
 }
 
@@ -713,14 +780,14 @@ impl RObject for ChatActionUploadingPhoto {
 impl TDChatAction for ChatActionUploadingPhoto {}
 
 impl ChatActionUploadingPhoto {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionUploadingPhotoBuilder {
+    pub fn builder() -> ChatActionUploadingPhotoBuilder {
         let mut inner = ChatActionUploadingPhoto::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionUploadingPhotoBuilder { inner }
+        ChatActionUploadingPhotoBuilder { inner }
     }
 
     pub fn progress(&self) -> i32 {
@@ -729,11 +796,14 @@ impl ChatActionUploadingPhoto {
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionUploadingPhotoBuilder {
+pub struct ChatActionUploadingPhotoBuilder {
     inner: ChatActionUploadingPhoto,
 }
 
-impl RTDChatActionUploadingPhotoBuilder {
+#[deprecated]
+pub type RTDChatActionUploadingPhotoBuilder = ChatActionUploadingPhotoBuilder;
+
+impl ChatActionUploadingPhotoBuilder {
     pub fn build(&self) -> ChatActionUploadingPhoto {
         self.inner.clone()
     }
@@ -750,7 +820,7 @@ impl AsRef<ChatActionUploadingPhoto> for ChatActionUploadingPhoto {
     }
 }
 
-impl AsRef<ChatActionUploadingPhoto> for RTDChatActionUploadingPhotoBuilder {
+impl AsRef<ChatActionUploadingPhoto> for ChatActionUploadingPhotoBuilder {
     fn as_ref(&self) -> &ChatActionUploadingPhoto {
         &self.inner
     }
@@ -765,6 +835,8 @@ pub struct ChatActionUploadingVideo {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Upload progress, as a percentage
+
+    #[serde(default)]
     progress: i32,
 }
 
@@ -782,14 +854,14 @@ impl RObject for ChatActionUploadingVideo {
 impl TDChatAction for ChatActionUploadingVideo {}
 
 impl ChatActionUploadingVideo {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionUploadingVideoBuilder {
+    pub fn builder() -> ChatActionUploadingVideoBuilder {
         let mut inner = ChatActionUploadingVideo::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionUploadingVideoBuilder { inner }
+        ChatActionUploadingVideoBuilder { inner }
     }
 
     pub fn progress(&self) -> i32 {
@@ -798,11 +870,14 @@ impl ChatActionUploadingVideo {
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionUploadingVideoBuilder {
+pub struct ChatActionUploadingVideoBuilder {
     inner: ChatActionUploadingVideo,
 }
 
-impl RTDChatActionUploadingVideoBuilder {
+#[deprecated]
+pub type RTDChatActionUploadingVideoBuilder = ChatActionUploadingVideoBuilder;
+
+impl ChatActionUploadingVideoBuilder {
     pub fn build(&self) -> ChatActionUploadingVideo {
         self.inner.clone()
     }
@@ -819,7 +894,7 @@ impl AsRef<ChatActionUploadingVideo> for ChatActionUploadingVideo {
     }
 }
 
-impl AsRef<ChatActionUploadingVideo> for RTDChatActionUploadingVideoBuilder {
+impl AsRef<ChatActionUploadingVideo> for ChatActionUploadingVideoBuilder {
     fn as_ref(&self) -> &ChatActionUploadingVideo {
         &self.inner
     }
@@ -834,6 +909,8 @@ pub struct ChatActionUploadingVideoNote {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Upload progress, as a percentage
+
+    #[serde(default)]
     progress: i32,
 }
 
@@ -851,14 +928,14 @@ impl RObject for ChatActionUploadingVideoNote {
 impl TDChatAction for ChatActionUploadingVideoNote {}
 
 impl ChatActionUploadingVideoNote {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionUploadingVideoNoteBuilder {
+    pub fn builder() -> ChatActionUploadingVideoNoteBuilder {
         let mut inner = ChatActionUploadingVideoNote::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionUploadingVideoNoteBuilder { inner }
+        ChatActionUploadingVideoNoteBuilder { inner }
     }
 
     pub fn progress(&self) -> i32 {
@@ -867,11 +944,14 @@ impl ChatActionUploadingVideoNote {
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionUploadingVideoNoteBuilder {
+pub struct ChatActionUploadingVideoNoteBuilder {
     inner: ChatActionUploadingVideoNote,
 }
 
-impl RTDChatActionUploadingVideoNoteBuilder {
+#[deprecated]
+pub type RTDChatActionUploadingVideoNoteBuilder = ChatActionUploadingVideoNoteBuilder;
+
+impl ChatActionUploadingVideoNoteBuilder {
     pub fn build(&self) -> ChatActionUploadingVideoNote {
         self.inner.clone()
     }
@@ -888,7 +968,7 @@ impl AsRef<ChatActionUploadingVideoNote> for ChatActionUploadingVideoNote {
     }
 }
 
-impl AsRef<ChatActionUploadingVideoNote> for RTDChatActionUploadingVideoNoteBuilder {
+impl AsRef<ChatActionUploadingVideoNote> for ChatActionUploadingVideoNoteBuilder {
     fn as_ref(&self) -> &ChatActionUploadingVideoNote {
         &self.inner
     }
@@ -903,6 +983,8 @@ pub struct ChatActionUploadingVoiceNote {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Upload progress, as a percentage
+
+    #[serde(default)]
     progress: i32,
 }
 
@@ -920,14 +1002,14 @@ impl RObject for ChatActionUploadingVoiceNote {
 impl TDChatAction for ChatActionUploadingVoiceNote {}
 
 impl ChatActionUploadingVoiceNote {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionUploadingVoiceNoteBuilder {
+    pub fn builder() -> ChatActionUploadingVoiceNoteBuilder {
         let mut inner = ChatActionUploadingVoiceNote::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatActionUploadingVoiceNoteBuilder { inner }
+        ChatActionUploadingVoiceNoteBuilder { inner }
     }
 
     pub fn progress(&self) -> i32 {
@@ -936,11 +1018,14 @@ impl ChatActionUploadingVoiceNote {
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionUploadingVoiceNoteBuilder {
+pub struct ChatActionUploadingVoiceNoteBuilder {
     inner: ChatActionUploadingVoiceNote,
 }
 
-impl RTDChatActionUploadingVoiceNoteBuilder {
+#[deprecated]
+pub type RTDChatActionUploadingVoiceNoteBuilder = ChatActionUploadingVoiceNoteBuilder;
+
+impl ChatActionUploadingVoiceNoteBuilder {
     pub fn build(&self) -> ChatActionUploadingVoiceNote {
         self.inner.clone()
     }
@@ -957,24 +1042,27 @@ impl AsRef<ChatActionUploadingVoiceNote> for ChatActionUploadingVoiceNote {
     }
 }
 
-impl AsRef<ChatActionUploadingVoiceNote> for RTDChatActionUploadingVoiceNoteBuilder {
+impl AsRef<ChatActionUploadingVoiceNote> for ChatActionUploadingVoiceNoteBuilder {
     fn as_ref(&self) -> &ChatActionUploadingVoiceNote {
         &self.inner
     }
 }
 
-//--------------tdlib1.8 begin-----------------------
-/// The user is picking a sticker to send
+/// The user is watching animations sent by the other party by clicking on an animated emoji
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ChatActionChoosingSticker {
+pub struct ChatActionWatchingAnimations {
     #[doc(hidden)]
     #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
+    /// The animated emoji
+
+    #[serde(default)]
+    emoji: String,
 }
 
-impl RObject for ChatActionChoosingSticker {
+impl RObject for ChatActionWatchingAnimations {
     #[doc(hidden)]
     fn extra(&self) -> Option<&str> {
         self.extra.as_deref()
@@ -985,40 +1073,51 @@ impl RObject for ChatActionChoosingSticker {
     }
 }
 
-impl TDChatAction for ChatActionChoosingSticker {}
+impl TDChatAction for ChatActionWatchingAnimations {}
 
-impl ChatActionChoosingSticker {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+impl ChatActionWatchingAnimations {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatActionChoosingStickerBuilder {
-        let mut inner = ChatActionChoosingSticker::default();
+    pub fn builder() -> ChatActionWatchingAnimationsBuilder {
+        let mut inner = ChatActionWatchingAnimations::default();
         inner.extra = Some(Uuid::new_v4().to_string());
-        RTDChatActionChoosingStickerBuilder { inner }
+
+        ChatActionWatchingAnimationsBuilder { inner }
+    }
+
+    pub fn emoji(&self) -> &String {
+        &self.emoji
     }
 }
 
 #[doc(hidden)]
-pub struct RTDChatActionChoosingStickerBuilder {
-    inner: ChatActionChoosingSticker,
+pub struct ChatActionWatchingAnimationsBuilder {
+    inner: ChatActionWatchingAnimations,
 }
 
-impl RTDChatActionChoosingStickerBuilder {
-    pub fn build(&self) -> ChatActionChoosingSticker {
+#[deprecated]
+pub type RTDChatActionWatchingAnimationsBuilder = ChatActionWatchingAnimationsBuilder;
+
+impl ChatActionWatchingAnimationsBuilder {
+    pub fn build(&self) -> ChatActionWatchingAnimations {
         self.inner.clone()
     }
-}
 
-impl AsRef<ChatActionChoosingSticker> for ChatActionChoosingSticker {
-    fn as_ref(&self) -> &ChatActionChoosingSticker {
+    pub fn emoji<T: AsRef<str>>(&mut self, emoji: T) -> &mut Self {
+        self.inner.emoji = emoji.as_ref().to_string();
         self
     }
 }
 
-impl AsRef<ChatActionChoosingSticker> for RTDChatActionChoosingStickerBuilder {
-    fn as_ref(&self) -> &ChatActionChoosingSticker {
-        &self.inner
+impl AsRef<ChatActionWatchingAnimations> for ChatActionWatchingAnimations {
+    fn as_ref(&self) -> &ChatActionWatchingAnimations {
+        self
     }
 }
 
-//--------------tdlib1.8 end-----------------------
+impl AsRef<ChatActionWatchingAnimations> for ChatActionWatchingAnimationsBuilder {
+    fn as_ref(&self) -> &ChatActionWatchingAnimations {
+        &self.inner
+    }
+}

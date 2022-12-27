@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -11,20 +11,28 @@ pub struct SecretChat {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Secret chat identifier
+
+    #[serde(default)]
     id: i32,
     /// Identifier of the chat partner
+
+    #[serde(default)]
     user_id: i64,
     /// State of the secret chat
 
     #[serde(skip_serializing_if = "SecretChatState::_is_default")]
     state: SecretChatState,
     /// True, if the chat was created by the current user; otherwise false
+
+    #[serde(default)]
     is_outbound: bool,
-    /// Current message Time To Live setting (self-destruct timer) for the chat, in seconds
-    ttl: i32,
     /// Hash of the currently used key for comparison with the hash of the chat partner's key. This is a string of 36 little-endian bytes, which must be split into groups of 2 bits, each denoting a pixel of one of 4 colors FFFFFF, D5E6F3, 2D5775, and 2F99C9. The pixels must be used to make a 12x12 square image filled from left to right, top to bottom. Alternatively, the first 32 bytes of the hash can be converted to the hexadecimal format and printed as 32 2-digit hex numbers
+
+    #[serde(default)]
     key_hash: String,
-    /// Secret chat layer; determines features supported by the chat partner's application. Video notes are supported if the layer >= 66; nested text entities and underline and strikethrough entities are supported if the layer >= 101
+    /// Secret chat layer; determines features supported by the chat partner's application. Nested text entities and underline and strikethrough entities are supported if the layer >= 101
+
+    #[serde(default)]
     layer: i32,
 }
 
@@ -40,14 +48,14 @@ impl RObject for SecretChat {
 }
 
 impl SecretChat {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDSecretChatBuilder {
+    pub fn builder() -> SecretChatBuilder {
         let mut inner = SecretChat::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDSecretChatBuilder { inner }
+        SecretChatBuilder { inner }
     }
 
     pub fn id(&self) -> i32 {
@@ -66,10 +74,6 @@ impl SecretChat {
         self.is_outbound
     }
 
-    pub fn ttl(&self) -> i32 {
-        self.ttl
-    }
-
     pub fn key_hash(&self) -> &String {
         &self.key_hash
     }
@@ -80,11 +84,14 @@ impl SecretChat {
 }
 
 #[doc(hidden)]
-pub struct RTDSecretChatBuilder {
+pub struct SecretChatBuilder {
     inner: SecretChat,
 }
 
-impl RTDSecretChatBuilder {
+#[deprecated]
+pub type RTDSecretChatBuilder = SecretChatBuilder;
+
+impl SecretChatBuilder {
     pub fn build(&self) -> SecretChat {
         self.inner.clone()
     }
@@ -109,11 +116,6 @@ impl RTDSecretChatBuilder {
         self
     }
 
-    pub fn ttl(&mut self, ttl: i32) -> &mut Self {
-        self.inner.ttl = ttl;
-        self
-    }
-
     pub fn key_hash<T: AsRef<str>>(&mut self, key_hash: T) -> &mut Self {
         self.inner.key_hash = key_hash.as_ref().to_string();
         self
@@ -131,7 +133,7 @@ impl AsRef<SecretChat> for SecretChat {
     }
 }
 
-impl AsRef<SecretChat> for RTDSecretChatBuilder {
+impl AsRef<SecretChat> for SecretChatBuilder {
     fn as_ref(&self) -> &SecretChat {
         &self.inner
     }

@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -16,9 +16,15 @@ pub struct ChatPosition {
     list: ChatList,
     /// A parameter used to determine order of the chat in the chat list. Chats must be sorted by the pair (order, chat.id) in descending order
 
-    #[serde(deserialize_with = "super::_common::number_from_string")]
+    #[serde(
+        deserialize_with = "super::_common::number_from_string",
+        serialize_with = "super::_common::string_to_number"
+    )]
+    #[serde(default)]
     order: i64,
     /// True, if the chat is pinned in the chat list
+
+    #[serde(default)]
     is_pinned: bool,
     /// Source of the chat in the chat list; may be null
     source: Option<ChatSource>,
@@ -36,14 +42,14 @@ impl RObject for ChatPosition {
 }
 
 impl ChatPosition {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatPositionBuilder {
+    pub fn builder() -> ChatPositionBuilder {
         let mut inner = ChatPosition::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
-        RTDChatPositionBuilder { inner }
+        ChatPositionBuilder { inner }
     }
 
     pub fn list(&self) -> &ChatList {
@@ -64,11 +70,14 @@ impl ChatPosition {
 }
 
 #[doc(hidden)]
-pub struct RTDChatPositionBuilder {
+pub struct ChatPositionBuilder {
     inner: ChatPosition,
 }
 
-impl RTDChatPositionBuilder {
+#[deprecated]
+pub type RTDChatPositionBuilder = ChatPositionBuilder;
+
+impl ChatPositionBuilder {
     pub fn build(&self) -> ChatPosition {
         self.inner.clone()
     }
@@ -100,7 +109,7 @@ impl AsRef<ChatPosition> for ChatPosition {
     }
 }
 
-impl AsRef<ChatPosition> for RTDChatPositionBuilder {
+impl AsRef<ChatPosition> for ChatPositionBuilder {
     fn as_ref(&self) -> &ChatPosition {
         &self.inner
     }

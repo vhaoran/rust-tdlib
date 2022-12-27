@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -10,10 +10,13 @@ pub struct ChatJoinRequestsInfo {
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
-
     /// Total number of pending join requests
-    total_count: i64,
+
+    #[serde(default)]
+    total_count: i32,
     /// Identifiers of at most 3 users sent the newest pending join requests
+
+    #[serde(default)]
     user_ids: Vec<i64>,
 }
 
@@ -29,16 +32,17 @@ impl RObject for ChatJoinRequestsInfo {
 }
 
 impl ChatJoinRequestsInfo {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDChatJoinRequestsInfoBuilder {
+    pub fn builder() -> ChatJoinRequestsInfoBuilder {
         let mut inner = ChatJoinRequestsInfo::default();
         inner.extra = Some(Uuid::new_v4().to_string());
-        RTDChatJoinRequestsInfoBuilder { inner }
+
+        ChatJoinRequestsInfoBuilder { inner }
     }
 
-    pub fn total_count(&self) -> i64 {
+    pub fn total_count(&self) -> i32 {
         self.total_count
     }
 
@@ -48,16 +52,19 @@ impl ChatJoinRequestsInfo {
 }
 
 #[doc(hidden)]
-pub struct RTDChatJoinRequestsInfoBuilder {
+pub struct ChatJoinRequestsInfoBuilder {
     inner: ChatJoinRequestsInfo,
 }
 
-impl RTDChatJoinRequestsInfoBuilder {
+#[deprecated]
+pub type RTDChatJoinRequestsInfoBuilder = ChatJoinRequestsInfoBuilder;
+
+impl ChatJoinRequestsInfoBuilder {
     pub fn build(&self) -> ChatJoinRequestsInfo {
         self.inner.clone()
     }
 
-    pub fn total_count(&mut self, total_count: i64) -> &mut Self {
+    pub fn total_count(&mut self, total_count: i32) -> &mut Self {
         self.inner.total_count = total_count;
         self
     }
@@ -74,7 +81,7 @@ impl AsRef<ChatJoinRequestsInfo> for ChatJoinRequestsInfo {
     }
 }
 
-impl AsRef<ChatJoinRequestsInfo> for RTDChatJoinRequestsInfoBuilder {
+impl AsRef<ChatJoinRequestsInfo> for ChatJoinRequestsInfoBuilder {
     fn as_ref(&self) -> &ChatJoinRequestsInfo {
         &self.inner
     }

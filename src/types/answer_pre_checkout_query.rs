@@ -1,4 +1,4 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
@@ -12,9 +12,15 @@ pub struct AnswerPreCheckoutQuery {
     client_id: Option<i32>,
     /// Identifier of the pre-checkout query
 
-    #[serde(deserialize_with = "super::_common::number_from_string")]
+    #[serde(
+        deserialize_with = "super::_common::number_from_string",
+        serialize_with = "super::_common::string_to_number"
+    )]
+    #[serde(default)]
     pre_checkout_query_id: i64,
     /// An error message, empty on success
+
+    #[serde(default)]
     error_message: String,
 
     #[serde(rename(serialize = "@type"))]
@@ -35,16 +41,16 @@ impl RObject for AnswerPreCheckoutQuery {
 impl RFunction for AnswerPreCheckoutQuery {}
 
 impl AnswerPreCheckoutQuery {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDAnswerPreCheckoutQueryBuilder {
+    pub fn builder() -> AnswerPreCheckoutQueryBuilder {
         let mut inner = AnswerPreCheckoutQuery::default();
         inner.extra = Some(Uuid::new_v4().to_string());
 
         inner.td_type = "answerPreCheckoutQuery".to_string();
 
-        RTDAnswerPreCheckoutQueryBuilder { inner }
+        AnswerPreCheckoutQueryBuilder { inner }
     }
 
     pub fn pre_checkout_query_id(&self) -> i64 {
@@ -57,11 +63,14 @@ impl AnswerPreCheckoutQuery {
 }
 
 #[doc(hidden)]
-pub struct RTDAnswerPreCheckoutQueryBuilder {
+pub struct AnswerPreCheckoutQueryBuilder {
     inner: AnswerPreCheckoutQuery,
 }
 
-impl RTDAnswerPreCheckoutQueryBuilder {
+#[deprecated]
+pub type RTDAnswerPreCheckoutQueryBuilder = AnswerPreCheckoutQueryBuilder;
+
+impl AnswerPreCheckoutQueryBuilder {
     pub fn build(&self) -> AnswerPreCheckoutQuery {
         self.inner.clone()
     }
@@ -83,7 +92,7 @@ impl AsRef<AnswerPreCheckoutQuery> for AnswerPreCheckoutQuery {
     }
 }
 
-impl AsRef<AnswerPreCheckoutQuery> for RTDAnswerPreCheckoutQueryBuilder {
+impl AsRef<AnswerPreCheckoutQuery> for AnswerPreCheckoutQueryBuilder {
     fn as_ref(&self) -> &AnswerPreCheckoutQuery {
         &self.inner
     }

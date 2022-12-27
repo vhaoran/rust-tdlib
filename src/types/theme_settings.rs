@@ -1,30 +1,33 @@
-use crate::errors::*;
+use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
 /// Describes theme settings
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-#[serde(tag = "@type")]
 pub struct ThemeSettings {
-    // #[doc(hidden)]
-    // #[serde(rename(serialize = "@type", deserialize = "@type"))]
-    // td_name: String,
     #[doc(hidden)]
     #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
-
     /// Theme accent color in ARGB format
-    accent_color: i64,
+
+    #[serde(default)]
+    accent_color: i32,
     /// The background to be used in chats; may be null
     background: Option<Background>,
     /// The fill to be used as a background for outgoing messages
+
+    #[serde(skip_serializing_if = "BackgroundFill::_is_default")]
     outgoing_message_fill: BackgroundFill,
     /// If true, the freeform gradient fill needs to be animated on every sent message
+
+    #[serde(default)]
     animate_outgoing_message_fill: bool,
     /// Accent color of outgoing messages in ARGB format
-    outgoing_message_accent_color: i64,
+
+    #[serde(default)]
+    outgoing_message_accent_color: i32,
 }
 
 impl RObject for ThemeSettings {
@@ -39,17 +42,17 @@ impl RObject for ThemeSettings {
 }
 
 impl ThemeSettings {
-    pub fn from_json<S: AsRef<str>>(json: S) -> RTDResult<Self> {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
-    pub fn builder() -> RTDThemeSettingsBuilder {
+    pub fn builder() -> ThemeSettingsBuilder {
         let mut inner = ThemeSettings::default();
-        // inner.td_name = "themeSettings".to_string();
         inner.extra = Some(Uuid::new_v4().to_string());
-        RTDThemeSettingsBuilder { inner }
+
+        ThemeSettingsBuilder { inner }
     }
 
-    pub fn accent_color(&self) -> i64 {
+    pub fn accent_color(&self) -> i32 {
         self.accent_color
     }
 
@@ -65,22 +68,25 @@ impl ThemeSettings {
         self.animate_outgoing_message_fill
     }
 
-    pub fn outgoing_message_accent_color(&self) -> i64 {
+    pub fn outgoing_message_accent_color(&self) -> i32 {
         self.outgoing_message_accent_color
     }
 }
 
 #[doc(hidden)]
-pub struct RTDThemeSettingsBuilder {
+pub struct ThemeSettingsBuilder {
     inner: ThemeSettings,
 }
 
-impl RTDThemeSettingsBuilder {
+#[deprecated]
+pub type RTDThemeSettingsBuilder = ThemeSettingsBuilder;
+
+impl ThemeSettingsBuilder {
     pub fn build(&self) -> ThemeSettings {
         self.inner.clone()
     }
 
-    pub fn accent_color(&mut self, accent_color: i64) -> &mut Self {
+    pub fn accent_color(&mut self, accent_color: i32) -> &mut Self {
         self.inner.accent_color = accent_color;
         self
     }
@@ -108,7 +114,7 @@ impl RTDThemeSettingsBuilder {
 
     pub fn outgoing_message_accent_color(
         &mut self,
-        outgoing_message_accent_color: i64,
+        outgoing_message_accent_color: i32,
     ) -> &mut Self {
         self.inner.outgoing_message_accent_color = outgoing_message_accent_color;
         self
@@ -121,7 +127,7 @@ impl AsRef<ThemeSettings> for ThemeSettings {
     }
 }
 
-impl AsRef<ThemeSettings> for RTDThemeSettingsBuilder {
+impl AsRef<ThemeSettings> for ThemeSettingsBuilder {
     fn as_ref(&self) -> &ThemeSettings {
         &self.inner
     }

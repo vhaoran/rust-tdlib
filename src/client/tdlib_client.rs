@@ -1,12 +1,12 @@
-use crate::errors::RTDResult;
+use crate::errors::Result;
 use crate::tdjson;
 use crate::types::RFunction;
 
 /// A bridge between TDLib and rust-tdlib.
 pub trait TdLibClient {
-    fn send<Fnc: RFunction>(&self, client_id: tdjson::ClientId, fnc: Fnc) -> RTDResult<()>;
+    fn send<Fnc: RFunction>(&self, client_id: tdjson::ClientId, fnc: Fnc) -> Result<()>;
     fn receive(&self, timeout: f64) -> Option<String>;
-    fn execute<Fnc: RFunction>(&self, fnc: Fnc) -> RTDResult<Option<String>>;
+    fn execute<Fnc: RFunction>(&self, fnc: Fnc) -> Result<Option<String>>;
     fn new_client(&self) -> tdjson::ClientId;
 }
 
@@ -21,13 +21,10 @@ impl Default for TdJson {
 }
 
 impl TdLibClient for TdJson {
-    fn send<Fnc: RFunction>(&self, client_id: tdjson::ClientId, fnc: Fnc) -> RTDResult<()> {
+    fn send<Fnc: RFunction>(&self, client_id: tdjson::ClientId, fnc: Fnc) -> Result<()> {
         let json = fnc.to_json()?;
 
-        //
-        // log::debug!("json  of source: {:?}", json);
-
-        //
+        log::debug!("--send_json: {json}-------");
         tdjson::send(client_id, &json[..]);
         Ok(())
     }
@@ -36,7 +33,7 @@ impl TdLibClient for TdJson {
         tdjson::receive(timeout)
     }
 
-    fn execute<Fnc: RFunction>(&self, fnc: Fnc) -> RTDResult<Option<String>> {
+    fn execute<Fnc: RFunction>(&self, fnc: Fnc) -> Result<Option<String>> {
         let json = fnc.to_json()?;
         Ok(tdjson::execute(&json[..]))
     }
