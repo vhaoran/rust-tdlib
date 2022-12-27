@@ -621,7 +621,12 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
             Ok(())
         }
         AuthorizationState::WaitTdlibParameters(_) => {
-            log::debug!("going to set tdlib parameters");
+            log::debug!("going to set tdlib_parameters");
+            log::debug!(
+                "--params_of_client: {:#?}-------",
+                client.tdlib_parameters()
+            );
+
             client
                 .set_tdlib_parameters(
                     SetTdlibParameters::builder()
@@ -697,6 +702,8 @@ async fn first_internal_request<S: TdLibClient>(tdlib_client: &S, client_id: Cli
     match received {
         Err(_) => log::error!("receiver already closed"),
         Ok(v) => {
+            log::debug!("--recevie: {v:#?}-------");
+
             if let Err(e) = serde_json::from_value::<JsonValue>(v) {
                 log::error!("invalid response received: {}", e)
             }
