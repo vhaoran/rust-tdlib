@@ -11,29 +11,25 @@ pub struct ForwardMessages {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Identifier of the chat to which to forward messages
-
     #[serde(default)]
     chat_id: i64,
     /// Identifier of the chat from which to forward messages
+    message_thread_id: Option<i64>,
 
     #[serde(default)]
     from_chat_id: i64,
     /// Identifiers of the messages to forward. Message identifiers must be in a strictly increasing order. At most 100 messages can be forwarded simultaneously
-
     #[serde(default)]
     message_ids: Vec<i64>,
     /// Options to be used to send the messages; pass null to use default options
     options: MessageSendOptions,
     /// If true, content of the messages will be copied without reference to the original sender. Always true if the messages are forwarded to a secret chat or are local
-
     #[serde(default)]
     send_copy: bool,
     /// If true, media caption of message copies will be removed. Ignored if send_copy is false
-
     #[serde(default)]
     remove_caption: bool,
     /// If true, messages will not be forwarded and instead fake messages will be returned
-
     #[serde(default)]
     only_preview: bool,
 
@@ -78,6 +74,9 @@ impl ForwardMessages {
     pub fn message_ids(&self) -> &Vec<i64> {
         &self.message_ids
     }
+    pub fn message_thread_id(&self) -> Option<i64> {
+        self.message_thread_id
+    }
 
     pub fn options(&self) -> &MessageSendOptions {
         &self.options
@@ -111,6 +110,11 @@ impl ForwardMessagesBuilder {
 
     pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
         self.inner.chat_id = chat_id;
+        self
+    }
+
+    pub fn message_thread_id(&mut self, message_thread_id: i64) -> &mut Self {
+        self.inner.message_thread_id = Some(message_thread_id);
         self
     }
 

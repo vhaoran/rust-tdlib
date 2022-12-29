@@ -1,4 +1,3 @@
-//! Handlers for all incoming data
 use super::{
     auth_handler::{AuthStateHandler, ConsoleAuthStateHandler},
     observer::OBSERVER,
@@ -28,9 +27,9 @@ use tokio::{
 
 #[derive(Debug)]
 pub struct WorkerBuilder<A, T>
-where
-    A: AuthStateHandler + Send + Sync + 'static,
-    T: TdLibClient + Send + Sync + Clone + 'static,
+    where
+        A: AuthStateHandler + Send + Sync + 'static,
+        T: TdLibClient + Send + Sync + Clone + 'static,
 {
     read_updates_timeout: f64,
     channels_send_timeout: f64,
@@ -51,9 +50,9 @@ impl Default for WorkerBuilder<ConsoleAuthStateHandler, TdJson> {
 }
 
 impl<A, T> WorkerBuilder<A, T>
-where
-    A: AuthStateHandler + Send + Sync + 'static,
-    T: TdLibClient + Send + Sync + Clone + 'static,
+    where
+        A: AuthStateHandler + Send + Sync + 'static,
+        T: TdLibClient + Send + Sync + Clone + 'static,
 {
     /// Specifies timeout which will be used during sending to [tokio::sync::mpsc](tokio::sync::mpsc).
     pub fn with_channels_send_timeout(mut self, timeout: f64) -> Self {
@@ -69,8 +68,8 @@ where
     /// [AuthStateHandler](crate::client::client::AuthStateHandler) allows you to handle particular "auth states", such as [WaitPassword](crate::types::AuthorizationStateWaitPassword), [WaitPhoneNumber](crate::types::AuthorizationStateWaitPhoneNumber) and so on.
     /// See [AuthorizationState](crate::types::AuthorizationState).
     pub fn with_auth_state_handler<N>(self, auth_state_handler: N) -> WorkerBuilder<N, T>
-    where
-        N: AuthStateHandler + Send + Sync + 'static,
+        where
+            N: AuthStateHandler + Send + Sync + 'static,
     {
         WorkerBuilder {
             auth_state_handler,
@@ -82,8 +81,8 @@ where
 
     #[doc(hidden)]
     pub fn with_tdlib_client<C>(self, tdlib_client: C) -> WorkerBuilder<A, C>
-    where
-        C: TdLibClient + Send + Sync + Clone + 'static,
+        where
+            C: TdLibClient + Send + Sync + Clone + 'static,
     {
         WorkerBuilder {
             tdlib_client,
@@ -116,8 +115,8 @@ struct ClientContext<S: TdLibClient + Clone> {
 }
 
 impl<S> ClientContext<S>
-where
-    S: TdLibClient + Clone,
+    where
+        S: TdLibClient + Clone,
 {
     pub fn client(&self) -> &Client<S> {
         &self.client
@@ -142,9 +141,9 @@ type ClientsMap<S> = HashMap<ClientId, ClientContext<S>>;
 /// You have to [start](crate::client::worker::Worker::start) worker and bind each client with worker using [auth_client](crate::client::worker::Worker::auth_client).
 #[derive(Debug, Clone)]
 pub struct Worker<A, S>
-where
-    A: AuthStateHandler + Send + Sync + 'static,
-    S: TdLibClient + Send + Sync + Clone + 'static,
+    where
+        A: AuthStateHandler + Send + Sync + 'static,
+        S: TdLibClient + Send + Sync + Clone + 'static,
 {
     run_flag: Arc<AtomicBool>,
     auth_state_handler: Arc<A>,
@@ -161,9 +160,9 @@ impl Worker<ConsoleAuthStateHandler, TdJson> {
 }
 
 impl<A, T> Worker<A, T>
-where
-    A: AuthStateHandler + Send + Sync + 'static,
-    T: TdLibClient + Send + Sync + Clone + 'static,
+    where
+        A: AuthStateHandler + Send + Sync + 'static,
+        T: TdLibClient + Send + Sync + Clone + 'static,
 {
     /// Returns state of the client.
     pub async fn get_client_state(
@@ -211,10 +210,10 @@ where
     pub async fn wait_auth_state_change(&self, client: &Client<T>) -> Result<StateMessage> {
         let client_id = client.get_client_id()?;
         match self.clients.read().await.get(&client_id) {
-            None => {Err(Error::BadRequest("client not authorized yet"))}
+            None => { Err(Error::BadRequest("client not authorized yet")) }
             Some(v) => {
                 match v.pub_state_message_receiver() {
-                    None => {Err(Error::BadRequest("state receiver not specified, need to call `Client::builder().with_auth_state_channel(...) before Worker::bind_client(...)"))}
+                    None => { Err(Error::BadRequest("state receiver not specified, need to call `Client::builder().with_auth_state_channel(...) before Worker::bind_client(...)")) }
                     Some(rec) => {
                         let state = rec.lock().await.recv().await.ok_or(Error::Internal("can't receive state: channel closed"))?;
                         Ok(state)
@@ -341,7 +340,8 @@ where
                 _ = updates_handle => {
                     log::debug!("updates task stopped");
                 },
-            };
+            }
+            ;
             run_flag.store(false, Ordering::Release);
         })
     }
@@ -369,7 +369,7 @@ where
                     .await
                     .unwrap()
                 {
-                    log::trace!("received json from tdlib: {}", json);
+                    log::debug!("received_raw_json: {}", json);
                     handle_td_resp_received(json.as_str(), &auth_sx, &clients, send_timeout).await;
                 }
             }
@@ -393,7 +393,7 @@ where
                     auth_state,
                     self.channels_send_timeout,
                 )
-                .await
+                    .await
             }
         }
     }
@@ -425,7 +425,7 @@ where
                                 auth_state.authorization_state(),
                                 send_timeout,
                             )
-                            .await
+                                .await
                         }
                     };
 
@@ -519,9 +519,9 @@ async fn handle_td_resp_received<S: TdLibClient + Send + Sync + Clone>(
 }
 
 impl<A, S> Drop for Worker<A, S>
-where
-    A: AuthStateHandler + Send + Sync + 'static,
-    S: TdLibClient + Send + Sync + Clone + 'static,
+    where
+        A: AuthStateHandler + Send + Sync + 'static,
+        S: TdLibClient + Send + Sync + Clone + 'static,
 {
     fn drop(&mut self) {
         self.stop();
@@ -773,7 +773,7 @@ mod tests {
                     .unwrap(),
             ),
         )
-        .await;
+            .await;
         match res {
             Err(e) => panic!("{:?}", e),
             Ok(v) => match v {
@@ -794,7 +794,7 @@ mod tests {
                     .unwrap(),
             ),
         )
-        .await;
+            .await;
         match res {
             Err(_) => {}
             _ => panic!("error not raised"),
@@ -845,7 +845,7 @@ mod tests {
             Duration::from_secs(10),
             client.search_public_chats(search_req),
         )
-        .await
+            .await
         {
             Err(_) => panic!("did not receive response within 1 s"),
             Ok(Err(e)) => panic!("{}", e),

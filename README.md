@@ -1,7 +1,11 @@
 # rust-tdlib
+
+update to support tdlib1.8.9 new author flow
+
+
 Rust client for TDlib.
 Library allows you to interact with Telegram Database library.
-Currently, supports tdlib v1.8.0.
+Currently, supports tdlib v1.8.9.
 
 ### Features
 * client - provides total integration with TDlib API. See `examples` directory. Enabled by default. rust-tdlib provides only TDlib types without this feature. 
