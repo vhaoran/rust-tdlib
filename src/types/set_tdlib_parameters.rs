@@ -11,10 +11,15 @@ pub struct SetTdlibParameters {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Parameters for TDLib initialization
+    #[serde(flatten)]
     parameters: TdlibParameters,
 
     #[serde(rename(serialize = "@type"))]
     td_type: String,
+    // ID = 1384743481;
+    // #[serde(rename(serialize = "id"))]
+    // id: i64,
+    // static ID:i64 = 1384743481;
 }
 
 impl RObject for SetTdlibParameters {
@@ -37,6 +42,7 @@ impl SetTdlibParameters {
     pub fn builder() -> SetTdlibParametersBuilder {
         let mut inner = SetTdlibParameters::default();
         inner.extra = Some(Uuid::new_v4().to_string());
+        // inner.id = 1384743481_i64;
 
         inner.td_type = "setTdlibParameters".to_string();
 

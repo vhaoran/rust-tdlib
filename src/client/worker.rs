@@ -266,13 +266,13 @@ where
         };
 
         self.clients.write().await.insert(client_id, ctx);
-        log::debug!("new client added");
+        log::debug!("new_client_added");
 
         // We need to call any tdlib method to retrieve first response.
         // Otherwise client can't be authorized: no `UpdateAuthorizationState` send by TDLib.
         first_internal_request(&client.get_tdlib_client(), client_id).await;
 
-        log::trace!("received first internal response");
+        log::trace!("step_2_received_first_internal_response");
 
         Ok(client)
     }
