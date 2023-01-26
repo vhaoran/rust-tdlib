@@ -244,7 +244,7 @@ impl<A, T> Worker<A, T>
             return Err(Error::BadRequest("worker not started yet"));
         };
         let client_id = client.get_tdlib_client().new_client();
-        log::debug!("new client created: {}", client_id);
+        // log::debug!("new client created: {}", client_id);
         client.set_client_id(client_id)?;
 
         let (sx, rx) = match client.get_auth_state_channel_size() {
@@ -265,7 +265,7 @@ impl<A, T> Worker<A, T>
         };
 
         self.clients.write().await.insert(client_id, ctx);
-        log::debug!("new_client_added");
+        // log::debug!("new_client_added");
 
         // We need to call any tdlib method to retrieve first response.
         // Otherwise client can't be authorized: no `UpdateAuthorizationState` send by TDLib.
@@ -285,7 +285,7 @@ impl<A, T> Worker<A, T>
     // Method needs for tests because we can't handle get_application_config request properly.
     pub async fn set_client(&mut self, mut client: Client<T>) -> Client<T> {
         let client_id = client.get_tdlib_client().new_client();
-        log::debug!("new client created: {}", client_id);
+        // log::debug!("new client created: {}", client_id);
         client.set_client_id(client_id).unwrap();
 
         let (psx, prx) = mpsc::channel::<ClientState>(5);
@@ -627,7 +627,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
                 client.tdlib_parameters()
             );
 
-            client
+            let _ = client
                 .set_tdlib_parameters(
                     SetTdlibParameters::builder()
                         .parameters(client.tdlib_parameters())
