@@ -29,7 +29,7 @@ pub struct RemoteFile {
     /// Size of the remote available part of the file, in bytes; 0 if unknown
 
     #[serde(default)]
-    uploaded_size: i32,
+    uploaded_size: i64,
 }
 
 impl RObject for RemoteFile {
@@ -70,7 +70,7 @@ impl RemoteFile {
         self.is_uploading_completed
     }
 
-    pub fn uploaded_size(&self) -> i32 {
+    pub fn uploaded_size(&self) -> i64 {
         self.uploaded_size
     }
 }
@@ -108,7 +108,7 @@ impl RemoteFileBuilder {
         self
     }
 
-    pub fn uploaded_size(&mut self, uploaded_size: i32) -> &mut Self {
+    pub fn uploaded_size(&mut self, uploaded_size: i64) -> &mut Self {
         self.inner.uploaded_size = uploaded_size;
         self
     }
