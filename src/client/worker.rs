@@ -27,9 +27,9 @@ use tokio::{
 
 #[derive(Debug)]
 pub struct WorkerBuilder<A, T>
-    where
-        A: AuthStateHandler + Send + Sync + 'static,
-        T: TdLibClient + Send + Sync + Clone + 'static,
+where
+    A: AuthStateHandler + Send + Sync + 'static,
+    T: TdLibClient + Send + Sync + Clone + 'static,
 {
     read_updates_timeout: f64,
     channels_send_timeout: f64,
@@ -50,9 +50,9 @@ impl Default for WorkerBuilder<ConsoleAuthStateHandler, TdJson> {
 }
 
 impl<A, T> WorkerBuilder<A, T>
-    where
-        A: AuthStateHandler + Send + Sync + 'static,
-        T: TdLibClient + Send + Sync + Clone + 'static,
+where
+    A: AuthStateHandler + Send + Sync + 'static,
+    T: TdLibClient + Send + Sync + Clone + 'static,
 {
     /// Specifies timeout which will be used during sending to [tokio::sync::mpsc](tokio::sync::mpsc).
     pub fn with_channels_send_timeout(mut self, timeout: f64) -> Self {
@@ -68,8 +68,8 @@ impl<A, T> WorkerBuilder<A, T>
     /// [AuthStateHandler](crate::client::client::AuthStateHandler) allows you to handle particular "auth states", such as [WaitPassword](crate::types::AuthorizationStateWaitPassword), [WaitPhoneNumber](crate::types::AuthorizationStateWaitPhoneNumber) and so on.
     /// See [AuthorizationState](crate::types::AuthorizationState).
     pub fn with_auth_state_handler<N>(self, auth_state_handler: N) -> WorkerBuilder<N, T>
-        where
-            N: AuthStateHandler + Send + Sync + 'static,
+    where
+        N: AuthStateHandler + Send + Sync + 'static,
     {
         WorkerBuilder {
             auth_state_handler,
@@ -81,8 +81,8 @@ impl<A, T> WorkerBuilder<A, T>
 
     #[doc(hidden)]
     pub fn with_tdlib_client<C>(self, tdlib_client: C) -> WorkerBuilder<A, C>
-        where
-            C: TdLibClient + Send + Sync + Clone + 'static,
+    where
+        C: TdLibClient + Send + Sync + Clone + 'static,
     {
         WorkerBuilder {
             tdlib_client,
@@ -115,8 +115,8 @@ struct ClientContext<S: TdLibClient + Clone> {
 }
 
 impl<S> ClientContext<S>
-    where
-        S: TdLibClient + Clone,
+where
+    S: TdLibClient + Clone,
 {
     pub fn client(&self) -> &Client<S> {
         &self.client
@@ -141,9 +141,9 @@ type ClientsMap<S> = HashMap<ClientId, ClientContext<S>>;
 /// You have to [start](crate::client::worker::Worker::start) worker and bind each client with worker using [auth_client](crate::client::worker::Worker::auth_client).
 #[derive(Debug, Clone)]
 pub struct Worker<A, S>
-    where
-        A: AuthStateHandler + Send + Sync + 'static,
-        S: TdLibClient + Send + Sync + Clone + 'static,
+where
+    A: AuthStateHandler + Send + Sync + 'static,
+    S: TdLibClient + Send + Sync + Clone + 'static,
 {
     run_flag: Arc<AtomicBool>,
     auth_state_handler: Arc<A>,
@@ -160,9 +160,9 @@ impl Worker<ConsoleAuthStateHandler, TdJson> {
 }
 
 impl<A, T> Worker<A, T>
-    where
-        A: AuthStateHandler + Send + Sync + 'static,
-        T: TdLibClient + Send + Sync + Clone + 'static,
+where
+    A: AuthStateHandler + Send + Sync + 'static,
+    T: TdLibClient + Send + Sync + Clone + 'static,
 {
     /// Returns state of the client.
     pub async fn get_client_state(
@@ -338,10 +338,9 @@ impl<A, T> Worker<A, T>
                     log::debug!("authorization task stopped");
                 },
                 _ = updates_handle => {
-                    log::debug!("updates task stopped");
+                    // log::debug!("updates task stopped");
                 },
-            }
-            ;
+            };
             run_flag.store(false, Ordering::Release);
         })
     }
@@ -369,7 +368,7 @@ impl<A, T> Worker<A, T>
                     .await
                     .unwrap()
                 {
-                    log::debug!("received_raw_json: {}", json);
+                    // log::debug!("received_raw_json: {}", json);
                     handle_td_resp_received(json.as_str(), &auth_sx, &clients, send_timeout).await;
                 }
             }
@@ -393,7 +392,7 @@ impl<A, T> Worker<A, T>
                     auth_state,
                     self.channels_send_timeout,
                 )
-                    .await
+                .await
             }
         }
     }
@@ -409,7 +408,7 @@ impl<A, T> Worker<A, T>
 
         tokio::spawn(async move {
             while let Some(auth_state) = auth_rx.recv().await {
-                log::debug!("received new auth state: {:?}", auth_state);
+                // log::debug!("received new auth state: {:?}", auth_state);
                 if let Some(client_id) = auth_state.client_id() {
                     let result = match clients.read().await.get(&client_id) {
                         None => {
@@ -425,13 +424,13 @@ impl<A, T> Worker<A, T>
                                 auth_state.authorization_state(),
                                 send_timeout,
                             )
-                                .await
+                            .await
                         }
                     };
 
                     match result {
                         Ok(_) => {
-                            log::debug!("state changes handled properly")
+                            // log::debug!("state changes handled properly")
                         }
                         Err(err) => {
                             match clients.read().await.get(&client_id) {
@@ -519,9 +518,9 @@ async fn handle_td_resp_received<S: TdLibClient + Send + Sync + Clone>(
 }
 
 impl<A, S> Drop for Worker<A, S>
-    where
-        A: AuthStateHandler + Send + Sync + 'static,
-        S: TdLibClient + Send + Sync + Clone + 'static,
+where
+    A: AuthStateHandler + Send + Sync + 'static,
+    S: TdLibClient + Send + Sync + Clone + 'static,
 {
     fn drop(&mut self) {
         self.stop();
@@ -536,7 +535,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
     state: &AuthorizationState,
     send_state_timeout: time::Duration,
 ) -> Result<()> {
-    log::debug!("handling new auth state: {:?}", state);
+    // log::debug!("handling new auth state: {:?}", state);
     let mut result_state = None;
     let res = match state {
         AuthorizationState::_Default => Ok(()),
@@ -547,7 +546,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
             Ok(())
         }
         AuthorizationState::Ready(_) => {
-            log::debug!("ready state received, send signal");
+            // log::debug!("ready state received, send signal");
             result_state = Some(ClientState::Opened);
             Ok(())
         }
@@ -562,7 +561,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
             let key = auth_state_handler
                 .handle_encryption_key(wait_encryption_key)
                 .await;
-            log::debug!("checking encryption key");
+            // log::debug!("checking encryption key");
             client
                 .check_database_encryption_key(
                     CheckDatabaseEncryptionKey::builder()
@@ -570,20 +569,20 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
                         .build(),
                 )
                 .await?;
-            log::debug!("encryption key check done");
+            // log::debug!("encryption key check done");
             Ok(())
         }
         AuthorizationState::WaitOtherDeviceConfirmation(wait_device_confirmation) => {
-            log::debug!("handling other device confirmation");
+            // log::debug!("handling other device confirmation");
             auth_state_handler
                 .handle_other_device_confirmation(wait_device_confirmation)
                 .await;
-            log::debug!("handled other device confirmation");
+            // log::debug!("handled other device confirmation");
             Ok(())
         }
         AuthorizationState::WaitPassword(wait_password) => {
             let password = auth_state_handler.handle_wait_password(wait_password).await;
-            log::debug!("checking password");
+            // log::debug!("checking password");
             client
                 .check_authentication_password(
                     CheckAuthenticationPassword::builder()
@@ -591,7 +590,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
                         .build(),
                 )
                 .await?;
-            log::debug!("password checked");
+            // log::debug!("password checked");
             Ok(())
         }
         AuthorizationState::WaitPhoneNumber(wait_phone_number) => {
@@ -773,7 +772,7 @@ mod tests {
                     .unwrap(),
             ),
         )
-            .await;
+        .await;
         match res {
             Err(e) => panic!("{:?}", e),
             Ok(v) => match v {
@@ -794,7 +793,7 @@ mod tests {
                     .unwrap(),
             ),
         )
-            .await;
+        .await;
         match res {
             Err(_) => {}
             _ => panic!("error not raised"),
@@ -845,7 +844,7 @@ mod tests {
             Duration::from_secs(10),
             client.search_public_chats(search_req),
         )
-            .await
+        .await
         {
             Err(_) => panic!("did not receive response within 1 s"),
             Ok(Err(e)) => panic!("{}", e),
