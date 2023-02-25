@@ -24,7 +24,7 @@ impl TdLibClient for TdJson {
     fn send<Fnc: RFunction>(&self, client_id: tdjson::ClientId, fnc: Fnc) -> Result<()> {
         let json = fnc.to_json()?;
 
-        // log::debug!("-client_id: {client_id:?}-send_json: {json}-------");
+        // log::debug!("-client_id: {client_id}-send_raw_json: {} ", json);
         tdjson::send(client_id, &json[..]);
         Ok(())
     }
