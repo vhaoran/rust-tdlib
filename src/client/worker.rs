@@ -368,7 +368,7 @@ where
                     .await
                     .unwrap()
                 {
-                    // log::debug!("received_raw_json: {}", json.as_str());
+                    log::debug!("received_raw_json: {}", json.as_str());
                     handle_td_resp_received(json.as_str(), &auth_sx, &clients, send_timeout).await;
                 }
             }
