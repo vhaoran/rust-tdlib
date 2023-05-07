@@ -801,7 +801,7 @@ pub struct ChatAdministratorRights {
 
 impl ChatAdministratorRights {
     pub fn builder() -> ChatAdministratorRightsBuilder {
-        let mut inner = ChatAdministratorRights::default();
+        let inner = ChatAdministratorRights::default();
 
         ChatAdministratorRightsBuilder { inner }
     }
