@@ -368,7 +368,7 @@ where
                     .await
                     .unwrap()
                 {
-                    // log::debug!("received_raw_json: {}", json.as_str());
+                    log::debug!("received_raw_json: {}", json.as_str());
                     handle_td_resp_received(json.as_str(), &auth_sx, &clients, send_timeout).await;
                 }
             }
@@ -466,12 +466,12 @@ async fn handle_td_resp_received<S: TdLibClient + Send + Sync + Clone>(
     send_timeout: Duration,
 ) {
     match serde_json::from_str::<serde_json::Value>(response) {
-        Err(e) => log::error!("can't deserialize tdlib data: {}", e),
+        Err(e) => log::error!("raw_json_error_can't deserialize tdlib data: {},{response:#?}", e),
         Ok(t) => {
             if let Some(t) = OBSERVER.notify(t) {
                 match serde_json::from_value::<Update>(t) {
                     Err(err) => {
-                        log::error!("cannot deserialize to update: {err:?}, data: {response:?}")
+                        log::error!("raw_json_error_cannot deserialize to update: {err:?}, raw_json_data: {response:?}")
                     }
                     Ok(update) => {
                         if let Update::AuthorizationState(auth_state) = update {
@@ -701,7 +701,7 @@ async fn first_internal_request<S: TdLibClient>(tdlib_client: &S, client_id: Cli
     match received {
         Err(_) => log::error!("receiver already closed"),
         Ok(v) => {
-            log::debug!("--recevie: {v:#?}-------");
+            log::debug!("--raw_json_recevie: {v:#?}-------");
 
             if let Err(e) = serde_json::from_value::<JsonValue>(v) {
                 log::error!("invalid response received: {}", e)

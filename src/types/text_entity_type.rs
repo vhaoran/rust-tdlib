@@ -2,7 +2,7 @@ use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 
 /// Represents a part of the text which must be formatted differently
 pub trait TDTextEntityType: Debug + RObject {}
@@ -67,6 +67,9 @@ pub enum TextEntityType {
     /// An HTTP URL
     #[serde(rename = "textEntityTypeUrl")]
     Url(TextEntityTypeUrl),
+    //     add by whr
+    #[serde(rename = "textEntityTypeCustomEmoji")]
+    CustomEmoji(TextEntityTypeCustomEmoji),
 }
 
 impl Default for TextEntityType {
@@ -97,6 +100,7 @@ impl RObject for TextEntityType {
             TextEntityType::TextUrl(t) => t.extra(),
             TextEntityType::Underline(t) => t.extra(),
             TextEntityType::Url(t) => t.extra(),
+            TextEntityType::CustomEmoji(t) => t.extra(),
 
             _ => None,
         }
@@ -122,6 +126,7 @@ impl RObject for TextEntityType {
             TextEntityType::TextUrl(t) => t.client_id(),
             TextEntityType::Underline(t) => t.client_id(),
             TextEntityType::Url(t) => t.client_id(),
+            TextEntityType::CustomEmoji(t) => t.client_id(),
 
             _ => None,
         }
@@ -1293,3 +1298,78 @@ impl AsRef<TextEntityTypeUrl> for TextEntityTypeUrlBuilder {
         &self.inner
     }
 }
+
+/// TextEntityTypeCustomEmoji
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct TextEntityTypeCustomEmoji {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    #[serde(default)]
+    custom_emoji_id: String,
+}
+
+impl RObject for TextEntityTypeCustomEmoji {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDTextEntityType for TextEntityTypeCustomEmoji {}
+
+impl TextEntityTypeCustomEmoji {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> TextEntityTypeCustomEmojiBuilder {
+        let mut inner = TextEntityTypeCustomEmoji::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        TextEntityTypeCustomEmojiBuilder { inner }
+    }
+    pub fn custom_emoji_id(&self) -> &String {
+        &self.custom_emoji_id
+    }
+}
+
+#[doc(hidden)]
+pub struct TextEntityTypeCustomEmojiBuilder {
+    inner: TextEntityTypeCustomEmoji,
+}
+
+#[deprecated]
+pub type RTDTextEntityTypeCustomEmojiBuilder = TextEntityTypeCustomEmojiBuilder;
+
+impl TextEntityTypeCustomEmojiBuilder {
+    pub fn build(&self) -> TextEntityTypeCustomEmoji {
+        self.inner.clone()
+    }
+    pub fn custom_emoji_id<T>(&mut self, id: T) -> &mut Self
+    where
+        T: AsRef<str> +Display,
+    {
+        self.inner.custom_emoji_id = id.to_string();
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeCustomEmoji> for TextEntityTypeCustomEmoji {
+    fn as_ref(&self) -> &TextEntityTypeCustomEmoji {
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeCustomEmoji> for TextEntityTypeCustomEmojiBuilder {
+    fn as_ref(&self) -> &TextEntityTypeCustomEmoji {
+        &self.inner
+    }
+}
+//-----------end by whr--------------------------
