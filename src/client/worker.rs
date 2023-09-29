@@ -4,7 +4,10 @@ use super::{
     tdlib_client::{TdJson, TdLibClient},
     {Client, ClientState},
 };
-use crate::types::{GetAuthorizationState, JsonValue};
+use crate::types::{
+    AddProxy, EnableProxy, GetAuthorizationState, GetProxies, JsonValue, ProxyType,
+    ProxyTypeMtproto, TestProxy,
+};
 use crate::{
     errors::{Error, Result},
     tdjson::ClientId,
@@ -237,15 +240,77 @@ where
         }
     }
 
+    async fn set_proxy(&mut self, client: Client<T>, proxy: AddProxy) -> Result<()> {
+        log::debug!(
+            "bind_client_proxy_param: {}: {} - {:?}",
+            proxy.server(),
+            proxy.port(),
+            proxy.type_()
+        );
+
+        log::debug!("--bind_client_before set proxy-------");
+        //-------------------------------------
+        let r = client.get_proxies(GetProxies::builder().build()).await;
+
+        //-------------------------------------
+        let p = client.add_proxy(proxy).await.map_err(|e| {
+            log::error!("---bind_client_添加代理失败---{}-", e.to_string());
+            e
+        })?;
+
+        client
+            .test_proxy(
+                TestProxy::builder()
+                    .server(p.server())
+                    .port(p.port())
+                    .timeout(20_f32)
+                    .dc_id(1_i32)
+                    .type_(p.type_())
+                    .build(),
+            )
+            .await
+            .map_err(|e| {
+                log::error!(
+                    "---bind_client_test_proxy_fail 代理测试失败，代理可能不可用---{}-",
+                    e.to_string()
+                );
+                e
+            })
+            .map(|data| {
+                log::debug!("--bind_client_test_proxy_ok ---{:?}---", data);
+                data
+            })?;
+        log::debug!("--bind_client_after_set_proxy-------");
+        let _ = client
+            .enable_proxy(EnableProxy::builder().proxy_id(p.id()).build())
+            .await
+            .map_err(|e| {
+                log::error!("---bind_client_enabled_proxy_error---{}-", e.to_string());
+                e
+            })
+            .map(|data| {
+                log::debug!("--bind_client_enabled_proxy_ok ---{:?}---", data);
+                data
+            });
+
+        Ok(())
+    }
+
     /// Binds client with worker and runs authorization routines.
     /// Method returns error if worker is not running or client already bound
-    pub async fn bind_client(&mut self, mut client: Client<T>) -> Result<Client<T>> {
+    pub async fn bind_client(
+        &mut self,
+        mut client: Client<T>,
+        proxy: Option<AddProxy>,
+    ) -> Result<Client<T>> {
         if !self.is_running() {
             return Err(Error::BadRequest("worker not started yet"));
         };
         let client_id = client.get_tdlib_client().new_client();
-        // log::debug!("new client created: {}", client_id);
+        log::debug!("bind_client_new client created: {}", client_id);
         client.set_client_id(client_id)?;
+
+        log::debug!("--bind_client_before_--get_auth_state_channel_size-----");
 
         let (sx, rx) = match client.get_auth_state_channel_size() {
             None => (None, None),
@@ -265,13 +330,22 @@ where
         };
 
         self.clients.write().await.insert(client_id, ctx);
-        // log::debug!("new_client_added");
+        log::debug!("bind_client_new_client_added and insert,and will send_first request");
+        //-----------proxy start--------------------------
+        match proxy {
+            Some(p) => {
+                let _ = self.set_proxy(client.clone(), p).await?;
+            }
+            _ => {}
+        }
+
+        //-----------proxy ok--------------------------
 
         // We need to call any tdlib method to retrieve first response.
         // Otherwise client can't be authorized: no `UpdateAuthorizationState` send by TDLib.
         first_internal_request(&client.get_tdlib_client(), client_id).await;
 
-        log::trace!("step_2_received_first_internal_response");
+        log::debug!("bind_client_step_2_received_first_internal_response");
 
         Ok(client)
     }
@@ -466,12 +540,15 @@ async fn handle_td_resp_received<S: TdLibClient + Send + Sync + Clone>(
     send_timeout: Duration,
 ) {
     match serde_json::from_str::<serde_json::Value>(response) {
-        Err(e) => log::error!("raw_json_error_can't deserialize tdlib data: {},{response:#?}", e),
+        Err(e) => log::error!(
+            "raw_json_error_can't deserialize tdlib data: {},{response:#?}",
+            e
+        ),
         Ok(t) => {
             if let Some(t) = OBSERVER.notify(t) {
                 match serde_json::from_value::<Update>(t) {
                     Err(err) => {
-                        log::error!("raw_json_error_cannot deserialize to update: {err:?}, raw_json_data: {response:?}")
+                        log::error!("author_raw_json_error_cannot deserialize to update: {err:?}, raw_json_data: {response:?}")
                     }
                     Ok(update) => {
                         if let Update::AuthorizationState(auth_state) = update {

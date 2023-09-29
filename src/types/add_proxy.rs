@@ -22,6 +22,7 @@ pub struct AddProxy {
 
     #[serde(default)]
     enable: bool,
+    skip_validation: bool,
     /// Proxy type
 
     #[serde(rename(serialize = "type", deserialize = "type"))]
@@ -100,6 +101,10 @@ impl AddProxyBuilder {
 
     pub fn enable(&mut self, enable: bool) -> &mut Self {
         self.inner.enable = enable;
+        self
+    }
+    pub fn skip_validation(&mut self, skip_validation: bool) -> &mut Self {
+        self.inner.skip_validation = skip_validation;
         self
     }
 

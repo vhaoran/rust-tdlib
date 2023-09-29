@@ -83,6 +83,7 @@ where
     }
 
     // Adds a proxy server for network requests. Can be called before authorization
+    // if you got client id then do
     pub async fn add_proxy<C: AsRef<AddProxy>>(&self, add_proxy: C) -> Result<Proxy> {
         self.make_request(add_proxy).await
     }

@@ -39,7 +39,8 @@ pub struct UserFullInfo {
     /// A short user bio
 
     #[serde(default)]
-    bio: String,
+    // bio: String,
+    bio: Option<FormattedText>,
     /// For bots, the text that is shown on the bot's profile page and is sent together with the link when users share the bot
 
     #[serde(default)]
@@ -56,6 +57,8 @@ pub struct UserFullInfo {
 
     #[serde(default)]
     commands: Vec<BotCommand>,
+
+    premium_gift_options: Option<Document>,
 }
 
 impl RObject for UserFullInfo {
@@ -108,9 +111,10 @@ impl UserFullInfo {
         self.need_phone_number_privacy_exception
     }
 
-    pub fn bio(&self) -> &String {
-        &self.bio
-    }
+    // modify by whr
+    // pub fn bio(&self) -> &String {
+    //     &self.bio
+    // }
 
     pub fn share_text(&self) -> &String {
         &self.share_text
@@ -180,10 +184,12 @@ impl UserFullInfoBuilder {
         self
     }
 
-    pub fn bio<T: AsRef<str>>(&mut self, bio: T) -> &mut Self {
-        self.inner.bio = bio.as_ref().to_string();
-        self
-    }
+    // pub fn bio<T: AsRef<str>>(&mut self, bio: T) -> &mut Self {
+    //     // self.inner.bio = bio.as_ref().to_string();
+    //     self.inner.bio = Some(bio);
+    //     self
+    // }
+
 
     pub fn share_text<T: AsRef<str>>(&mut self, share_text: T) -> &mut Self {
         self.inner.share_text = share_text.as_ref().to_string();

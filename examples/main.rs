@@ -15,6 +15,8 @@ async fn main() {
     env_logger::init();
     let (sender, mut receiver) = tokio::sync::mpsc::channel::<Box<Update>>(10000);
 
+
+
     let client1 = Client::builder()
         .with_tdlib_parameters(
             TdlibParameters::builder()
@@ -32,6 +34,7 @@ async fn main() {
         .with_updates_sender(sender)
         .build()
         .unwrap();
+
 
     let client2 = Client::builder()
         .with_tdlib_parameters(
