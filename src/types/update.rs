@@ -316,6 +316,9 @@ pub enum Update {
     // whr
     #[serde(rename = "updateStoryStealthMode")]
     StoryStealthMode(UpdateStoryStealthMode),
+    //whr
+    #[serde(rename = "updateChatMessageAutoDeleteTime")]
+    ChatMessageAutoDeleteTime(UpdateChatMessageAutoDeleteTime),
 }
 
 impl Default for Update {
@@ -429,6 +432,7 @@ impl RObject for Update {
             Update::ChatAvailableReactions(t) => t.extra(),
             Update::ChatFolders(t) => t.extra(),
             Update::StoryStealthMode(t) => t.extra(),
+            Update::ChatMessageAutoDeleteTime(t) => t.extra(),
 
             _ => None,
         }
@@ -536,6 +540,7 @@ impl RObject for Update {
             Update::ChatAvailableReactions(t) => t.client_id(),
             Update::ChatFolders(t) => t.client_id(),
             Update::StoryStealthMode(t) => t.client_id(),
+            Update::ChatMessageAutoDeleteTime(t) => t.client_id(),
 
             _ => None,
         }
@@ -9313,6 +9318,68 @@ impl AsRef<UpdateStoryStealthMode> for UpdateStoryStealthMode {
 
 impl AsRef<UpdateStoryStealthMode> for UpdateStoryStealthModeBuilder {
     fn as_ref(&self) -> &UpdateStoryStealthMode {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatMessageAutoDeleteTime {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    #[serde(flatten)]
+    data: Option<Document>,
+}
+
+impl RObject for UpdateChatMessageAutoDeleteTime {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatMessageAutoDeleteTime {}
+
+impl UpdateChatMessageAutoDeleteTime {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateChatMessageAutoDeleteTimeBuilder {
+        let mut inner = UpdateChatMessageAutoDeleteTime::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateChatMessageAutoDeleteTimeBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateChatMessageAutoDeleteTimeBuilder {
+    inner: UpdateChatMessageAutoDeleteTime,
+}
+
+#[deprecated]
+pub type RTDUpdateChatMessageAutoDeleteTimeBuilder = UpdateChatMessageAutoDeleteTimeBuilder;
+
+impl UpdateChatMessageAutoDeleteTimeBuilder {
+    pub fn build(&self) -> UpdateChatMessageAutoDeleteTime {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateChatMessageAutoDeleteTime> for UpdateChatMessageAutoDeleteTime {
+    fn as_ref(&self) -> &UpdateChatMessageAutoDeleteTime {
+        self
+    }
+}
+
+impl AsRef<UpdateChatMessageAutoDeleteTime> for UpdateChatMessageAutoDeleteTimeBuilder {
+    fn as_ref(&self) -> &UpdateChatMessageAutoDeleteTime {
         &self.inner
     }
 }

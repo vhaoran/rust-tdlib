@@ -160,6 +160,10 @@ pub enum MessageContent {
     /// The current user has connected a website by logging in using Telegram Login Widget on it
     #[serde(rename = "messageWebsiteConnected")]
     MessageWebsiteConnected(MessageWebsiteConnected),
+    //
+    #[serde(rename = "messageChatSetMessageAutoDeleteTime")]
+    MessageChatSetMessageAutoDeleteTime(MessageChatSetMessageAutoDeleteTime),
+    //
 }
 
 impl Default for MessageContent {
@@ -221,6 +225,7 @@ impl RObject for MessageContent {
             MessageContent::MessageVideoNote(t) => t.extra(),
             MessageContent::MessageVoiceNote(t) => t.extra(),
             MessageContent::MessageWebsiteConnected(t) => t.extra(),
+            MessageContent::MessageChatSetMessageAutoDeleteTime(t) => t.extra(),
 
             _ => None,
         }
@@ -277,6 +282,7 @@ impl RObject for MessageContent {
             MessageContent::MessageVideoNote(t) => t.client_id(),
             MessageContent::MessageVoiceNote(t) => t.client_id(),
             MessageContent::MessageWebsiteConnected(t) => t.client_id(),
+            MessageContent::MessageChatSetMessageAutoDeleteTime(t) => t.client_id(),
 
             _ => None,
         }
@@ -4424,6 +4430,71 @@ impl AsRef<MessageWebsiteConnected> for MessageWebsiteConnected {
 
 impl AsRef<MessageWebsiteConnected> for MessageWebsiteConnectedBuilder {
     fn as_ref(&self) -> &MessageWebsiteConnected {
+        &self.inner
+    }
+}
+//-------------------------------------
+/// The current user has connected a website by logging in using Telegram Login Widget on it
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MessageChatSetMessageAutoDeleteTime {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    /// Domain name of the connected website
+
+    #[serde(flatten)]
+    data: Option<Document>,
+}
+
+impl RObject for MessageChatSetMessageAutoDeleteTime {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDMessageContent for MessageChatSetMessageAutoDeleteTime {}
+
+impl MessageChatSetMessageAutoDeleteTime {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> MessageChatSetMessageAutoDeleteTimeBuilder {
+        let mut inner = MessageChatSetMessageAutoDeleteTime::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        MessageChatSetMessageAutoDeleteTimeBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct MessageChatSetMessageAutoDeleteTimeBuilder {
+    inner: MessageChatSetMessageAutoDeleteTime,
+}
+
+#[deprecated]
+pub type RTDMessageChatSetMessageAutoDeleteTimeBuilder = MessageChatSetMessageAutoDeleteTimeBuilder;
+
+impl MessageChatSetMessageAutoDeleteTimeBuilder {
+    pub fn build(&self) -> MessageChatSetMessageAutoDeleteTime {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<MessageChatSetMessageAutoDeleteTime> for MessageChatSetMessageAutoDeleteTime {
+    fn as_ref(&self) -> &MessageChatSetMessageAutoDeleteTime {
+        self
+    }
+}
+
+impl AsRef<MessageChatSetMessageAutoDeleteTime> for MessageChatSetMessageAutoDeleteTimeBuilder {
+    fn as_ref(&self) -> &MessageChatSetMessageAutoDeleteTime {
         &self.inner
     }
 }

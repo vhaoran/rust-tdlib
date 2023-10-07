@@ -240,7 +240,13 @@ where
         }
     }
 
-    async fn set_proxy(&mut self, client: Client<T>, proxy: AddProxy) -> Result<()> {
+    async fn set_proxy(&mut self, client: Client<T>, proxy: Option<AddProxy>) -> Result<()> {
+        if proxy.is_none() {
+            log::debug!("bind_client proxy is none,and not set");
+            return Ok(());
+        }
+        let proxy = proxy.unwrap();
+
         log::debug!(
             "bind_client_proxy_param: {}: {} - {:?}",
             proxy.server(),
@@ -249,14 +255,28 @@ where
         );
 
         log::debug!("--bind_client_before set proxy-------");
-        //-------------------------------------
-        let r = client.get_proxies(GetProxies::builder().build()).await;
+        //-----------only for show old proxies--------------------------
+        match client.get_proxies(GetProxies::builder().build()).await {
+            Ok(v) => {
+                for p in v.proxies() {
+                    log::debug!(
+                        "--bind_client exists proxy: {} {}-------",
+                        p.server(),
+                        p.port()
+                    );
+                }
+            }
+            _ => {
+                log::error!("bind_client_not get proxies ");
+            }
+        }
 
         //-------------------------------------
         let p = client.add_proxy(proxy).await.map_err(|e| {
             log::error!("---bind_client_添加代理失败---{}-", e.to_string());
             e
         })?;
+        log::debug!("--bind_client_has_add_proxy-------");
 
         client
             .test_proxy(
@@ -332,13 +352,10 @@ where
         self.clients.write().await.insert(client_id, ctx);
         log::debug!("bind_client_new_client_added and insert,and will send_first request");
         //-----------proxy start--------------------------
-        match proxy {
-            Some(p) => {
-                let _ = self.set_proxy(client.clone(), p).await?;
-            }
-            _ => {}
-        }
-
+        let _ = self.set_proxy(client.clone(), proxy).await.map_err(|e| {
+            log::error!("---bind_client_set_proxy_error---{}-", e.to_string());
+            e
+        })?;
         //-----------proxy ok--------------------------
 
         // We need to call any tdlib method to retrieve first response.
