@@ -164,6 +164,9 @@ pub enum MessageContent {
     #[serde(rename = "messageChatSetMessageAutoDeleteTime")]
     MessageChatSetMessageAutoDeleteTime(MessageChatSetMessageAutoDeleteTime),
     //
+    #[serde(rename = "messageForumTopicCreated")]
+    MessageForumTopicCreated(MessageForumTopicCreated),
+    //
 }
 
 impl Default for MessageContent {
@@ -226,6 +229,7 @@ impl RObject for MessageContent {
             MessageContent::MessageVoiceNote(t) => t.extra(),
             MessageContent::MessageWebsiteConnected(t) => t.extra(),
             MessageContent::MessageChatSetMessageAutoDeleteTime(t) => t.extra(),
+            MessageContent::MessageForumTopicCreated(t) => t.extra(),
 
             _ => None,
         }
@@ -282,7 +286,9 @@ impl RObject for MessageContent {
             MessageContent::MessageVideoNote(t) => t.client_id(),
             MessageContent::MessageVoiceNote(t) => t.client_id(),
             MessageContent::MessageWebsiteConnected(t) => t.client_id(),
+            //add by whr
             MessageContent::MessageChatSetMessageAutoDeleteTime(t) => t.client_id(),
+            MessageContent::MessageForumTopicCreated(t) => t.client_id(),
 
             _ => None,
         }
@@ -4498,3 +4504,69 @@ impl AsRef<MessageChatSetMessageAutoDeleteTime> for MessageChatSetMessageAutoDel
         &self.inner
     }
 }
+//-------------------------------------
+/// The current user has connected a website by logging in using Telegram Login Widget on it
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MessageForumTopicCreated {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    /// Domain name of the connected website
+
+    #[serde(flatten)]
+    data: Option<Document>,
+}
+
+impl RObject for MessageForumTopicCreated {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDMessageContent for MessageForumTopicCreated {}
+
+impl MessageForumTopicCreated {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> MessageForumTopicCreatedBuilder {
+        let mut inner = MessageForumTopicCreated::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        MessageForumTopicCreatedBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct MessageForumTopicCreatedBuilder {
+    inner: MessageForumTopicCreated,
+}
+
+#[deprecated]
+pub type RTDMessageForumTopicCreatedBuilder = MessageForumTopicCreatedBuilder;
+
+impl MessageForumTopicCreatedBuilder {
+    pub fn build(&self) -> MessageForumTopicCreated {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<MessageForumTopicCreated> for MessageForumTopicCreated {
+    fn as_ref(&self) -> &MessageForumTopicCreated {
+        self
+    }
+}
+
+impl AsRef<MessageForumTopicCreated> for MessageForumTopicCreatedBuilder {
+    fn as_ref(&self) -> &MessageForumTopicCreated {
+        &self.inner
+    }
+}
+//-------------------------------------

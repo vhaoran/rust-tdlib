@@ -70,6 +70,9 @@ pub enum TextEntityType {
     //     add by whr
     #[serde(rename = "textEntityTypeCustomEmoji")]
     CustomEmoji(TextEntityTypeCustomEmoji),
+    // add by whr
+    #[serde(rename = "textEntityTypeSpoiler")]
+    Spoiler(TextEntityTypeSpoiler),
 }
 
 impl Default for TextEntityType {
@@ -101,6 +104,7 @@ impl RObject for TextEntityType {
             TextEntityType::Underline(t) => t.extra(),
             TextEntityType::Url(t) => t.extra(),
             TextEntityType::CustomEmoji(t) => t.extra(),
+            TextEntityType::Spoiler(t) => t.extra(),
 
             _ => None,
         }
@@ -127,6 +131,7 @@ impl RObject for TextEntityType {
             TextEntityType::Underline(t) => t.client_id(),
             TextEntityType::Url(t) => t.client_id(),
             TextEntityType::CustomEmoji(t) => t.client_id(),
+            TextEntityType::Spoiler(t) => t.client_id(),
 
             _ => None,
         }
@@ -1354,7 +1359,7 @@ impl TextEntityTypeCustomEmojiBuilder {
     }
     pub fn custom_emoji_id<T>(&mut self, id: T) -> &mut Self
     where
-        T: AsRef<str> +Display,
+        T: AsRef<str> + Display,
     {
         self.inner.custom_emoji_id = id.to_string();
         self
@@ -1373,3 +1378,66 @@ impl AsRef<TextEntityTypeCustomEmoji> for TextEntityTypeCustomEmojiBuilder {
     }
 }
 //-----------end by whr--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct TextEntityTypeSpoiler {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    #[serde(default)]
+    #[serde(flatten)]
+    data: Option<Document>,
+}
+
+impl RObject for TextEntityTypeSpoiler {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDTextEntityType for TextEntityTypeSpoiler {}
+
+impl TextEntityTypeSpoiler {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> TextEntityTypeSpoilerBuilder {
+        let mut inner = TextEntityTypeSpoiler::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        TextEntityTypeSpoilerBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct TextEntityTypeSpoilerBuilder {
+    inner: TextEntityTypeSpoiler,
+}
+
+#[deprecated]
+pub type RTDTextEntityTypeSpoilerBuilder = TextEntityTypeSpoilerBuilder;
+
+impl TextEntityTypeSpoilerBuilder {
+    pub fn build(&self) -> TextEntityTypeSpoiler {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<TextEntityTypeSpoiler> for TextEntityTypeSpoiler {
+    fn as_ref(&self) -> &TextEntityTypeSpoiler {
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeSpoiler> for TextEntityTypeSpoilerBuilder {
+    fn as_ref(&self) -> &TextEntityTypeSpoiler {
+        &self.inner
+    }
+}
