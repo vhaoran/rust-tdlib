@@ -319,6 +319,9 @@ pub enum Update {
     //whr
     #[serde(rename = "updateChatMessageAutoDeleteTime")]
     ChatMessageAutoDeleteTime(UpdateChatMessageAutoDeleteTime),
+    //whr
+    #[serde(rename = "updateMessageUnreadReactions")]
+    MessageUnreadReactions(UpdateMessageUnreadReactions),
 }
 
 impl Default for Update {
@@ -433,6 +436,7 @@ impl RObject for Update {
             Update::ChatFolders(t) => t.extra(),
             Update::StoryStealthMode(t) => t.extra(),
             Update::ChatMessageAutoDeleteTime(t) => t.extra(),
+            Update::MessageUnreadReactions(t) => t.extra(),
 
             _ => None,
         }
@@ -541,6 +545,7 @@ impl RObject for Update {
             Update::ChatFolders(t) => t.client_id(),
             Update::StoryStealthMode(t) => t.client_id(),
             Update::ChatMessageAutoDeleteTime(t) => t.client_id(),
+            Update::MessageUnreadReactions(t) => t.client_id(),
 
             _ => None,
         }
@@ -9380,6 +9385,68 @@ impl AsRef<UpdateChatMessageAutoDeleteTime> for UpdateChatMessageAutoDeleteTime 
 
 impl AsRef<UpdateChatMessageAutoDeleteTime> for UpdateChatMessageAutoDeleteTimeBuilder {
     fn as_ref(&self) -> &UpdateChatMessageAutoDeleteTime {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateMessageUnreadReactions {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    #[serde(flatten)]
+    data: Option<Document>,
+}
+
+impl RObject for UpdateMessageUnreadReactions {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateMessageUnreadReactions {}
+
+impl UpdateMessageUnreadReactions {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateMessageUnreadReactionsBuilder {
+        let mut inner = UpdateMessageUnreadReactions::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateMessageUnreadReactionsBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateMessageUnreadReactionsBuilder {
+    inner: UpdateMessageUnreadReactions,
+}
+
+#[deprecated]
+pub type RTDUpdateMessageUnreadReactionsBuilder = UpdateMessageUnreadReactionsBuilder;
+
+impl UpdateMessageUnreadReactionsBuilder {
+    pub fn build(&self) -> UpdateMessageUnreadReactions {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateMessageUnreadReactions> for UpdateMessageUnreadReactions {
+    fn as_ref(&self) -> &UpdateMessageUnreadReactions {
+        self
+    }
+}
+
+impl AsRef<UpdateMessageUnreadReactions> for UpdateMessageUnreadReactionsBuilder {
+    fn as_ref(&self) -> &UpdateMessageUnreadReactions {
         &self.inner
     }
 }
