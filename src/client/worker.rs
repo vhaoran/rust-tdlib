@@ -4,6 +4,7 @@ use super::{
     tdlib_client::{TdJson, TdLibClient},
     {Client, ClientState},
 };
+#[allow(unused_imports)]
 use crate::types::{
     AddProxy, EnableProxy, GetAuthorizationState, GetProxies, JsonValue, ProxyType,
     ProxyTypeMtproto, TestProxy,
