@@ -1517,6 +1517,7 @@ where
     }
 
     // Returns information about a file with a map thumbnail in PNG format. Only map thumbnail files with size less than 1MB can be downloaded
+    //whr-XXXX
     pub async fn get_map_thumbnail_file<C: AsRef<GetMapThumbnailFile>>(
         &self,
         get_map_thumbnail_file: C,

@@ -28,6 +28,13 @@ pub enum AuthenticationCodeType {
     /// An authentication code is delivered via a private Telegram message, which can be viewed from another active session
     #[serde(rename = "authenticationCodeTypeTelegramMessage")]
     TelegramMessage(AuthenticationCodeTypeTelegramMessage),
+    // todo
+    #[serde(rename = "authenticationCodeTypeFragment")]
+    Fragment(AuthenticationCodeTypeFragment),
+    // todo
+    // authenticationCodeTypeFirebaseIos
+    // authenticationCodeTypeFirebaseAndroid
+    //
 }
 
 impl Default for AuthenticationCodeType {
@@ -45,6 +52,7 @@ impl RObject for AuthenticationCodeType {
             AuthenticationCodeType::MissedCall(t) => t.extra(),
             AuthenticationCodeType::Sms(t) => t.extra(),
             AuthenticationCodeType::TelegramMessage(t) => t.extra(),
+            AuthenticationCodeType::Fragment(t) => t.extra(),
 
             _ => None,
         }
@@ -57,6 +65,8 @@ impl RObject for AuthenticationCodeType {
             AuthenticationCodeType::MissedCall(t) => t.client_id(),
             AuthenticationCodeType::Sms(t) => t.client_id(),
             AuthenticationCodeType::TelegramMessage(t) => t.client_id(),
+            // whr
+            AuthenticationCodeType::Fragment(t) => t.client_id(),
 
             _ => None,
         }
@@ -462,3 +472,90 @@ impl AsRef<AuthenticationCodeTypeTelegramMessage> for AuthenticationCodeTypeTele
         &self.inner
     }
 }
+//-------------------------------------
+/// An authentication code is delivered via a private Telegram message, which can be viewed from another active session
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct AuthenticationCodeTypeFragment {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    /// Length of the code
+
+
+    #[serde(default)]
+    url: String,
+    #[serde(default)]
+    length: i32,
+}
+
+impl RObject for AuthenticationCodeTypeFragment {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDAuthenticationCodeType for AuthenticationCodeTypeFragment {}
+
+impl AuthenticationCodeTypeFragment {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> AuthenticationCodeTypeFragmentBuilder {
+        let mut inner = AuthenticationCodeTypeFragment::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        AuthenticationCodeTypeFragmentBuilder { inner }
+    }
+
+    pub fn length(&self) -> i32 {
+        self.length
+    }
+    pub fn url(&self) -> String {
+        self.url.clone()
+    }
+}
+
+#[doc(hidden)]
+pub struct AuthenticationCodeTypeFragmentBuilder {
+    inner: AuthenticationCodeTypeFragment,
+}
+
+#[deprecated]
+pub type RTDAuthenticationCodeTypeFragmentBuilder =
+AuthenticationCodeTypeFragmentBuilder;
+
+impl AuthenticationCodeTypeFragmentBuilder {
+    pub fn build(&self) -> AuthenticationCodeTypeFragment {
+        self.inner.clone()
+    }
+
+    pub fn length(&mut self, length: i32) -> &mut Self {
+        self.inner.length = length;
+        self
+    }
+    pub fn url(&mut self, url: String) -> &mut Self {
+        self.inner.url = url;
+        self
+    }
+
+}
+
+impl AsRef<AuthenticationCodeTypeFragment> for AuthenticationCodeTypeFragment {
+    fn as_ref(&self) -> &AuthenticationCodeTypeFragment {
+        self
+    }
+}
+
+impl AsRef<AuthenticationCodeTypeFragment> for AuthenticationCodeTypeFragmentBuilder {
+    fn as_ref(&self) -> &AuthenticationCodeTypeFragment {
+        &self.inner
+    }
+}
+
