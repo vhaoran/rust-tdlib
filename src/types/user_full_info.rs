@@ -1,6 +1,7 @@
 use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
+use crate::types::premium_payment_option::PremiumPaymentOption;
 
 /// Contains full information about a user
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -58,7 +59,8 @@ pub struct UserFullInfo {
     #[serde(default)]
     commands: Vec<BotCommand>,
 
-    premium_gift_options: Option<Document>,
+    // premium_gift_options: Option<Document>,
+    premium_gift_options: Option<Vec<PremiumPaymentOption>>,
 }
 
 impl RObject for UserFullInfo {
@@ -189,7 +191,6 @@ impl UserFullInfoBuilder {
     //     self.inner.bio = Some(bio);
     //     self
     // }
-
 
     pub fn share_text<T: AsRef<str>>(&mut self, share_text: T) -> &mut Self {
         self.inner.share_text = share_text.as_ref().to_string();

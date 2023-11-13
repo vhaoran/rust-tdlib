@@ -22,6 +22,8 @@ pub enum ChatList {
     /// A main list of chats
     #[serde(rename = "chatListMain")]
     Main(ChatListMain),
+    #[serde(rename = "chatListFolder")]
+    Folder(ChatListFolder),
 }
 
 impl Default for ChatList {
@@ -37,6 +39,7 @@ impl RObject for ChatList {
             ChatList::Archive(t) => t.extra(),
             ChatList::Filter(t) => t.extra(),
             ChatList::Main(t) => t.extra(),
+            ChatList::Folder(t) => t.extra(),
 
             _ => None,
         }
@@ -47,6 +50,7 @@ impl RObject for ChatList {
             ChatList::Archive(t) => t.client_id(),
             ChatList::Filter(t) => t.client_id(),
             ChatList::Main(t) => t.client_id(),
+            ChatList::Folder(t) => t.client_id(),
 
             _ => None,
         }
@@ -264,3 +268,71 @@ impl AsRef<ChatListMain> for ChatListMainBuilder {
         &self.inner
     }
 }
+//-------------------------------------
+/// A main list of chats
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ChatListFolder {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    #[serde(default)]
+    chat_folder_id: i32,
+}
+
+impl RObject for ChatListFolder {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDChatList for ChatListFolder {}
+
+impl ChatListFolder {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> ChatListFolderBuilder {
+        let mut inner = ChatListFolder::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        ChatListFolderBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct ChatListFolderBuilder {
+    inner: ChatListFolder,
+}
+
+#[deprecated]
+pub type RTDChatListFolderBuilder = ChatListFolderBuilder;
+
+impl ChatListFolderBuilder {
+    pub fn build(&self) -> ChatListFolder {
+        self.inner.clone()
+    }
+    pub fn chat_folder_id(&mut self, chat_folder_id: i32) -> &mut ChatListFolderBuilder {
+        self.inner.chat_folder_id = chat_folder_id;
+        self
+    }
+}
+
+impl AsRef<ChatListFolder> for ChatListFolder {
+    fn as_ref(&self) -> &ChatListFolder {
+        self
+    }
+}
+
+impl AsRef<ChatListFolder> for ChatListFolderBuilder {
+    fn as_ref(&self) -> &ChatListFolder {
+        &self.inner
+    }
+}
+//-------------------------------------

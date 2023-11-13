@@ -12,7 +12,10 @@ pub struct MessageForwardInfo {
     client_id: Option<i32>,
     /// Origin of a forwarded message
 
-    #[serde(skip_serializing_if = "MessageForwardOrigin::_is_default")]
+    // #[serde(skip_serializing_if = "MessageForwardOrigin::_is_default")]
+    // origin: MessageForwardOrigin,
+    // add by whr
+    #[serde(rename="origin")]
     origin: MessageForwardOrigin,
     /// Point in time (Unix timestamp) when the message was originally sent
 

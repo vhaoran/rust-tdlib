@@ -322,6 +322,12 @@ pub enum Update {
     //whr
     #[serde(rename = "updateMessageUnreadReactions")]
     MessageUnreadReactions(UpdateMessageUnreadReactions),
+    // updateAccentColors
+    #[serde(rename = "updateAccentColors")]
+    AccentColors(UpdateAccentColors),
+    #[serde(rename = "updateUnconfirmedSession")]
+    UnconfirmedSession(UpdateUnconfirmedSession),
+
 }
 
 impl Default for Update {
@@ -437,6 +443,8 @@ impl RObject for Update {
             Update::StoryStealthMode(t) => t.extra(),
             Update::ChatMessageAutoDeleteTime(t) => t.extra(),
             Update::MessageUnreadReactions(t) => t.extra(),
+            Update::AccentColors(t) => t.extra(),
+            Update::UnconfirmedSession(t) => t.extra(),
 
             _ => None,
         }
@@ -546,6 +554,8 @@ impl RObject for Update {
             Update::StoryStealthMode(t) => t.client_id(),
             Update::ChatMessageAutoDeleteTime(t) => t.client_id(),
             Update::MessageUnreadReactions(t) => t.client_id(),
+            Update::AccentColors(t) => t.client_id(),
+            Update::UnconfirmedSession(t) => t.client_id(),
 
             _ => None,
         }
@@ -9447,6 +9457,131 @@ impl AsRef<UpdateMessageUnreadReactions> for UpdateMessageUnreadReactions {
 
 impl AsRef<UpdateMessageUnreadReactions> for UpdateMessageUnreadReactionsBuilder {
     fn as_ref(&self) -> &UpdateMessageUnreadReactions {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateAccentColors {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    #[serde(flatten)]
+    data: Option<Document>,
+}
+
+impl RObject for UpdateAccentColors {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateAccentColors {}
+
+impl UpdateAccentColors {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateAccentColorsBuilder {
+        let mut inner = UpdateAccentColors::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateAccentColorsBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateAccentColorsBuilder {
+    inner: UpdateAccentColors,
+}
+
+#[deprecated]
+pub type RTDUpdateAccentColorsBuilder = UpdateAccentColorsBuilder;
+
+impl UpdateAccentColorsBuilder {
+    pub fn build(&self) -> UpdateAccentColors {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateAccentColors> for UpdateAccentColors {
+    fn as_ref(&self) -> &UpdateAccentColors {
+        self
+    }
+}
+
+impl AsRef<UpdateAccentColors> for UpdateAccentColorsBuilder {
+    fn as_ref(&self) -> &UpdateAccentColors {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateUnconfirmedSession {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    #[serde(flatten)]
+    data: Option<Document>,
+}
+
+impl RObject for UpdateUnconfirmedSession {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateUnconfirmedSession {}
+
+impl UpdateUnconfirmedSession {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateUnconfirmedSessionBuilder {
+        let mut inner = UpdateUnconfirmedSession::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateUnconfirmedSessionBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateUnconfirmedSessionBuilder {
+    inner: UpdateUnconfirmedSession,
+}
+
+#[deprecated]
+pub type RTDUpdateUnconfirmedSessionBuilder = UpdateUnconfirmedSessionBuilder;
+
+impl UpdateUnconfirmedSessionBuilder {
+    pub fn build(&self) -> UpdateUnconfirmedSession {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateUnconfirmedSession> for UpdateUnconfirmedSession {
+    fn as_ref(&self) -> &UpdateUnconfirmedSession {
+        self
+    }
+}
+
+impl AsRef<UpdateUnconfirmedSession> for UpdateUnconfirmedSessionBuilder {
+    fn as_ref(&self) -> &UpdateUnconfirmedSession {
         &self.inner
     }
 }
