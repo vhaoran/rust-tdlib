@@ -73,6 +73,9 @@ pub enum TextEntityType {
     // add by whr
     #[serde(rename = "textEntityTypeSpoiler")]
     Spoiler(TextEntityTypeSpoiler),
+    #[serde(rename = "textEntityTypeBlockQuote")]
+    BlockQuote(TextEntityTypeBlockQuote),
+
 }
 
 impl Default for TextEntityType {
@@ -105,6 +108,7 @@ impl RObject for TextEntityType {
             TextEntityType::Url(t) => t.extra(),
             TextEntityType::CustomEmoji(t) => t.extra(),
             TextEntityType::Spoiler(t) => t.extra(),
+            TextEntityType::BlockQuote(t) => t.extra(),
 
             _ => None,
         }
@@ -132,6 +136,7 @@ impl RObject for TextEntityType {
             TextEntityType::Url(t) => t.client_id(),
             TextEntityType::CustomEmoji(t) => t.client_id(),
             TextEntityType::Spoiler(t) => t.client_id(),
+            TextEntityType::BlockQuote(t) => t.client_id(),
 
             _ => None,
         }
@@ -1438,6 +1443,67 @@ impl AsRef<TextEntityTypeSpoiler> for TextEntityTypeSpoiler {
 
 impl AsRef<TextEntityTypeSpoiler> for TextEntityTypeSpoilerBuilder {
     fn as_ref(&self) -> &TextEntityTypeSpoiler {
+        &self.inner
+    }
+}
+//-------------------------------------
+/// A bold text
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct TextEntityTypeBlockQuote {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+}
+
+impl RObject for TextEntityTypeBlockQuote {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDTextEntityType for TextEntityTypeBlockQuote {}
+
+impl TextEntityTypeBlockQuote {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> TextEntityTypeBlockQuoteBuilder {
+        let mut inner = TextEntityTypeBlockQuote::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        TextEntityTypeBlockQuoteBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct TextEntityTypeBlockQuoteBuilder {
+    inner: TextEntityTypeBlockQuote,
+}
+
+#[deprecated]
+pub type RTDTextEntityTypeBlockQuoteBuilder = TextEntityTypeBlockQuoteBuilder;
+
+impl TextEntityTypeBlockQuoteBuilder {
+    pub fn build(&self) -> TextEntityTypeBlockQuote {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<TextEntityTypeBlockQuote> for TextEntityTypeBlockQuote {
+    fn as_ref(&self) -> &TextEntityTypeBlockQuote {
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeBlockQuote> for TextEntityTypeBlockQuoteBuilder {
+    fn as_ref(&self) -> &TextEntityTypeBlockQuote {
         &self.inner
     }
 }

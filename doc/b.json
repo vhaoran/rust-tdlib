@@ -1,6 +1,47 @@
-
-
 {
- "@type":"textEntityTypeCustomEmoji",
- "custom_emoji_id":"5836898273666798437"
+  "TypedSingleMsg" : {
+    "type_name" : "文本" ,
+    "src_msg" : {
+      "is_his" : true ,
+      "from_cid" : -4008723924 ,
+      "msg_id" : 1432661000192 ,
+      "msg_date" : 1699344168 ,
+      "caption" : "xxxxxxxxxx" ,
+      "album_id" : 0
+    } ,
+    "bo dy" : {
+      "@extra" : "9b323cec-6a61-4a98-a40c-d3cc81c98ebc" ,
+      "@client_id" : null ,
+      "chat_id" : 5955099424 ,
+      "message_thread_id" : 0 ,
+      "reply_to_message_id" : 0 ,
+      "options" : {
+        "@extra" : null ,
+        "@client_id" : null ,
+        "disable_notification" : false ,
+        "from_background" : false
+      } ,
+      "reply_markup" : {
+        "@type" : "replyMarkupInlineKeyboard" ,
+        "@extra" : "7cf383a5-6446-4c32-916d-541810b398d1" ,
+        "@client_id" : null ,
+        "rows" : []
+      } ,
+      "input_message_content" : {
+        "@type" : "inputMessageText" ,
+        "@extra" : "e069d6db-cfe2-4a14-  9ad9-0a7265be3f3d" ,
+        "@client_id" : null ,
+        "text" : {
+          "@extra" : "bf505d90-853c-450b-ba74-fb73266ec4  8f" ,
+          "@client_id" : 1 ,
+          "text" : "xxxxxxxxxx" ,
+          "entities" : []
+        } ,
+        "disable_web_page_preview" : false ,
+        "clear_draft" : false
+      } ,
+      "@type" : "sendMessage"
+    } ,
+    "to_cid" : 5955099424
+  }
 }
