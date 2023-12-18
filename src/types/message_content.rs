@@ -167,6 +167,9 @@ pub enum MessageContent {
     #[serde(rename = "messageForumTopicCreated")]
     MessageForumTopicCreated(MessageForumTopicCreated),
     //
+    #[serde(rename = "messageStory")]
+    MessageStory(MessageStory),
+    //
 }
 
 impl Default for MessageContent {
@@ -230,6 +233,7 @@ impl RObject for MessageContent {
             MessageContent::MessageWebsiteConnected(t) => t.extra(),
             MessageContent::MessageChatSetMessageAutoDeleteTime(t) => t.extra(),
             MessageContent::MessageForumTopicCreated(t) => t.extra(),
+            MessageContent::MessageStory(t) => t.extra(),
 
             _ => None,
         }
@@ -289,6 +293,7 @@ impl RObject for MessageContent {
             //add by whr
             MessageContent::MessageChatSetMessageAutoDeleteTime(t) => t.client_id(),
             MessageContent::MessageForumTopicCreated(t) => t.client_id(),
+            MessageContent::MessageStory(t) => t.client_id(),
 
             _ => None,
         }
@@ -4570,3 +4575,101 @@ impl AsRef<MessageForumTopicCreated> for MessageForumTopicCreatedBuilder {
     }
 }
 //-------------------------------------
+/// A voice note message
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MessageStory {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    story_sender_chat_id: i64,
+    #[serde(default)]
+    story_id: i64,
+    #[serde(default)]
+    via_mention: bool,
+}
+
+impl RObject for MessageStory {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDMessageContent for MessageStory {}
+
+impl MessageStory {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> MessageStoryBuilder {
+        let mut inner = MessageStory::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        MessageStoryBuilder { inner }
+    }
+
+    // story_sender_chat_id: i64,
+    // story_id: i64,
+    // via_mention: bool,
+    pub fn story_sender_chat_id(&self) -> i64 {
+        self.story_sender_chat_id
+    }
+
+    pub fn story_id(&self) -> i64 {
+        self.story_id
+    }
+    pub fn via_mention(&self) -> bool {
+        self.via_mention
+    }
+}
+
+#[doc(hidden)]
+pub struct MessageStoryBuilder {
+    inner: MessageStory,
+}
+
+#[deprecated]
+pub type RTDMessageStoryBuilder = MessageStoryBuilder;
+
+impl MessageStoryBuilder {
+    pub fn build(&self) -> MessageStory {
+        self.inner.clone()
+    }
+
+    // story_sender_chat_id: ChatId,
+    // story_id: i64,
+    // via_mention: bool,
+    pub fn story_sender_chat_id(&mut self, story_sender_chat_id: i64) -> &mut Self {
+        self.inner.story_sender_chat_id = story_sender_chat_id;
+        self
+    }
+
+    pub fn story_id(&mut self, story_id: i64) -> &mut Self {
+        self.inner.story_id = story_id;
+        self
+    }
+
+    pub fn via_mention(&mut self, via_mention: bool) -> &mut Self {
+        self.inner.via_mention = via_mention;
+        self
+    }
+}
+
+impl AsRef<MessageStory> for MessageStory {
+    fn as_ref(&self) -> &MessageStory {
+        self
+    }
+}
+
+impl AsRef<MessageStory> for MessageStoryBuilder {
+    fn as_ref(&self) -> &MessageStory {
+        &self.inner
+    }
+}
