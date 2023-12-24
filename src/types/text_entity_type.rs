@@ -75,7 +75,6 @@ pub enum TextEntityType {
     Spoiler(TextEntityTypeSpoiler),
     #[serde(rename = "textEntityTypeBlockQuote")]
     BlockQuote(TextEntityTypeBlockQuote),
-
 }
 
 impl Default for TextEntityType {
@@ -89,25 +88,25 @@ impl RObject for TextEntityType {
     fn extra(&self) -> Option<&str> {
         match self {
             TextEntityType::BankCardNumber(t) => t.extra(),
-            TextEntityType::Bold(t) => t.extra(),
-            TextEntityType::BotCommand(t) => t.extra(),
-            TextEntityType::Cashtag(t) => t.extra(),
-            TextEntityType::Code(t) => t.extra(),
-            TextEntityType::EmailAddress(t) => t.extra(),
-            TextEntityType::Hashtag(t) => t.extra(),
-            TextEntityType::Italic(t) => t.extra(),
+            TextEntityType::Bold(t) => t.extra(),         //
+            TextEntityType::BotCommand(t) => t.extra(),   //
+            TextEntityType::Cashtag(t) => t.extra(),      //
+            TextEntityType::Code(t) => t.extra(),         //
+            TextEntityType::EmailAddress(t) => t.extra(), //
+            TextEntityType::Hashtag(t) => t.extra(),      //
+            TextEntityType::Italic(t) => t.extra(),       //
             TextEntityType::MediaTimestamp(t) => t.extra(),
-            TextEntityType::Mention(t) => t.extra(),
+            TextEntityType::Mention(t) => t.extra(), //
             TextEntityType::MentionName(t) => t.extra(),
             TextEntityType::PhoneNumber(t) => t.extra(),
-            TextEntityType::Pre(t) => t.extra(),
+            TextEntityType::Pre(t) => t.extra(), //
             TextEntityType::PreCode(t) => t.extra(),
-            TextEntityType::Strikethrough(t) => t.extra(),
-            TextEntityType::TextUrl(t) => t.extra(),
-            TextEntityType::Underline(t) => t.extra(),
-            TextEntityType::Url(t) => t.extra(),
+            TextEntityType::Strikethrough(t) => t.extra(), //
+            TextEntityType::TextUrl(t) => t.extra(),       //
+            TextEntityType::Underline(t) => t.extra(),     //
+            TextEntityType::Url(t) => t.extra(),           //
             TextEntityType::CustomEmoji(t) => t.extra(),
-            TextEntityType::Spoiler(t) => t.extra(),
+            TextEntityType::Spoiler(t) => t.extra(), //
             TextEntityType::BlockQuote(t) => t.extra(),
 
             _ => None,
@@ -1390,10 +1389,9 @@ pub struct TextEntityTypeSpoiler {
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
-
-    #[serde(default)]
-    #[serde(flatten)]
-    data: Option<Document>,
+    // #[serde(default)]
+    // #[serde(flatten)]
+    // data: Option<Document>,
 }
 
 impl RObject for TextEntityTypeSpoiler {
@@ -1506,4 +1504,13 @@ impl AsRef<TextEntityTypeBlockQuote> for TextEntityTypeBlockQuoteBuilder {
     fn as_ref(&self) -> &TextEntityTypeBlockQuote {
         &self.inner
     }
+}
+
+#[test]
+fn aa() {
+    //---------------------
+    let s = r#"
+"㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️\n\n【采集猫】V2.1.0版本已发布，请及时更新！\n\n🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️\n\n更新内容如下（更新后无需做任何其他设置）：\n\n1️⃣优化了登陆流程，解决了登陆过程的一个BUG；\n2️⃣优化了重启软件后恢复缓冲区数据的逻辑，大大降低了软件请求飞机服务器的频次（图一）；\n3️⃣规则设置增加了模板，新增一条规则以后，将该条规则选中（整条规则变蓝色即为选中，鼠标点击一下该条规则的空白处即可选中），点击新增规则，那么新增加的规则将以选中的规则作为模板复制其“爬取类型”“历史还是当前还是所有”“替换规则”“转发群”，方便规则很多的用户快速复用规则参数，同时也新增了【全部删除】按钮，可以一键清空“来源群”或者“目标群”的所有内容；（图二）\n4️⃣将自动下载的受保护资源的保存期限延长到了一周（基于 恢复发送记录逻辑的更改 导致的）。\n5️⃣软件页面增加了一些操作提示，对新用户更友好。\n6️⃣规则设置底部增加了一个【查找】功能，支持模糊匹配，方便规则很多的用户快速定位想要修改的规则（图二）。\n7️⃣优化了合辑发送的逻辑，合辑发送功能更强大，进一步降低了合并合辑的时候的割裂可能；\n8️⃣其他更多细节，请更新软件后体验；\n\n❤️❤️本次更新针对了一些功能性缺失的修复，如无必要，可不用更新，🎯🎯\n推荐大家更新！\n❤️❤️\n\n============================\n\n更新方式：\n\n直接关闭采集猫软件，点击软件目录下的 update-crawler.exe，将会自动开始更新，更新结束后会提示已更新完成，完成后关闭更新软件，双击 软件目录下的ui-crawler.exe即可正常启动采集猫！\n\n============================\n\n新用户如何下载采集猫软件呢？\n\n点击 置顶 的消息，附件里面有个 update- crawler.exe，下载下来，在电脑某个盘新建一个文件夹，将该附件 移动进去，双击即可开始更新，更新完毕后，双击同目录下的 ui-cralwer.exe即可正常启动采集猫！（所有路径暂不支持中文，新建的文件夹名字请使用英文或数字）\n\n\n🔴🔴🔴唯一客服👍👍👍： @TGcaiji\n🔴🔴🔴官方群组：@aodipay (如果无法私聊客服，请加入群组@我们）\n🔴🔴🔴技术团队👍👍👍： @shixiong_da","entities":    
+    "#;
+    println!("-----------{}-----------", s.len());
 }

@@ -1,178 +1,149 @@
-{
-  "@type" : "updateUserFullInfo" ,
-  "user_id" : 5216941809 ,
-  "user_full_info" : {
-    "@type" : "userFullInfo" ,
-    "photo" : {
-      "@type" : "chatPhoto" ,
-      "id" : "4913924877547842245" ,
-      "added_date" : 1652946314 ,
-      "minithumbnail" : {
-        "@type" : "minithumbnail" ,
-        "width" : 40 ,
-        "height" : 40 ,
-        "data" : "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H////6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj/wAARCAAoACgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDWlkWJC7dB+tZF3fSsDhigPQCpLmRywjZs7M96o3B+ZRUXuzeMUo3GJIyNkGr9rqDqcMSy+h61RWNsjcMD3OKeirkMmcZIJNDBNPRnQo6yIGU5Boqlpshy0fb7woqk7oykuV2K9+u28J7MAahmg/dBicMeg9qvarEzRrIq525z7VDFuWHfPIMHuPT0rOTs7mileNitFGlyEiB2yKvOeMY9KWWMhfNVxJuHHbj6UpkSRhsUgg/f6fSrEKIyNgkqTjkc05S0uSrpi6Yp80n0WirVtAY1ODtBOfeiqjewptNlggMpBGQetZUFm7zOHfKxnAQ+vrRRTauSnYbPaybj5cefUY5H0q/Z2ogiG7l8c+1FFTFaDbLNFFFWSf/Z"
-      } ,
-      "sizes" : [
-        {
-          "@type" : "photoSize" ,
-          "type" : "a" ,
-          "photo" : {
-            "@type" : "file" ,
-            "id" : 1694 ,
-            "size" : 12975 ,
-            "expected_size" : 12975 ,
-            "local" : {
-              "@type" : "localFile" ,
-              "path" : "" ,
-              "can_be_downloaded" : true ,
-              "can_be_deleted" : false ,
-              "is_downloading_active" : false ,
-              "is_downloading_completed" : false ,
-              "download_offset" : 0 ,
-              "downloaded_prefix_size" : 0 ,
-              "downloaded_size" : 0
-            } ,
-            "remote" : {
-              "@type" : "remoteFile" ,
-              "id" : "AgACAgEAAxUAAWVMm3xAmPBCWkj05Rj0feaRVAg7AALFqjEbpMQxREK2AZdVfV0iAQADAgADYQADMwQ" ,
-              "unique_id" : "AQADxaoxG6TEMUQAAQ" ,
-              "is_uploading_active" : false ,
-              "is_uploading_completed" : true ,
-              "uploaded_size" : 12975
-            }
-          } ,
-          "width" : 160 ,
-          "height" : 160 ,
-          "progressive_sizes" : []
-        } ,
-        {
-          "@type" : "photoSize" ,
-          "type" : "b" ,
-          "photo" : {
-            "@type" : "file" ,
-            "id" : 1695 ,
-            "size" : 32707 ,
-            "expected_size" : 32707 ,
-            "local" : {
-              "@type" : "localFile" ,
-              "path" : "" ,
-              "can_be_downloaded" : true ,
-              "can_be_deleted" : false ,
-              "is_downloading_active" : false ,
-              "is_downloading_completed" : false ,
-              "download_offset" : 0 ,
-              "downloaded_prefix_size" : 0 ,
-              "downloaded_size" : 0
-            } ,
-            "remote" : {
-              "@type" : "remoteFile" ,
-              "id" : "AgACAgEAAxUAAWVMm3xAmPBCWkj05Rj0feaRVAg7AALFqjEbpMQxREK2AZdVfV0iAQADAgADYgADMwQ" ,
-              "unique_id" : "AQADxaoxG6TEMURn" ,
-              "is_uploading_active" : false ,
-              "is_uploading_completed" : true ,
-              "uploaded_size" : 32707
-            }
-          } ,
-          "width" : 320 ,
-          "height" : 320 ,
-          "progressive_sizes" : []
-        } ,
-        {
-          "@type" : "photoSize" ,
-          "type" : "c" ,
-          "photo" : {
-            "@type" : "file" ,
-            "id" : 1696 ,
-            "size" : 69772 ,
-            "expected_size" : 69772 ,
-            "local" : {
-              "@type" : "localFile" ,
-              "path" : "" ,
-              "can_be_downloaded" : true ,
-              "can_be_deleted" : false ,
-              "is_downloading_active" : false ,
-              "is_downloading_completed" : false ,
-              "download_offset" : 0 ,
-              "downloaded_prefix_size" : 0 ,
-              "downloaded_size" : 0
-            } ,
-            "remote" : {
-              "@type" : "remoteFile" ,
-              ,
-              "id" : "AgACAgEAAxUAAWVMm3xAmPBCWkj05Rj0feaRVAg7AALFqjEbpMQxREK2AZdVfV0iAQADAgADYwADMwQ" ,
-              "unique_id" : "AQADxaoxG6TEMUQB" ,
-              "is_uploading_active" : false ,
-              "is_uploading_completed" : true ,
-              "uploaded_size" : 69772
-            }
-          } ,
-          "width" : 640 ,
-          "height" : 640 ,
-          "progressive_sizes" : []
-        }
-      ]
-    } ,
-    "can_be_called" : true ,
-    "supports_video_calls" : true ,
-    "has_private_calls" : false ,
-    "has_private_forwards" : true ,
-    "has_restricted_voice_and_video_note_messages" : false ,
-    "has_pinned_stories" : true ,
-    "need_phone_number_privacy_exception" : false ,
-    "bio" : {
-      "@type" : "formattedText" ,
-      "text" : "\\u3010\\u91c7\\u96c6\\u732b\\u3011-\\u6700\\u540e\\u4e00\\u6b21\\u4e13\\u4e1a\\u7684TG\\u8d44\\u6e90\\u91c7\\u96c6\\u5de5\\u5177\\u5df2\\u4e0a\\u7ebf\\uff0c\\u5168\\u81ea\\u52a8\\u76d1\\u63a7\\u76ee\\u6807\\u7fa4/\\u9891\\u9053\\u8d44\\u6e90\\u53d8\\u5316\\u5e76\\u6309\\u8bbe\\u5b9a\\u7684\\u89c4\\u5219\\u81ea\\u52a8\\u8f6c\\u53d1/\\u4e0b\\u8f7d\\u3002\\u91c7\\u96c6\\u732b: @caijimao" ,
-      "entities" : [
-        {
-          "@type" : "textEntity" ,
-          "offset" : 60 ,
-          "length" : 9 ,
-          "type" : {
-            "@type" : "textEntityTypeMention"
-          }
-        }
-      ]
-    } ,
-    "premium_gift_options" : [
-      {
-        "@type" : "premiumPaymentOption" ,
-        "currency" : "CNY" ,
-        "amount" : 20900 ,
-        "discount_percentage" : 39 ,
-        "month_count" : 12 ,
-        "store_product_id" : "org.telegram.telegramPremium.twelveMonths" ,
-        "payment_link" : {
-          "@type" : "internalLinkTypeInvoice" ,
-          "invoice_name" : "premgift5216941809_12_fe81eec86710a33863"
-        }
-      } ,
-      {
-        "@type" : "premiumPaymentOption" ,
-        "currency" : "CNY" ,
-        "amount" : 11900 ,
-        "discount_percentage" : 31 ,
-        "month_count" : 6 ,
-        "store_product_id" : "org.telegram.telegramPremium.sixMonths" ,
-        "payment_link" : {
-          "@type" : "internalLinkTypeInvoice" ,
-          "invoice_name" : "premgift5216941809_6_b3481bc42855a31ec6"
-        }
-      } ,
-      {
-        "@type" : "premiumPaymentOption" ,
-        "currency" : "CNY" ,
-        "amount" : 8699 ,
-        "discount_percentage" : 0 ,
-        "month_count" : 3 ,
-        "store_product_id" : "org.telegram.telegramPremium.threeMonths" ,
-        "payment_link" : {
-          "@type" : "internalLinkTypeInvoice" ,
-          "invoice_name" : "premgift5216941809_3_8c7f502f6575955f7d"
-        }
-      }
-    ] ,
-    "group_in_common_count" : 11
+[
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":26 ,
+    "length":25 ,
+    "type":{
+      "@type":"textEntityTypeBold" ,
+      "@extra":null ,
+      "@client_id":null
+    }
   } ,
-  "@client_id" : 1
-}
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":26 ,
+    "length":1 ,
+    "type":{
+      "@type":"textEntityTypeItalic" ,
+      "@extra":null ,
+      "@client_id":null
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":51 ,
+    "length":5 ,
+    "type":{
+      "@type":"textEntityTypeCustomEmoji" ,
+      "@extra":null ,
+      "@client_id":null ,
+      "custom_emoji_id":"5298698275447120446"
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":56 ,
+    "length":5 ,
+    "type":{
+      "@type":"textEntityTypeCustomEmoji" ,
+      "@extra":null ,
+      "@client_id":null ,
+      "custom_emoji_id":"5298698275447120446"
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":61 ,
+    "length":5 ,
+    "type":{
+      "@type":"textEntityTypeCustomEmoji" ,
+      "@extra":null ,
+      "@client_id":null ,
+      "custom_emoji_id":"5298698275447120446"
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":620 ,
+    "length":7 ,
+    "type":{
+      "@type":"textEntityTypeBlockQuote" ,
+      "@extra":null ,
+      "@client_id":null
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":664 ,
+    "length":5 ,
+    "type":{
+      "@type":"textEntityTypeBold" ,
+      "@extra":null ,
+      "@client_id":null
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":807 ,
+    "length":15 ,
+    "type":{
+      "@type":"textEntityTypeBold" ,
+      "@extra":null ,
+      "@client_id":null
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":826 ,
+    "length":2 ,
+    "type":{
+      "@type":"textEntityTypeTextUrl" ,
+      "@extra":null ,
+      "@client_id":null ,
+      "url":"https://t.me/CaiJiMao/8"
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":936 ,
+    "length":29 ,
+    "type":{
+      "@type":"textEntityTypeBold" ,
+      "@extra":null ,
+      "@client_id":null
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":986 ,
+    "length":8 ,
+    "type":{
+      "@type":"textEntityTypeMention" ,
+      "@extra":null ,
+      "@client_id":null
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":1006 ,
+    "length":8 ,
+    "type":{
+      "@type":"textEntityTypeMention" ,
+      "@extra":null ,
+      "@client_id":null
+    }
+  } ,
+  {
+    "@extra":null ,
+    "@client_id":null ,
+    "offset":1053 ,
+    "length":12 ,
+    "type":{
+      "@type":"textEntityTypeMention" ,
+      "@extra":null ,
+      "@client_id":null
+    }
+  }
+]

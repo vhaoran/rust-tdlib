@@ -1530,6 +1530,8 @@ where
         &self,
         get_markdown_text: C,
     ) -> Result<FormattedText> {
+
+
         self.make_request(get_markdown_text).await
     }
 

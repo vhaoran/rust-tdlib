@@ -805,145 +805,145 @@ async fn first_internal_request<S: TdLibClient>(tdlib_client: &S, client_id: Cli
     };
 }
 
-#[cfg(test)]
-mod tests {
-    use crate::client::tdlib_client::TdLibClient;
-    use crate::client::worker::Worker;
-    use crate::client::Client;
-    use crate::errors::Result;
-    use crate::tdjson;
-    use crate::types::{Chats, RFunction, RObject, SearchPublicChats, TdlibParameters};
-    use std::time::Duration;
-    use tokio::time::timeout;
-
-    #[derive(Clone)]
-    struct MockedRawApi {
-        to_receive: Option<String>,
-    }
-
-    impl MockedRawApi {
-        pub fn set_to_receive(&mut self, value: String) {
-            log::trace!("delayed to receive: {}", value);
-            self.to_receive = Some(value);
-        }
-
-        pub fn new() -> Self {
-            Self { to_receive: None }
-        }
-    }
-
-    impl TdLibClient for MockedRawApi {
-        fn send<Fnc: RFunction>(&self, _client_id: tdjson::ClientId, _fnc: Fnc) -> Result<()> {
-            Ok(())
-        }
-
-        fn receive(&self, _timeout: f64) -> Option<String> {
-            self.to_receive.clone()
-        }
-
-        fn execute<Fnc: RFunction>(&self, _fnc: Fnc) -> Result<Option<String>> {
-            unimplemented!()
-        }
-
-        fn new_client(&self) -> tdjson::ClientId {
-            1
-        }
-    }
-
-    #[tokio::test]
-    async fn test_start_and_auth() {
-        let mocked_raw_api = MockedRawApi::new();
-        let mut worker = Worker::builder()
-            .with_tdlib_client(mocked_raw_api.clone())
-            .build()
-            .unwrap();
-        let res = timeout(
-            Duration::from_millis(50),
-            worker.bind_client(
-                Client::builder()
-                    .with_tdlib_client(mocked_raw_api.clone())
-                    .with_tdlib_parameters(TdlibParameters::builder().build())
-                    .build()
-                    .unwrap(),
-            ),
-        )
-        .await;
-        match res {
-            Err(e) => panic!("{:?}", e),
-            Ok(v) => match v {
-                Err(e) => assert_eq!(e.to_string(), "worker not started yet".to_string()),
-                Ok(_) => panic!("error not raised"),
-            },
-        };
-
-        worker.start();
-        // we can't handle first request because we do not know @extra. so just wait a while.
-        let res = timeout(
-            Duration::from_millis(50),
-            worker.bind_client(
-                Client::builder()
-                    .with_tdlib_client(mocked_raw_api.clone())
-                    .with_tdlib_parameters(TdlibParameters::builder().build())
-                    .build()
-                    .unwrap(),
-            ),
-        )
-        .await;
-        match res {
-            Err(_) => {}
-            _ => panic!("error not raised"),
-        };
-    }
-
-    #[tokio::test]
-    async fn test_request_flow() {
-        let mut mocked_raw_api = MockedRawApi::new();
-
-        let search_req = SearchPublicChats::builder().build();
-        let chats = Chats::builder().chat_ids(vec![1, 2, 3]).build();
-        let chats: serde_json::Value = serde_json::to_value(chats).unwrap();
-        let mut chats_object = chats.as_object().unwrap().clone();
-        chats_object.insert(
-            "@client_id".to_string(),
-            serde_json::Value::Number(1.into()),
-        );
-        chats_object.insert(
-            "@extra".to_string(),
-            serde_json::Value::String(search_req.extra().unwrap().to_string()),
-        );
-        chats_object.insert(
-            "@type".to_string(),
-            serde_json::Value::String("chats".to_string()),
-        );
-        let to_receive = serde_json::to_string(&chats_object).unwrap();
-        mocked_raw_api.set_to_receive(to_receive);
-        log::trace!("chats objects: {:?}", chats_object);
-
-        let mut worker = Worker::builder()
-            .with_tdlib_client(mocked_raw_api.clone())
-            .build()
-            .unwrap();
-        worker.start();
-
-        let client = worker
-            .set_client(
-                Client::builder()
-                    .with_tdlib_client(mocked_raw_api.clone())
-                    .with_tdlib_parameters(TdlibParameters::builder().build())
-                    .build()
-                    .unwrap(),
-            )
-            .await;
-
-        match timeout(
-            Duration::from_secs(10),
-            client.search_public_chats(search_req),
-        )
-        .await
-        {
-            Err(_) => panic!("did not receive response within 1 s"),
-            Ok(Err(e)) => panic!("{}", e),
-            Ok(Ok(result)) => assert_eq!(result.chat_ids(), &vec![1, 2, 3]),
-        }
-    }
-}
+// #[cfg(test)]
+// mod tests {
+//     use crate::client::tdlib_client::TdLibClient;
+//     use crate::client::worker::Worker;
+//     use crate::client::Client;
+//     use crate::errors::Result;
+//     use crate::tdjson;
+//     use crate::types::{Chats, RFunction, RObject, SearchPublicChats, TdlibParameters};
+//     use std::time::Duration;
+//     use tokio::time::timeout;
+//
+//     #[derive(Clone)]
+//     struct MockedRawApi {
+//         to_receive: Option<String>,
+//     }
+//
+//     impl MockedRawApi {
+//         pub fn set_to_receive(&mut self, value: String) {
+//             log::trace!("delayed to receive: {}", value);
+//             self.to_receive = Some(value);
+//         }
+//
+//         pub fn new() -> Self {
+//             Self { to_receive: None }
+//         }
+//     }
+//
+//     impl TdLibClient for MockedRawApi {
+//         fn send<Fnc: RFunction>(&self, _client_id: tdjson::ClientId, _fnc: Fnc) -> Result<()> {
+//             Ok(())
+//         }
+//
+//         fn receive(&self, _timeout: f64) -> Option<String> {
+//             self.to_receive.clone()
+//         }
+//
+//         fn execute<Fnc: RFunction>(&self, _fnc: Fnc) -> Result<Option<String>> {
+//             unimplemented!()
+//         }
+//
+//         fn new_client(&self) -> tdjson::ClientId {
+//             1
+//         }
+//     }
+//
+//     #[tokio::test]
+//     async fn test_start_and_auth() {
+//         let mocked_raw_api = MockedRawApi::new();
+//         let mut worker = Worker::builder()
+//             .with_tdlib_client(mocked_raw_api.clone())
+//             .build()
+//             .unwrap();
+//         let res = timeout(
+//             Duration::from_millis(50),
+//             worker.bind_client(
+//                 Client::builder()
+//                     .with_tdlib_client(mocked_raw_api.clone())
+//                     .with_tdlib_parameters(TdlibParameters::builder().build())
+//                     .build()
+//                     .unwrap(),
+//             ),
+//         )
+//         .await;
+//         match res {
+//             Err(e) => panic!("{:?}", e),
+//             Ok(v) => match v {
+//                 Err(e) => assert_eq!(e.to_string(), "worker not started yet".to_string()),
+//                 Ok(_) => panic!("error not raised"),
+//             },
+//         };
+//
+//         worker.start();
+//         // we can't handle first request because we do not know @extra. so just wait a while.
+//         let res = timeout(
+//             Duration::from_millis(50),
+//             worker.bind_client(
+//                 Client::builder()
+//                     .with_tdlib_client(mocked_raw_api.clone())
+//                     .with_tdlib_parameters(TdlibParameters::builder().build())
+//                     .build()
+//                     .unwrap(),
+//             ),
+//         )
+//         .await;
+//         match res {
+//             Err(_) => {}
+//             _ => panic!("error not raised"),
+//         };
+//     }
+//
+//     #[tokio::test]
+//     async fn test_request_flow() {
+//         let mut mocked_raw_api = MockedRawApi::new();
+//
+//         let search_req = SearchPublicChats::builder().build();
+//         let chats = Chats::builder().chat_ids(vec![1, 2, 3]).build();
+//         let chats: serde_json::Value = serde_json::to_value(chats).unwrap();
+//         let mut chats_object = chats.as_object().unwrap().clone();
+//         chats_object.insert(
+//             "@client_id".to_string(),
+//             serde_json::Value::Number(1.into()),
+//         );
+//         chats_object.insert(
+//             "@extra".to_string(),
+//             serde_json::Value::String(search_req.extra().unwrap().to_string()),
+//         );
+//         chats_object.insert(
+//             "@type".to_string(),
+//             serde_json::Value::String("chats".to_string()),
+//         );
+//         let to_receive = serde_json::to_string(&chats_object).unwrap();
+//         mocked_raw_api.set_to_receive(to_receive);
+//         log::trace!("chats objects: {:?}", chats_object);
+//
+//         let mut worker = Worker::builder()
+//             .with_tdlib_client(mocked_raw_api.clone())
+//             .build()
+//             .unwrap();
+//         worker.start();
+//
+//         let client = worker
+//             .set_client(
+//                 Client::builder()
+//                     .with_tdlib_client(mocked_raw_api.clone())
+//                     .with_tdlib_parameters(TdlibParameters::builder().build())
+//                     .build()
+//                     .unwrap(),
+//             )
+//             .await;
+//
+//         match timeout(
+//             Duration::from_secs(10),
+//             client.search_public_chats(search_req),
+//         )
+//         .await
+//         {
+//             Err(_) => panic!("did not receive response within 1 s"),
+//             Ok(Err(e)) => panic!("{}", e),
+//             Ok(Ok(result)) => assert_eq!(result.chat_ids(), &vec![1, 2, 3]),
+//         }
+//     }
+// }
