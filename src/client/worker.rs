@@ -430,7 +430,7 @@ where
                     log::debug!("authorization task stopped");
                 },
                 _ = updates_handle => {
-                    // log::debug!("updates task stopped");
+                    log::debug!("updates task_handler");
                 },
             };
             run_flag.store(false, Ordering::Release);
@@ -500,7 +500,7 @@ where
 
         tokio::spawn(async move {
             while let Some(auth_state) = auth_rx.recv().await {
-                // log::debug!("received new auth state: {:?}", auth_state);
+                log::debug!("received new auth state: {:?}", auth_state);
                 if let Some(client_id) = auth_state.client_id() {
                     let result = match clients.read().await.get(&client_id) {
                         None => {
