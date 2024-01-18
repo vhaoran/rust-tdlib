@@ -70,6 +70,9 @@ pub struct User {
     have_access: bool,
     /// Type of the user
 
+    #[serde(default)]
+    is_premium: bool,
+
     #[serde(rename(serialize = "type", deserialize = "type"))]
     #[serde(skip_serializing_if = "UserType::_is_default")]
     type_: UserType,
@@ -159,6 +162,9 @@ impl User {
 
     pub fn have_access(&self) -> bool {
         self.have_access
+    }
+    pub fn is_premium(&self) -> bool {
+        self.is_premium
     }
 
     pub fn type_(&self) -> &UserType {
