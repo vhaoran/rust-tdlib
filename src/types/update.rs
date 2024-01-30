@@ -327,7 +327,6 @@ pub enum Update {
     AccentColors(UpdateAccentColors),
     #[serde(rename = "updateUnconfirmedSession")]
     UnconfirmedSession(UpdateUnconfirmedSession),
-
 }
 
 impl Default for Update {
@@ -8875,9 +8874,9 @@ pub struct UpdateFileDownloads {
     client_id: Option<i32>,
     /// The new list of users nearby
     #[serde(default)]
-    total_size: u32,
+    total_size: u64,
     total_count: u32,
-    downloaded_size: u32,
+    downloaded_size: u64,
 }
 
 impl RObject for UpdateFileDownloads {
@@ -8904,13 +8903,13 @@ impl UpdateFileDownloads {
         UpdateUsersNearbyBuilder { inner }
     }
 
-    pub fn total_size(&self) -> u32 {
+    pub fn total_size(&self) -> u64 {
         self.total_size
     }
     pub fn total_count(&self) -> u32 {
         self.total_count
     }
-    pub fn downloaded_size(&self) -> u32 {
+    pub fn downloaded_size(&self) -> u64 {
         self.downloaded_size
     }
 
@@ -8932,7 +8931,7 @@ impl UpdateFileDownloadsBuilder {
         self.inner.clone()
     }
 
-    pub fn total_size(&mut self, total_size: u32) -> &mut Self {
+    pub fn total_size(&mut self, total_size: u64) -> &mut Self {
         self.inner.total_size = total_size;
         self
     }
@@ -8940,7 +8939,7 @@ impl UpdateFileDownloadsBuilder {
         self.inner.total_count = total_count;
         self
     }
-    pub fn downloaded_size(&mut self, downloaded_size: u32) -> &mut Self {
+    pub fn downloaded_size(&mut self, downloaded_size: u64) -> &mut Self {
         self.inner.downloaded_size = downloaded_size;
         self
     }

@@ -41,7 +41,7 @@ pub struct LocalFile {
     /// Total downloaded file size, in bytes. Can be used only for calculating download progress. The actual file size may be bigger, and some parts of it may contain garbage
 
     #[serde(default)]
-    downloaded_size: i32,
+    downloaded_size: i64,
 }
 
 impl RObject for LocalFile {
@@ -94,7 +94,7 @@ impl LocalFile {
         self.downloaded_prefix_size
     }
 
-    pub fn downloaded_size(&self) -> i32 {
+    pub fn downloaded_size(&self) -> i64 {
         self.downloaded_size
     }
 }
@@ -147,7 +147,7 @@ impl LocalFileBuilder {
         self
     }
 
-    pub fn downloaded_size(&mut self, downloaded_size: i32) -> &mut Self {
+    pub fn downloaded_size(&mut self, downloaded_size: i64) -> &mut Self {
         self.inner.downloaded_size = downloaded_size;
         self
     }
