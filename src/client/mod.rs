@@ -233,9 +233,13 @@ where
         match received {
             Err(_) => Err(CLOSED_RECEIVER_ERROR),
             Ok(v) => {
+                let vv = v.clone();
                 if error_received(&v) {
                     match serde_json::from_value::<TDLibError>(v) {
-                        Ok(v) => Err(Error::TDLibError(v)),
+                        Ok(v) => {
+                            log::error!("tdlib_error: {v:?}");
+                            Err(Error::TDLibError(v))
+                        }
                         Err(e) => {
                             log::error!("cannot deserialize error response: {:?}", e);
                             Err(INVALID_RESPONSE_ERROR)
@@ -243,7 +247,10 @@ where
                     }
                 } else {
                     match serde_json::from_value::<Q>(v) {
-                        Ok(v) => Ok(v),
+                        Ok(v) => {
+                            log::debug!("raw_json_result: {}", vv.to_string());
+                            Ok(v)
+                        }
                         Err(e) => {
                             log::error!("response serialization error: {:?}", e);
                             Err(INVALID_RESPONSE_ERROR)
