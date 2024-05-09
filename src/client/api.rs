@@ -1530,8 +1530,6 @@ where
         &self,
         get_markdown_text: C,
     ) -> Result<FormattedText> {
-
-
         self.make_request(get_markdown_text).await
     }
 
@@ -1543,6 +1541,13 @@ where
     // Returns information about a message
     pub async fn get_message<C: AsRef<GetMessage>>(&self, get_message: C) -> Result<Message> {
         self.make_request(get_message).await
+    }
+
+    pub async fn get_forum_topics<C: AsRef<GetForumTopics>>(
+        &self,
+        get_forum_topics: C,
+    ) -> Result<ForumTopics> {
+        self.make_request(get_forum_topics).await
     }
 
     // Returns an HTML code for embedding the message. Available only for messages in supergroups and channels with a username

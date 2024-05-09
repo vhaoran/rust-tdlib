@@ -327,6 +327,14 @@ pub enum Update {
     AccentColors(UpdateAccentColors),
     #[serde(rename = "updateUnconfirmedSession")]
     UnconfirmedSession(UpdateUnconfirmedSession),
+    #[serde(rename = "updateChatAddedToList")]
+    ChatAddedToList(UpdateChatAddedToList),
+    #[serde(rename = "updateChatUnreadReactionCount")]
+    ChatUnreadReactionCount(UpdateChatUnreadReactionCount),
+    #[serde(rename = "updateChatIsTranslatable")]
+    ChatIsTranslatable(UpdateChatIsTranslatable),
+    #[serde(rename = "updateSavedMessagesTopic")]
+    SavedMessagesTopic(UpdateSavedMessagesTopic),
 }
 
 impl Default for Update {
@@ -444,6 +452,10 @@ impl RObject for Update {
             Update::MessageUnreadReactions(t) => t.extra(),
             Update::AccentColors(t) => t.extra(),
             Update::UnconfirmedSession(t) => t.extra(),
+            Update::ChatAddedToList(t) => t.extra(),
+            Update::ChatUnreadReactionCount(t) => t.extra(),
+            Update::ChatIsTranslatable(t) => t.extra(),
+            Update::SavedMessagesTopic(t) => t.extra(),
 
             _ => None,
         }
@@ -555,6 +567,10 @@ impl RObject for Update {
             Update::MessageUnreadReactions(t) => t.client_id(),
             Update::AccentColors(t) => t.client_id(),
             Update::UnconfirmedSession(t) => t.client_id(),
+            Update::ChatAddedToList(t) => t.client_id(),
+            Update::ChatUnreadReactionCount(t) => t.client_id(),
+            Update::ChatIsTranslatable(t) => t.client_id(),
+            Update::SavedMessagesTopic(t) => t.client_id(),
 
             _ => None,
         }
@@ -5306,6 +5322,8 @@ pub struct UpdateMessageSendFailed {
     /// Error message
     #[serde(default)]
     error_message: String,
+    #[serde(default)]
+    error: TdError,
 }
 
 impl RObject for UpdateMessageSendFailed {
@@ -5342,6 +5360,9 @@ impl UpdateMessageSendFailed {
 
     pub fn error_code(&self) -> i32 {
         self.error_code
+    }
+    pub fn error(&self) -> &TdError {
+        &self.error
     }
 
     pub fn error_message(&self) -> &String {
@@ -9581,6 +9602,261 @@ impl AsRef<UpdateUnconfirmedSession> for UpdateUnconfirmedSession {
 
 impl AsRef<UpdateUnconfirmedSession> for UpdateUnconfirmedSessionBuilder {
     fn as_ref(&self) -> &UpdateUnconfirmedSession {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatAddedToList {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    chat_id: i64,
+    chat_list: ChatList,
+}
+
+impl RObject for UpdateChatAddedToList {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatAddedToList {}
+
+impl UpdateChatAddedToList {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateChatAddedToListBuilder {
+        let mut inner = UpdateChatAddedToList::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateChatAddedToListBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateChatAddedToListBuilder {
+    inner: UpdateChatAddedToList,
+}
+
+#[deprecated]
+pub type RTDUpdateChatAddedToListBuilder = UpdateChatAddedToListBuilder;
+
+impl UpdateChatAddedToListBuilder {
+    pub fn build(&self) -> UpdateChatAddedToList {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateChatAddedToList> for UpdateChatAddedToList {
+    fn as_ref(&self) -> &UpdateChatAddedToList {
+        self
+    }
+}
+
+impl AsRef<UpdateChatAddedToList> for UpdateChatAddedToListBuilder {
+    fn as_ref(&self) -> &UpdateChatAddedToList {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatUnreadReactionCount {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    chat_id: i64,
+    unread_reaction_count: i64,
+}
+
+impl RObject for UpdateChatUnreadReactionCount {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatUnreadReactionCount {}
+
+impl UpdateChatUnreadReactionCount {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateChatUnreadReactionCountBuilder {
+        let mut inner = UpdateChatUnreadReactionCount::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateChatUnreadReactionCountBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateChatUnreadReactionCountBuilder {
+    inner: UpdateChatUnreadReactionCount,
+}
+
+#[deprecated]
+pub type RTDUpdateChatUnreadReactionCountBuilder = UpdateChatUnreadReactionCountBuilder;
+
+impl UpdateChatUnreadReactionCountBuilder {
+    pub fn build(&self) -> UpdateChatUnreadReactionCount {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateChatUnreadReactionCount> for UpdateChatUnreadReactionCount {
+    fn as_ref(&self) -> &UpdateChatUnreadReactionCount {
+        self
+    }
+}
+
+impl AsRef<UpdateChatUnreadReactionCount> for UpdateChatUnreadReactionCountBuilder {
+    fn as_ref(&self) -> &UpdateChatUnreadReactionCount {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateChatIsTranslatable {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    chat_id: i64,
+    is_translatable: bool,
+}
+
+impl RObject for UpdateChatIsTranslatable {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateChatIsTranslatable {}
+
+impl UpdateChatIsTranslatable {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateChatIsTranslatableBuilder {
+        let mut inner = UpdateChatIsTranslatable::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateChatIsTranslatableBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateChatIsTranslatableBuilder {
+    inner: UpdateChatIsTranslatable,
+}
+
+#[deprecated]
+pub type RTDUpdateChatIsTranslatableBuilder = UpdateChatIsTranslatableBuilder;
+
+impl UpdateChatIsTranslatableBuilder {
+    pub fn build(&self) -> UpdateChatIsTranslatable {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateChatIsTranslatable> for UpdateChatIsTranslatable {
+    fn as_ref(&self) -> &UpdateChatIsTranslatable {
+        self
+    }
+}
+
+impl AsRef<UpdateChatIsTranslatable> for UpdateChatIsTranslatableBuilder {
+    fn as_ref(&self) -> &UpdateChatIsTranslatable {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateSavedMessagesTopic {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    topic: Document,
+}
+
+impl RObject for UpdateSavedMessagesTopic {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateSavedMessagesTopic {}
+
+impl UpdateSavedMessagesTopic {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateSavedMessagesTopicBuilder {
+        let mut inner = UpdateSavedMessagesTopic::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateSavedMessagesTopicBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateSavedMessagesTopicBuilder {
+    inner: UpdateSavedMessagesTopic,
+}
+
+#[deprecated]
+pub type RTDUpdateSavedMessagesTopicBuilder = UpdateSavedMessagesTopicBuilder;
+
+impl UpdateSavedMessagesTopicBuilder {
+    pub fn build(&self) -> UpdateSavedMessagesTopic {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateSavedMessagesTopic> for UpdateSavedMessagesTopic {
+    fn as_ref(&self) -> &UpdateSavedMessagesTopic {
+        self
+    }
+}
+
+impl AsRef<UpdateSavedMessagesTopic> for UpdateSavedMessagesTopicBuilder {
+    fn as_ref(&self) -> &UpdateSavedMessagesTopic {
         &self.inner
     }
 }

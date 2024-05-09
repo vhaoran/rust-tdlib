@@ -64,6 +64,26 @@ impl AsRef<MessageSendingState> for MessageSendingState {
     }
 }
 
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct TdError {
+    #[serde(default)]
+    #[serde(rename = "@type")]
+    pub _type: String,
+    #[serde(default)]
+    pub code: i64,
+    #[serde(default)]
+    pub message: String,
+}
+
+impl TdError {
+    pub fn code(&self) -> i64 {
+        self.code
+    }
+    pub fn message(&self) -> &String {
+        &self.message
+    }
+}
+
 /// The message failed to be sent
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct MessageSendingStateFailed {
@@ -73,6 +93,8 @@ pub struct MessageSendingStateFailed {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// An error code; 0 if unknown
+    #[serde(default)]
+    error: TdError,
 
     #[serde(default)]
     error_code: i32,

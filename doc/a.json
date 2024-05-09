@@ -1,149 +1,91 @@
-[
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":26 ,
-    "length":25 ,
-    "type":{
-      "@type":"textEntityTypeBold" ,
-      "@extra":null ,
-      "@client_id":null
+{
+  "@type": "updateSavedMessagesTopic " ,
+  "topic": {
+    "@type ": "savedMessagesTopic " ,
+    "id ": 5921259105 ,
+    "type ": {
+      "@type ": "savedMessagesTopicTypeMyNotes "
+    } ,
+    "is_pinned ": false ,
+    "order ": "0 " ,
+    "last_message ": {
+      "@type ": "message " ,
+      "id ": 22115516416 ,
+      "sender_id ": {
+        "@type ": "messageSenderUser " ,
+        "user_id ": 5921259105
+      } ,
+      "chat_id ": 5921259105 ,
+      "is_outgoing ": true ,
+      "is_pinned ": false ,
+      "can_be_edited ": true ,
+      "can_be_forwarded ": true ,
+      "can_be_replied_in_another_chat ": true ,
+      "can_be_saved ": true ,
+      "can_be_deleted_only_for_self ": true ,
+      "can_be_deleted_for_all_users ": false ,
+      "can_get_added_reactions ": false ,
+      "can_get_statistics ": false ,
+      "can_get_message_thread ": false ,
+      "can_get_read_date ": false ,
+      "can_get_viewers ": false ,
+      "can_get_media_timestamp_links ": false ,
+      "can_report_reactions ": false ,
+      "has_timestamped_media ": true ,
+      "is_channel_post ": false ,
+      "is_topic_message ": false ,
+      "contains_unread_mention ": false ,
+      "date ": 1711446229 ,
+      "edit_date": 0 ,
+      "unread_reactions ": [] ,
+      "message_thread_id ": 0 ,
+      "saved_messages_topic_id ": 5921259105 ,
+      "self_destruct_in ": 0.000000 ,
+      "auto_delete_in ": 0.000000 ,
+      "via_bot_user_id ": 0 ,
+      "sender_boost_count ": 0 ,
+      "author_signature ": " " ,
+      "media_album_id ": "0 " ,
+      "restriction_reason ": " " ,
+      "content ": {
+        "@type ": "messageDocument " ,
+        "document ": {
+          "@type ": "document " ,
+          "file_name ": "ui-crawler.exe " ,
+          "mime_type ": "application/x-ms-dos-executable " ,
+          "document ": {
+            "@type ": "file " ,
+            "id ": 169923 ,
+            "size ": 37457373 ,
+            "expected_size ": 37457373 ,
+            "local ": {
+              "@type ": "localFile " ,
+              "path ": " " ,
+              "can_be_downloaded ": true ,
+              "can_be_deleted": false ,
+              "is_downloading_active ": false ,
+              "is_downloading_completed ": false ,
+              "download_offset ": 0 ,
+              "downloaded_prefix_size ": 0 ,
+              "downloaded_size ": 0
+            } ,
+            "remote ": {
+              "@type ": "remoteFile " ,
+              "id ": "BQACAgUAAxkBAAJSY2YCmNUKEfXve46qsFxMlNfV-WnVAAJKEQACxWEQVCIs1TmssgNbNAQ" ,
+              "unique_id ": "AgADShEAAsVhEFQ " ,
+              "is_uploading_active ": false ,
+              "is_uploading_completed ": true ,
+              "uploaded_size ": 37457373
+            }
+          }
+        } ,
+        "caption ": {
+          "@type ": "formattedText " ,
+          "text ": " " ,
+          "entities ": []
+        }
+      }
     }
   } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":26 ,
-    "length":1 ,
-    "type":{
-      "@type":"textEntityTypeItalic" ,
-      "@extra":null ,
-      "@client_id":null
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":51 ,
-    "length":5 ,
-    "type":{
-      "@type":"textEntityTypeCustomEmoji" ,
-      "@extra":null ,
-      "@client_id":null ,
-      "custom_emoji_id":"5298698275447120446"
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":56 ,
-    "length":5 ,
-    "type":{
-      "@type":"textEntityTypeCustomEmoji" ,
-      "@extra":null ,
-      "@client_id":null ,
-      "custom_emoji_id":"5298698275447120446"
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":61 ,
-    "length":5 ,
-    "type":{
-      "@type":"textEntityTypeCustomEmoji" ,
-      "@extra":null ,
-      "@client_id":null ,
-      "custom_emoji_id":"5298698275447120446"
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":620 ,
-    "length":7 ,
-    "type":{
-      "@type":"textEntityTypeBlockQuote" ,
-      "@extra":null ,
-      "@client_id":null
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":664 ,
-    "length":5 ,
-    "type":{
-      "@type":"textEntityTypeBold" ,
-      "@extra":null ,
-      "@client_id":null
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":807 ,
-    "length":15 ,
-    "type":{
-      "@type":"textEntityTypeBold" ,
-      "@extra":null ,
-      "@client_id":null
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":826 ,
-    "length":2 ,
-    "type":{
-      "@type":"textEntityTypeTextUrl" ,
-      "@extra":null ,
-      "@client_id":null ,
-      "url":"https://t.me/CaiJiMao/8"
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":936 ,
-    "length":29 ,
-    "type":{
-      "@type":"textEntityTypeBold" ,
-      "@extra":null ,
-      "@client_id":null
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":986 ,
-    "length":8 ,
-    "type":{
-      "@type":"textEntityTypeMention" ,
-      "@extra":null ,
-      "@client_id":null
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":1006 ,
-    "length":8 ,
-    "type":{
-      "@type":"textEntityTypeMention" ,
-      "@extra":null ,
-      "@client_id":null
-    }
-  } ,
-  {
-    "@extra":null ,
-    "@client_id":null ,
-    "offset":1053 ,
-    "length":12 ,
-    "type":{
-      "@type":"textEntityTypeMention" ,
-      "@extra":null ,
-      "@client_id":null
-    }
-  }
-]
+  "@client_id ": 1
+}

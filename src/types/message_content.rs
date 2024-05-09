@@ -2,6 +2,7 @@ use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
+use crate::types::message_chat_boost::{MessageChatBoost, MessageChatShared};
 use std::fmt::Debug;
 
 /// Contains the content of a message
@@ -170,6 +171,10 @@ pub enum MessageContent {
     #[serde(rename = "messageStory")]
     MessageStory(MessageStory),
     //
+    #[serde(rename = "messageChatBoost")]
+    MessageChatBoost(MessageChatBoost),
+    #[serde(rename = "messageChatShared")]
+    MessageChatShared(MessageChatShared),
 }
 
 impl Default for MessageContent {

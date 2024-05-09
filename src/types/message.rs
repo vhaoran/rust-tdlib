@@ -102,8 +102,8 @@ pub struct Message {
     author_signature: String,
     /// Unique identifier of an album this message belongs to. Only audios, documents, photos and videos can be grouped together in albums
     #[serde(
-    deserialize_with = "super::_common::number_from_string",
-    serialize_with = "super::_common::string_to_number"
+        deserialize_with = "super::_common::number_from_string",
+        serialize_with = "super::_common::string_to_number"
     )]
     #[serde(default)]
     media_album_id: i64,
@@ -115,6 +115,10 @@ pub struct Message {
     content: MessageContent,
     /// Reply markup for the message; may be null
     reply_markup: Option<ReplyMarkup>,
+
+    //-----------add by whr--------------------------
+    #[serde(default)]
+    sender_boost_count: i64,
 }
 
 impl RObject for Message {

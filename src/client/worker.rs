@@ -4,6 +4,7 @@ use super::{
     tdlib_client::{TdJson, TdLibClient},
     {Client, ClientState},
 };
+use crate::types::DisableProxy;
 #[allow(unused_imports)]
 use crate::types::{
     AddProxy, EnableProxy, GetAuthorizationState, GetProxies, JsonValue, ProxyType,
@@ -243,6 +244,7 @@ where
 
     async fn set_proxy(&mut self, client: Client<T>, proxy: Option<AddProxy>) -> Result<()> {
         if proxy.is_none() {
+            let _ = client.disable_proxy(DisableProxy::builder().build()).await;
             log::debug!("bind_client proxy is none,and not set");
             return Ok(());
         }
