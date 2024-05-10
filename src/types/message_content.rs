@@ -167,6 +167,9 @@ pub enum MessageContent {
     //
     #[serde(rename = "messageForumTopicCreated")]
     MessageForumTopicCreated(MessageForumTopicCreated),
+    #[serde(rename = "messageForumTopicEdited")]
+    MessageForumTopicEdited(MessageForumTopicEdited),
+
     //
     #[serde(rename = "messageStory")]
     MessageStory(MessageStory),
@@ -238,6 +241,7 @@ impl RObject for MessageContent {
             MessageContent::MessageWebsiteConnected(t) => t.extra(),
             MessageContent::MessageChatSetMessageAutoDeleteTime(t) => t.extra(),
             MessageContent::MessageForumTopicCreated(t) => t.extra(),
+            MessageContent::MessageForumTopicEdited(t) => t.extra(),
             MessageContent::MessageStory(t) => t.extra(),
 
             _ => None,
@@ -298,6 +302,7 @@ impl RObject for MessageContent {
             //add by whr
             MessageContent::MessageChatSetMessageAutoDeleteTime(t) => t.client_id(),
             MessageContent::MessageForumTopicCreated(t) => t.client_id(),
+            MessageContent::MessageForumTopicEdited(t) => t.client_id(),
             MessageContent::MessageStory(t) => t.client_id(),
 
             _ => None,
@@ -4523,10 +4528,12 @@ pub struct MessageForumTopicCreated {
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
-    /// Domain name of the connected website
 
-    #[serde(flatten)]
-    data: Option<Document>,
+    #[serde(default)]
+    name: String,
+
+    //todo
+    icon: Option<serde_json::Value>,
 }
 
 impl RObject for MessageForumTopicCreated {
@@ -4546,6 +4553,10 @@ impl MessageForumTopicCreated {
     pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
+    pub fn name(&self) -> &String {
+        &self.name
+    }
+
     pub fn builder() -> MessageForumTopicCreatedBuilder {
         let mut inner = MessageForumTopicCreated::default();
         inner.extra = Some(Uuid::new_v4().to_string());
@@ -4576,6 +4587,80 @@ impl AsRef<MessageForumTopicCreated> for MessageForumTopicCreated {
 
 impl AsRef<MessageForumTopicCreated> for MessageForumTopicCreatedBuilder {
     fn as_ref(&self) -> &MessageForumTopicCreated {
+        &self.inner
+    }
+}
+//-------------------------------------
+/// The current user has connected a website by logging in using Telegram Login Widget on it
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MessageForumTopicEdited {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    #[serde(default)]
+    name: String,
+
+    // edit_icon_custom_emoji_id":true,"icon_custom_emoji_id":"0"
+    #[serde(default)]
+    edit_icon_custom_emoji_id: bool,
+    #[serde(default)]
+    icon_custom_emoji_id: String,
+}
+
+impl RObject for MessageForumTopicEdited {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDMessageContent for MessageForumTopicEdited {}
+
+impl MessageForumTopicEdited {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn name(&self) -> &String {
+        &self.name
+    }
+
+    pub fn builder() -> MessageForumTopicEditedBuilder {
+        let mut inner = MessageForumTopicEdited::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        MessageForumTopicEditedBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct MessageForumTopicEditedBuilder {
+    inner: MessageForumTopicEdited,
+}
+
+#[deprecated]
+pub type RTDMessageForumTopicEditedBuilder = MessageForumTopicEditedBuilder;
+
+impl MessageForumTopicEditedBuilder {
+    pub fn build(&self) -> MessageForumTopicEdited {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<MessageForumTopicEdited> for MessageForumTopicEdited {
+    fn as_ref(&self) -> &MessageForumTopicEdited {
+        self
+    }
+}
+
+impl AsRef<MessageForumTopicEdited> for MessageForumTopicEditedBuilder {
+    fn as_ref(&self) -> &MessageForumTopicEdited {
         &self.inner
     }
 }

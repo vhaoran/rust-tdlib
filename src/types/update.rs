@@ -8992,7 +8992,7 @@ pub struct UpdateAttachmentMenuBots {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateAttachmentMenuBots {
@@ -9055,7 +9055,7 @@ pub struct UpdateActiveEmojiReactions {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateActiveEmojiReactions {
@@ -9117,7 +9117,7 @@ pub struct UpdateDefaultReactionType {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateDefaultReactionType {
@@ -9179,7 +9179,7 @@ pub struct UpdateChatAvailableReactions {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateChatAvailableReactions {
@@ -9241,7 +9241,7 @@ pub struct UpdateChatFolders {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateChatFolders {
@@ -9303,7 +9303,7 @@ pub struct UpdateStoryStealthMode {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateStoryStealthMode {
@@ -9365,7 +9365,7 @@ pub struct UpdateChatMessageAutoDeleteTime {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateChatMessageAutoDeleteTime {
@@ -9427,7 +9427,7 @@ pub struct UpdateMessageUnreadReactions {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateMessageUnreadReactions {
@@ -9489,7 +9489,7 @@ pub struct UpdateAccentColors {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateAccentColors {
@@ -9552,7 +9552,7 @@ pub struct UpdateUnconfirmedSession {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateUnconfirmedSession {

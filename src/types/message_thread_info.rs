@@ -18,7 +18,7 @@ pub struct MessageThreadInfo {
 
     #[serde(default)]
     message_thread_id: i64,
-    /// Information about the message thread
+    #[serde(default)]
     reply_info: MessageReplyInfo,
     /// Approximate number of unread messages in the message thread
 
