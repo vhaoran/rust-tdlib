@@ -4466,7 +4466,7 @@ pub struct MessageChatSetMessageAutoDeleteTime {
     /// Domain name of the connected website
 
     #[serde(flatten)]
-    data: Option<Document>,
+    data: Option<serde_json::Value>,
 }
 
 impl RObject for MessageChatSetMessageAutoDeleteTime {
