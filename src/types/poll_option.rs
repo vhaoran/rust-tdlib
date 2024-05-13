@@ -13,7 +13,7 @@ pub struct PollOption {
     /// Option text; 1-100 characters
 
     #[serde(default)]
-    text: String,
+    text: FormattedText,
     /// Number of voters for this option, available only for closed or voted polls
 
     #[serde(default)]
@@ -54,7 +54,7 @@ impl PollOption {
         PollOptionBuilder { inner }
     }
 
-    pub fn text(&self) -> &String {
+    pub fn text(&self) -> &FormattedText {
         &self.text
     }
 
@@ -88,8 +88,8 @@ impl PollOptionBuilder {
         self.inner.clone()
     }
 
-    pub fn text<T: AsRef<str>>(&mut self, text: T) -> &mut Self {
-        self.inner.text = text.as_ref().to_string();
+    pub fn text(&mut self, text: FormattedText) -> &mut Self {
+        self.inner.text = text;
         self
     }
 

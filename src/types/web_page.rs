@@ -66,6 +66,7 @@ pub struct WebPage {
     /// Preview of the content as a document, if available; may be null
     document: Option<Document>,
     /// Preview of the content as a sticker for small WEBP files, if available; may be null
+    #[serde(default)]
     sticker: Option<Sticker>,
     /// Preview of the content as a video, if available; may be null
     video: Option<Video>,

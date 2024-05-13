@@ -8,6 +8,9 @@ pub enum Error {
     SerdeJson(serde_json::Error),
     TDLibError(TDLibError),
     Internal(&'static str),
+    //
+    RawStr(String),
+    //
     BadRequest(&'static str),
 }
 
@@ -34,6 +37,10 @@ impl fmt::Display for Error {
             Error::Internal(err) => {
                 write!(f, "{}", err)
             }
+            Error::RawStr(err) => {
+                write!(f, "{}", err)
+            }
+
             Error::BadRequest(err) => {
                 write!(f, "{}", err)
             }
@@ -47,6 +54,7 @@ impl error::Error for Error {
             Error::Io(ref err) => Some(err),
             Error::SerdeJson(ref err) => Some(err),
             Error::Internal(_) => None,
+            Error::RawStr(_) => None,
             Error::TDLibError(_) => None,
             Error::BadRequest(_) => None,
         }

@@ -21,7 +21,7 @@ pub struct Poll {
     /// Poll question; 1-300 characters
 
     #[serde(default)]
-    question: String,
+    question: FormattedText,
     /// List of poll answer options
 
     #[serde(default)]
@@ -83,7 +83,7 @@ impl Poll {
         self.id
     }
 
-    pub fn question(&self) -> &String {
+    pub fn question(&self) -> &FormattedText {
         &self.question
     }
 
@@ -138,8 +138,8 @@ impl PollBuilder {
         self
     }
 
-    pub fn question<T: AsRef<str>>(&mut self, question: T) -> &mut Self {
-        self.inner.question = question.as_ref().to_string();
+    pub fn question(&mut self, question: FormattedText) -> &mut Self {
+        self.inner.question = question;
         self
     }
 

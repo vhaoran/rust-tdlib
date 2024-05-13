@@ -119,6 +119,30 @@ pub struct Message {
     //-----------add by whr--------------------------
     #[serde(default)]
     sender_boost_count: i64,
+    // whr-add
+    unread_reactions: Option<serde_json::Value>,
+    #[serde(default)]
+    auto_delete_in: f64,
+    #[serde(default)]
+    self_destruct_in: f64,
+    #[serde(default)]
+    sender_business_bot_user_id: i64,
+
+    #[serde(default)]
+    is_from_offline: bool,
+    #[serde(default)]
+    can_be_replied_in_another_chat: bool,
+    #[serde(default)]
+    can_get_read_date: bool,
+    #[serde(default)]
+    can_get_added_reactions: bool,
+    #[serde(default)]
+    reactions: Option<serde_json::Value>,
+    #[serde(default)]
+    can_report_reactions: bool,
+
+    #[serde(default)]
+    saved_messages_topic_id: i64,
 }
 
 impl RObject for Message {

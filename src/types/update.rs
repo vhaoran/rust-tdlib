@@ -9807,7 +9807,7 @@ pub struct UpdateSavedMessagesTopic {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
 
-    topic: Document,
+    topic: Option<serde_json::Value>,
 }
 
 impl RObject for UpdateSavedMessagesTopic {
