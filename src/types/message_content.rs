@@ -178,6 +178,13 @@ pub enum MessageContent {
     MessageChatBoost(MessageChatBoost),
     #[serde(rename = "messageChatShared")]
     MessageChatShared(MessageChatShared),
+    #[serde(rename = "messagePremiumGiveawayCreated")]
+    PremiumGiveawayCreated(MessagePremiumGiveawayCreated),
+
+    #[serde(rename = "messagePremiumGiveaway")]
+    PremiumGiveaway(serde_json::Value),
+    #[serde(rename = "messagePremiumGiveawayWinners")]
+    PremiumGiveawayWinners(serde_json::Value),
 }
 
 impl Default for MessageContent {
@@ -243,7 +250,8 @@ impl RObject for MessageContent {
             MessageContent::MessageForumTopicCreated(t) => t.extra(),
             MessageContent::MessageForumTopicEdited(t) => t.extra(),
             MessageContent::MessageStory(t) => t.extra(),
-
+            MessageContent::PremiumGiveawayCreated(t) => t.extra(),
+            // MessageContent::PremiumGiveaway(t) => t.extra(),
             _ => None,
         }
     }
@@ -304,7 +312,8 @@ impl RObject for MessageContent {
             MessageContent::MessageForumTopicCreated(t) => t.client_id(),
             MessageContent::MessageForumTopicEdited(t) => t.client_id(),
             MessageContent::MessageStory(t) => t.client_id(),
-
+            MessageContent::PremiumGiveawayCreated(t) => t.client_id(),
+            // MessageContent::PremiumGiveaway(t) => t.client_id(),
             _ => None,
         }
     }
@@ -4661,6 +4670,139 @@ impl AsRef<MessageForumTopicEdited> for MessageForumTopicEdited {
 
 impl AsRef<MessageForumTopicEdited> for MessageForumTopicEditedBuilder {
     fn as_ref(&self) -> &MessageForumTopicEdited {
+        &self.inner
+    }
+}
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MessagePremiumGiveawayCreated {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+}
+
+impl RObject for MessagePremiumGiveawayCreated {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDMessageContent for MessagePremiumGiveawayCreated {}
+
+impl MessagePremiumGiveawayCreated {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+
+    pub fn builder() -> MessagePremiumGiveawayCreatedBuilder {
+        let mut inner = MessagePremiumGiveawayCreated::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        MessagePremiumGiveawayCreatedBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct MessagePremiumGiveawayCreatedBuilder {
+    inner: MessagePremiumGiveawayCreated,
+}
+
+#[deprecated]
+pub type RTDMessagePremiumGiveawayCreatedBuilder = MessagePremiumGiveawayCreatedBuilder;
+
+impl MessagePremiumGiveawayCreatedBuilder {
+    pub fn build(&self) -> MessagePremiumGiveawayCreated {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<MessagePremiumGiveawayCreated> for MessagePremiumGiveawayCreated {
+    fn as_ref(&self) -> &MessagePremiumGiveawayCreated {
+        self
+    }
+}
+
+impl AsRef<MessagePremiumGiveawayCreated> for MessagePremiumGiveawayCreatedBuilder {
+    fn as_ref(&self) -> &MessagePremiumGiveawayCreated {
+        &self.inner
+    }
+}
+//-------------------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MessagePremiumGiveaway {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    #[serde(default)]
+    name: String,
+
+    // edit_icon_custom_emoji_id":true,"icon_custom_emoji_id":"0"
+    #[serde(default)]
+    edit_icon_custom_emoji_id: bool,
+    #[serde(default)]
+    icon_custom_emoji_id: String,
+}
+
+impl RObject for MessagePremiumGiveaway {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDMessageContent for MessagePremiumGiveaway {}
+
+impl MessagePremiumGiveaway {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn name(&self) -> &String {
+        &self.name
+    }
+
+    pub fn builder() -> MessagePremiumGiveawayBuilder {
+        let mut inner = MessagePremiumGiveaway::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        MessagePremiumGiveawayBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct MessagePremiumGiveawayBuilder {
+    inner: MessagePremiumGiveaway,
+}
+
+#[deprecated]
+pub type RTDMessagePremiumGiveawayBuilder = MessagePremiumGiveawayBuilder;
+
+impl MessagePremiumGiveawayBuilder {
+    pub fn build(&self) -> MessagePremiumGiveaway {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<MessagePremiumGiveaway> for MessagePremiumGiveaway {
+    fn as_ref(&self) -> &MessagePremiumGiveaway {
+        self
+    }
+}
+
+impl AsRef<MessagePremiumGiveaway> for MessagePremiumGiveawayBuilder {
+    fn as_ref(&self) -> &MessagePremiumGiveaway {
         &self.inner
     }
 }
