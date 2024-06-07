@@ -335,6 +335,14 @@ pub enum Update {
     ChatIsTranslatable(UpdateChatIsTranslatable),
     #[serde(rename = "updateSavedMessagesTopic")]
     SavedMessagesTopic(UpdateSavedMessagesTopic),
+    //
+    #[serde(rename = "updateMessageReaction")]
+    MessageReaction(serde_json::Value),
+    //for bot
+    // #[serde(rename = "updateMessageReactions")]
+    // MessageReactions(serde_json::Value),
+    //
+    //
 }
 
 impl Default for Update {

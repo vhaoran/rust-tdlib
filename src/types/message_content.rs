@@ -3618,6 +3618,93 @@ impl MessageSupergroupChatCreate {
     }
 }
 
+//-------------------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct LinkPreviewOptions {
+    #[serde(default)]
+    is_disabled_: bool,
+    #[serde(default)]
+    url_: String,
+    #[serde(default)]
+    force_small_media_: bool,
+    #[serde(default)]
+    force_large_media_: bool,
+    #[serde(default)]
+    show_above_text_: bool,
+}
+impl LinkPreviewOptions {
+    pub fn builder() -> LinkPreviewOptionsBuilder {
+        let mut inner = LinkPreviewOptions::default();
+        LinkPreviewOptionsBuilder { inner }
+    }
+    pub fn is_disabled_(&self) -> bool {
+        self.is_disabled_()
+    }
+    pub fn url_(&self) -> &String {
+        &self.url_
+    }
+
+    pub fn force_small_media_(&self) -> bool {
+        self.force_small_media_
+    }
+
+    pub fn force_large_media_(&self) -> bool {
+        self.force_large_media_
+    }
+
+    pub fn show_above_text_(&self) -> bool {
+        self.show_above_text_
+    }
+}
+
+pub struct LinkPreviewOptionsBuilder {
+    inner: LinkPreviewOptions,
+}
+
+impl LinkPreviewOptionsBuilder {
+    pub fn build(&self) -> LinkPreviewOptions {
+        self.inner.clone()
+    }
+
+    pub fn disabled(&mut self, b: bool) -> &mut Self {
+        self.inner.is_disabled_ = b;
+        self
+    }
+    pub fn url(&mut self, s: String) -> &mut Self {
+        self.inner.url_ = s;
+        self
+    }
+
+    pub fn force_small_media_(&mut self, b: bool) -> &mut Self {
+        self.inner.force_small_media_ = b;
+        self
+    }
+
+    pub fn force_large_media_(&mut self, b: bool) -> &mut Self {
+        self.inner.force_large_media_ = b;
+        self
+    }
+
+    pub fn show_above_text_(&mut self, b: bool) -> &mut Self {
+        self.inner.show_above_text_ = b;
+        self
+    }
+}
+
+impl AsRef<LinkPreviewOptions> for LinkPreviewOptions {
+    fn as_ref(&self) -> &LinkPreviewOptions {
+        self
+    }
+}
+
+impl AsRef<LinkPreviewOptions> for LinkPreviewOptionsBuilder {
+    fn as_ref(&self) -> &LinkPreviewOptions {
+        &self.inner
+    }
+}
+
+//-------------------------------------
+
 #[doc(hidden)]
 pub struct MessageSupergroupChatCreateBuilder {
     inner: MessageSupergroupChatCreate,
@@ -3661,6 +3748,7 @@ pub struct MessageText {
     text: FormattedText,
     /// A preview of the web page that's mentioned in the text; may be null
     web_page: Option<WebPage>,
+    link_preview_options_: Option<LinkPreviewOptions>,
 }
 
 impl RObject for MessageText {

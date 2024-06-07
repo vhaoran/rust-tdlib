@@ -1650,6 +1650,8 @@ pub struct InputMessageText {
 
     #[serde(default)]
     clear_draft: bool,
+    #[serde(default)]
+    link_preview_options_: LinkPreviewOptions,
 }
 
 impl RObject for InputMessageText {
@@ -1683,6 +1685,9 @@ impl InputMessageText {
     pub fn disable_web_page_preview(&self) -> bool {
         self.disable_web_page_preview
     }
+    pub fn link_preview_options(&self) -> &LinkPreviewOptions {
+        &self.link_preview_options_
+    }
 
     pub fn clear_draft(&self) -> bool {
         self.clear_draft
@@ -1709,6 +1714,10 @@ impl InputMessageTextBuilder {
 
     pub fn disable_web_page_preview(&mut self, disable_web_page_preview: bool) -> &mut Self {
         self.inner.disable_web_page_preview = disable_web_page_preview;
+        self
+    }
+    pub fn link_preview_options(&mut self, options: LinkPreviewOptions) -> &mut Self {
+        self.inner.link_preview_options_ = options;
         self
     }
 
