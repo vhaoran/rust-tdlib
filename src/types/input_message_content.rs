@@ -1644,12 +1644,13 @@ pub struct InputMessageText {
     text: FormattedText,
     /// True, if rich web page previews for URLs in the message text must be disabled
 
-    #[serde(default)]
-    disable_web_page_preview: bool,
+    // #[serde(default)]
+    // disable_web_page_preview: bool,
     /// True, if a chat message draft must be deleted
 
     #[serde(default)]
     clear_draft: bool,
+    // 	link_preview_options_
     #[serde(default)]
     link_preview_options_: LinkPreviewOptions,
 }
@@ -1682,9 +1683,9 @@ impl InputMessageText {
         &self.text
     }
 
-    pub fn disable_web_page_preview(&self) -> bool {
-        self.disable_web_page_preview
-    }
+    // pub fn disable_web_page_preview(&self) -> bool {
+    //     self.disable_web_page_preview
+    // }
     pub fn link_preview_options(&self) -> &LinkPreviewOptions {
         &self.link_preview_options_
     }
@@ -1712,10 +1713,10 @@ impl InputMessageTextBuilder {
         self
     }
 
-    pub fn disable_web_page_preview(&mut self, disable_web_page_preview: bool) -> &mut Self {
-        self.inner.disable_web_page_preview = disable_web_page_preview;
-        self
-    }
+    // pub fn disable_web_page_preview(&mut self, disable_web_page_preview: bool) -> &mut Self {
+    //     self.inner.disable_web_page_preview = disable_web_page_preview;
+    //     self
+    // }
     pub fn link_preview_options(&mut self, options: LinkPreviewOptions) -> &mut Self {
         self.inner.link_preview_options_ = options;
         self
