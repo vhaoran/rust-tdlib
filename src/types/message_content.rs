@@ -3622,15 +3622,20 @@ impl MessageSupergroupChatCreate {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct LinkPreviewOptions {
     #[serde(default)]
-    is_disabled_: bool,
+    // #[serde(rename="is_disabled")]
+    is_disabled: bool,
     #[serde(default)]
-    url_: String,
+    // #[serde(rename="url")]
+    url: String,
     #[serde(default)]
-    force_small_media_: bool,
+    // #[serde(rename="force_small_media")]
+    force_small_media: bool,
     #[serde(default)]
-    force_large_media_: bool,
+    // #[serde(rename="force_large_media")]
+    force_large_media: bool,
     #[serde(default)]
-    show_above_text_: bool,
+    // #[serde(rename="show_above_text")]
+    show_above_text: bool,
 }
 impl LinkPreviewOptions {
     pub fn builder() -> LinkPreviewOptionsBuilder {
@@ -3641,19 +3646,19 @@ impl LinkPreviewOptions {
         self.is_disabled_()
     }
     pub fn url_(&self) -> &String {
-        &self.url_
+        &self.url
     }
 
     pub fn force_small_media_(&self) -> bool {
-        self.force_small_media_
+        self.force_small_media
     }
 
     pub fn force_large_media_(&self) -> bool {
-        self.force_large_media_
+        self.force_large_media
     }
 
     pub fn show_above_text_(&self) -> bool {
-        self.show_above_text_
+        self.show_above_text
     }
 }
 
@@ -3667,26 +3672,26 @@ impl LinkPreviewOptionsBuilder {
     }
 
     pub fn disabled(&mut self, b: bool) -> &mut Self {
-        self.inner.is_disabled_ = b;
+        self.inner.is_disabled = b;
         self
     }
     pub fn url(&mut self, s: String) -> &mut Self {
-        self.inner.url_ = s;
+        self.inner.url = s;
         self
     }
 
     pub fn force_small_media_(&mut self, b: bool) -> &mut Self {
-        self.inner.force_small_media_ = b;
+        self.inner.force_small_media = b;
         self
     }
 
     pub fn force_large_media_(&mut self, b: bool) -> &mut Self {
-        self.inner.force_large_media_ = b;
+        self.inner.force_large_media = b;
         self
     }
 
     pub fn show_above_text_(&mut self, b: bool) -> &mut Self {
-        self.inner.show_above_text_ = b;
+        self.inner.show_above_text = b;
         self
     }
 }
@@ -3748,7 +3753,8 @@ pub struct MessageText {
     text: FormattedText,
     /// A preview of the web page that's mentioned in the text; may be null
     web_page: Option<WebPage>,
-    link_preview_options_: Option<LinkPreviewOptions>,
+    // #[serde(rename = "link_preview_options")]
+    link_preview_options: Option<LinkPreviewOptions>,
 }
 
 impl RObject for MessageText {
