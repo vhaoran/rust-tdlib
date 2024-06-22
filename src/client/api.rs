@@ -205,6 +205,13 @@ where
         self.make_request(cancel_upload_file).await
     }
 
+    pub async fn cancel_preliminary_upload_file<C: AsRef<CancelPreliminaryUploadFile>>(
+        &self,
+        cancel_upload_file: C,
+    ) -> Result<Ok> {
+        self.make_request(cancel_upload_file).await
+    }
+
     // Changes imported contacts using the list of contacts saved on the device. Imports newly added contacts and, if at least the file database is enabled, deletes recently deleted contacts. Query result depends on the result of the previous query, so only one query is possible at the same time
     pub async fn change_imported_contacts<C: AsRef<ChangeImportedContacts>>(
         &self,
