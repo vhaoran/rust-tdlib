@@ -15,24 +15,19 @@ pub struct MessageForwardInfo {
     // #[serde(skip_serializing_if = "MessageForwardOrigin::_is_default")]
     // origin: MessageForwardOrigin,
     // add by whr
-    #[serde(rename="origin")]
+    #[serde(rename = "origin")]
     origin: MessageForwardOrigin,
-    /// Point in time (Unix timestamp) when the message was originally sent
 
+    #[serde(default)]
+    source: ForwardSource,
+
+    /// Point in time (Unix timestamp) when the message was originally sent
     #[serde(default)]
     date: i32,
     /// The type of a public service announcement for the forwarded message
 
     #[serde(default)]
     public_service_announcement_type: String,
-    /// For messages forwarded to the chat with the current user (Saved Messages), to the Replies bot chat, or to the channel's discussion group, the identifier of the chat from which the message was forwarded last time; 0 if unknown
-
-    #[serde(default)]
-    from_chat_id: i64,
-    /// For messages forwarded to the chat with the current user (Saved Messages), to the Replies bot chat, or to the channel's discussion group, the identifier of the original message from which the new message was forwarded last time; 0 if unknown
-
-    #[serde(default)]
-    from_message_id: i64,
 }
 
 impl RObject for MessageForwardInfo {
@@ -69,12 +64,12 @@ impl MessageForwardInfo {
         &self.public_service_announcement_type
     }
 
-    pub fn from_chat_id(&self) -> i64 {
-        self.from_chat_id
+    pub fn chat_id(&self) -> i64 {
+        self.source.chat_id()
     }
 
-    pub fn from_message_id(&self) -> i64 {
-        self.from_message_id
+    pub fn message_id(&self) -> i64 {
+        self.source.message_id()
     }
 }
 
@@ -109,16 +104,6 @@ impl MessageForwardInfoBuilder {
             public_service_announcement_type.as_ref().to_string();
         self
     }
-
-    pub fn from_chat_id(&mut self, from_chat_id: i64) -> &mut Self {
-        self.inner.from_chat_id = from_chat_id;
-        self
-    }
-
-    pub fn from_message_id(&mut self, from_message_id: i64) -> &mut Self {
-        self.inner.from_message_id = from_message_id;
-        self
-    }
 }
 
 impl AsRef<MessageForwardInfo> for MessageForwardInfo {
@@ -130,5 +115,47 @@ impl AsRef<MessageForwardInfo> for MessageForwardInfo {
 impl AsRef<MessageForwardInfo> for MessageForwardInfoBuilder {
     fn as_ref(&self) -> &MessageForwardInfo {
         &self.inner
+    }
+}
+
+//-------------------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ForwardSource {
+    // "chat_id" :-1002089733533 ,
+    #[serde(default)]
+    chat_id: i64,
+    // "message_id" :10989076480 ,
+    #[serde(default)]
+    message_id: i64,
+    // "sender_name" :"" ,
+    #[serde(default)]
+    sender_name: String,
+    // "date" :0 ,
+    #[serde(default)]
+    date: i32,
+    // "is_outgoing" :false
+    #[serde(default)]
+    is_outgoing: bool,
+}
+
+impl ForwardSource {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+    pub fn message_id(&self) -> i64 {
+        self.message_id
+    }
+    pub fn sender_name(&self) -> &String {
+        &self.sender_name
+    }
+    pub fn date(&self) -> i32 {
+        self.date
+    }
+    pub fn is_outgoing(&self) -> bool {
+        self.is_outgoing
     }
 }
