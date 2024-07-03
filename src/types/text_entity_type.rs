@@ -75,6 +75,8 @@ pub enum TextEntityType {
     Spoiler(TextEntityTypeSpoiler),
     #[serde(rename = "textEntityTypeBlockQuote")]
     BlockQuote(TextEntityTypeBlockQuote),
+    #[serde(rename = "textEntityTypeExpandableBlockQuote")]
+    ExpandableBlockQuote(TextEntityTypeExpandableBlockQuote),
 }
 
 impl Default for TextEntityType {
@@ -1502,6 +1504,67 @@ impl AsRef<TextEntityTypeBlockQuote> for TextEntityTypeBlockQuote {
 
 impl AsRef<TextEntityTypeBlockQuote> for TextEntityTypeBlockQuoteBuilder {
     fn as_ref(&self) -> &TextEntityTypeBlockQuote {
+        &self.inner
+    }
+}
+//-------------------------------------
+/// A bold text
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct TextEntityTypeExpandableBlockQuote {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+}
+
+impl RObject for TextEntityTypeExpandableBlockQuote {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDTextEntityType for TextEntityTypeExpandableBlockQuote {}
+
+impl TextEntityTypeExpandableBlockQuote {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> TextEntityTypeExpandableBlockQuoteBuilder {
+        let mut inner = TextEntityTypeExpandableBlockQuote::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        TextEntityTypeExpandableBlockQuoteBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct TextEntityTypeExpandableBlockQuoteBuilder {
+    inner: TextEntityTypeExpandableBlockQuote,
+}
+
+#[deprecated]
+pub type RTDTextEntityTypeExpandableBlockQuoteBuilder = TextEntityTypeExpandableBlockQuoteBuilder;
+
+impl TextEntityTypeExpandableBlockQuoteBuilder {
+    pub fn build(&self) -> TextEntityTypeExpandableBlockQuote {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<TextEntityTypeExpandableBlockQuote> for TextEntityTypeExpandableBlockQuote {
+    fn as_ref(&self) -> &TextEntityTypeExpandableBlockQuote {
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeExpandableBlockQuote> for TextEntityTypeExpandableBlockQuoteBuilder {
+    fn as_ref(&self) -> &TextEntityTypeExpandableBlockQuote {
         &self.inner
     }
 }
