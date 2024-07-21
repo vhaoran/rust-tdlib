@@ -185,6 +185,14 @@ pub enum MessageContent {
     PremiumGiveaway(serde_json::Value),
     #[serde(rename = "messagePremiumGiveawayWinners")]
     PremiumGiveawayWinners(serde_json::Value),
+    // add by whr
+    #[serde(rename = "messagePaidMedia")]
+    PaidMedia(serde_json::Value),
+    #[serde(rename = "messageChatSetBackground")]
+    ChatSetBackground(serde_json::Value),
+    #[serde(rename = "messageBotWriteAccessAllowed")]
+    BotWriteAccessAllowed(serde_json::Value),
+
 }
 
 impl Default for MessageContent {

@@ -93,9 +93,8 @@ pub struct CancelPreliminaryUploadFile {
 
     #[serde(default)]
     file_id: i32,
-    #[serde(default)]
-    only_if_pending: bool,
-
+    // #[serde(default)]
+    // only_if_pending: bool,
     #[serde(rename(serialize = "@type"))]
     td_type: String,
 }
@@ -129,9 +128,9 @@ impl CancelPreliminaryUploadFile {
     pub fn file_id(&self) -> i32 {
         self.file_id
     }
-    pub fn only_if_pending(&self) -> bool {
-        self.only_if_pending
-    }
+    // pub fn only_if_pending(&self) -> bool {
+    //     self.only_if_pending
+    // }
 }
 
 #[doc(hidden)]
@@ -152,10 +151,10 @@ impl CancelPreliminaryUploadFileBuilder {
 
         self
     }
-    pub fn only_if_pending(&mut self, only_if_pending: bool) -> &mut Self {
-        self.inner.only_if_pending = only_if_pending;
-        self
-    }
+    // pub fn only_if_pending(&mut self, only_if_pending: bool) -> &mut Self {
+    //     self.inner.only_if_pending = only_if_pending;
+    //     self
+    // }
 }
 
 impl AsRef<CancelPreliminaryUploadFile> for CancelPreliminaryUploadFile {
@@ -169,5 +168,3 @@ impl AsRef<CancelPreliminaryUploadFile> for CancelPreliminaryUploadFileBuilder {
         &self.inner
     }
 }
-
-
