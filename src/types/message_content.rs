@@ -3651,7 +3651,7 @@ impl LinkPreviewOptions {
         LinkPreviewOptionsBuilder { inner }
     }
     pub fn is_disabled_(&self) -> bool {
-        self.is_disabled_()
+        self.is_disabled
     }
     pub fn url_(&self) -> &String {
         &self.url
