@@ -15,9 +15,11 @@ pub enum MessageContent {
     #[doc(hidden)]
     _Default,
     /// A message with an animated emoji
+    /// /// MessageAnimatedEmoji(MessageAnimatedEmoji),
     #[serde(rename = "messageAnimatedEmoji")]
-    MessageAnimatedEmoji(MessageAnimatedEmoji),
+    MessageAnimatedEmoji(serde_json::Value),
     /// An animation message (GIF-style).
+    ///
     #[serde(rename = "messageAnimation")]
     MessageAnimation(MessageAnimation),
     /// An audio message
@@ -192,7 +194,6 @@ pub enum MessageContent {
     ChatSetBackground(serde_json::Value),
     #[serde(rename = "messageBotWriteAccessAllowed")]
     BotWriteAccessAllowed(serde_json::Value),
-
 }
 
 impl Default for MessageContent {
@@ -205,7 +206,7 @@ impl RObject for MessageContent {
     #[doc(hidden)]
     fn extra(&self) -> Option<&str> {
         match self {
-            MessageContent::MessageAnimatedEmoji(t) => t.extra(),
+            // MessageContent::MessageAnimatedEmoji(t) => t.extra(),
             MessageContent::MessageAnimation(t) => t.extra(),
             MessageContent::MessageAudio(t) => t.extra(),
             MessageContent::MessageBasicGroupChatCreate(t) => t.extra(),
@@ -266,7 +267,7 @@ impl RObject for MessageContent {
     #[doc(hidden)]
     fn client_id(&self) -> Option<i32> {
         match self {
-            MessageContent::MessageAnimatedEmoji(t) => t.client_id(),
+            // MessageContent::MessageAnimatedEmoji(t) => t.client_id(),
             MessageContent::MessageAnimation(t) => t.client_id(),
             MessageContent::MessageAudio(t) => t.client_id(),
             MessageContent::MessageBasicGroupChatCreate(t) => t.client_id(),
