@@ -14,6 +14,7 @@ pub mod auth_handler;
 pub mod tdlib_client;
 
 pub use auth_handler::{AuthStateHandler, ConsoleAuthStateHandler, SignalAuthStateHandler};
+use log::debug;
 use observer::OBSERVER;
 use serde::de::DeserializeOwned;
 pub use worker::{Worker, WorkerBuilder};
@@ -235,6 +236,8 @@ where
             Ok(v) => {
                 let vv = v.clone();
                 let raw_str = vv.to_string();
+                log::debug!("raw_result_str: {raw_str}");
+
                 if error_received(&v) {
                     match serde_json::from_value::<TDLibError>(v.clone()) {
                         Ok(v) => {

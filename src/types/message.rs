@@ -30,32 +30,32 @@ pub struct Message {
     #[serde(default)]
     is_pinned: bool,
     /// True, if the message can be edited. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message by the application
-    #[serde(default)]
-    can_be_edited: bool,
+    // #[serde(default)]
+    // can_be_edited: bool,
     /// True, if the message can be forwarded
-    #[serde(default)]
-    can_be_forwarded: bool,
+    // #[serde(default)]
+    // can_be_forwarded: bool,
     /// True, if content of the message can be saved locally or copied
-    #[serde(default)]
-    can_be_saved: bool,
+    // #[serde(default)]
+    // can_be_saved: bool,
     /// True, if the message can be deleted only for the current user while other users will continue to see it
-    #[serde(default)]
-    can_be_deleted_only_for_self: bool,
+    // #[serde(default)]
+    // can_be_deleted_only_for_self: bool,
     /// True, if the message can be deleted for all users
-    #[serde(default)]
-    can_be_deleted_for_all_users: bool,
+    // #[serde(default)]
+    // can_be_deleted_for_all_users: bool,
     /// True, if the message statistics are available
-    #[serde(default)]
-    can_get_statistics: bool,
+    // #[serde(default)]
+    // can_get_statistics: bool,
     /// True, if the message thread info is available
-    #[serde(default)]
-    can_get_message_thread: bool,
+    // #[serde(default)]
+    // can_get_message_thread: bool,
     /// True, if chat members already viewed the message can be received through getMessageViewers
-    #[serde(default)]
-    can_get_viewers: bool,
+    // #[serde(default)]
+    // can_get_viewers: bool,
     /// True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description
-    #[serde(default)]
-    can_get_media_timestamp_links: bool,
+    // #[serde(default)]
+    // can_get_media_timestamp_links: bool,
     /// True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
     #[serde(default)]
     has_timestamped_media: bool,
@@ -195,41 +195,41 @@ impl Message {
         self.is_pinned
     }
 
-    pub fn can_be_edited(&self) -> bool {
-        self.can_be_edited
-    }
+    // pub fn can_be_edited(&self) -> bool {
+    //     self.can_be_edited
+    // }
+    //
+    // pub fn can_be_forwarded(&self) -> bool {
+    //     self.can_be_forwarded
+    // }
+    //
+    // pub fn can_be_saved(&self) -> bool {
+    //     self.can_be_saved
+    // }
+    //
+    // pub fn can_be_deleted_only_for_self(&self) -> bool {
+    //     self.can_be_deleted_only_for_self
+    // }
+    //
+    // pub fn can_be_deleted_for_all_users(&self) -> bool {
+    //     self.can_be_deleted_for_all_users
+    // }
+    //
+    // pub fn can_get_statistics(&self) -> bool {
+    //     self.can_get_statistics
+    // }
+    //
+    // pub fn can_get_message_thread(&self) -> bool {
+    //     self.can_get_message_thread
+    // }
 
-    pub fn can_be_forwarded(&self) -> bool {
-        self.can_be_forwarded
-    }
+    // pub fn can_get_viewers(&self) -> bool {
+    //     self.can_get_viewers
+    // }
 
-    pub fn can_be_saved(&self) -> bool {
-        self.can_be_saved
-    }
-
-    pub fn can_be_deleted_only_for_self(&self) -> bool {
-        self.can_be_deleted_only_for_self
-    }
-
-    pub fn can_be_deleted_for_all_users(&self) -> bool {
-        self.can_be_deleted_for_all_users
-    }
-
-    pub fn can_get_statistics(&self) -> bool {
-        self.can_get_statistics
-    }
-
-    pub fn can_get_message_thread(&self) -> bool {
-        self.can_get_message_thread
-    }
-
-    pub fn can_get_viewers(&self) -> bool {
-        self.can_get_viewers
-    }
-
-    pub fn can_get_media_timestamp_links(&self) -> bool {
-        self.can_get_media_timestamp_links
-    }
+    // pub fn can_get_media_timestamp_links(&self) -> bool {
+    //     self.can_get_media_timestamp_links
+    // }
 
     pub fn has_timestamped_media(&self) -> bool {
         self.has_timestamped_media
@@ -355,59 +355,59 @@ impl MessageBuilder {
         self
     }
 
-    pub fn can_be_edited(&mut self, can_be_edited: bool) -> &mut Self {
-        self.inner.can_be_edited = can_be_edited;
-        self
-    }
+    // pub fn can_be_edited(&mut self, can_be_edited: bool) -> &mut Self {
+    //     self.inner.can_be_edited = can_be_edited;
+    //     self
+    // }
+    //
+    // pub fn can_be_forwarded(&mut self, can_be_forwarded: bool) -> &mut Self {
+    //     self.inner.can_be_forwarded = can_be_forwarded;
+    //     self
+    // }
 
-    pub fn can_be_forwarded(&mut self, can_be_forwarded: bool) -> &mut Self {
-        self.inner.can_be_forwarded = can_be_forwarded;
-        self
-    }
+    // pub fn can_be_saved(&mut self, can_be_saved: bool) -> &mut Self {
+    //     self.inner.can_be_saved = can_be_saved;
+    //     self
+    // }
+    //
+    // pub fn can_be_deleted_only_for_self(
+    //     &mut self,
+    //     can_be_deleted_only_for_self: bool,
+    // ) -> &mut Self {
+    //     self.inner.can_be_deleted_only_for_self = can_be_deleted_only_for_self;
+    //     self
+    // }
+    //
+    // pub fn can_be_deleted_for_all_users(
+    //     &mut self,
+    //     can_be_deleted_for_all_users: bool,
+    // ) -> &mut Self {
+    //     self.inner.can_be_deleted_for_all_users = can_be_deleted_for_all_users;
+    //     self
+    // }
+    //
+    // pub fn can_get_statistics(&mut self, can_get_statistics: bool) -> &mut Self {
+    //     self.inner.can_get_statistics = can_get_statistics;
+    //     self
+    // }
 
-    pub fn can_be_saved(&mut self, can_be_saved: bool) -> &mut Self {
-        self.inner.can_be_saved = can_be_saved;
-        self
-    }
-
-    pub fn can_be_deleted_only_for_self(
-        &mut self,
-        can_be_deleted_only_for_self: bool,
-    ) -> &mut Self {
-        self.inner.can_be_deleted_only_for_self = can_be_deleted_only_for_self;
-        self
-    }
-
-    pub fn can_be_deleted_for_all_users(
-        &mut self,
-        can_be_deleted_for_all_users: bool,
-    ) -> &mut Self {
-        self.inner.can_be_deleted_for_all_users = can_be_deleted_for_all_users;
-        self
-    }
-
-    pub fn can_get_statistics(&mut self, can_get_statistics: bool) -> &mut Self {
-        self.inner.can_get_statistics = can_get_statistics;
-        self
-    }
-
-    pub fn can_get_message_thread(&mut self, can_get_message_thread: bool) -> &mut Self {
-        self.inner.can_get_message_thread = can_get_message_thread;
-        self
-    }
-
-    pub fn can_get_viewers(&mut self, can_get_viewers: bool) -> &mut Self {
-        self.inner.can_get_viewers = can_get_viewers;
-        self
-    }
-
-    pub fn can_get_media_timestamp_links(
-        &mut self,
-        can_get_media_timestamp_links: bool,
-    ) -> &mut Self {
-        self.inner.can_get_media_timestamp_links = can_get_media_timestamp_links;
-        self
-    }
+    // pub fn can_get_message_thread(&mut self, can_get_message_thread: bool) -> &mut Self {
+    //     self.inner.can_get_message_thread = can_get_message_thread;
+    //     self
+    // }
+    //
+    // pub fn can_get_viewers(&mut self, can_get_viewers: bool) -> &mut Self {
+    //     self.inner.can_get_viewers = can_get_viewers;
+    //     self
+    // }
+    //
+    // pub fn can_get_media_timestamp_links(
+    //     &mut self,
+    //     can_get_media_timestamp_links: bool,
+    // ) -> &mut Self {
+    //     self.inner.can_get_media_timestamp_links = can_get_media_timestamp_links;
+    //     self
+    // }
 
     pub fn has_timestamped_media(&mut self, has_timestamped_media: bool) -> &mut Self {
         self.inner.has_timestamped_media = has_timestamped_media;

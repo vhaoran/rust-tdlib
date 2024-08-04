@@ -6,6 +6,8 @@ pub(crate) use self::_common::{RFunction, RObject};
 mod _common;
 
 pub use self::accept_call::*;
+pub use self::get_message_properties::*;
+pub use self::message_properties::*;
 pub use self::accept_terms_of_service::*;
 pub use self::account_ttl::*;
 pub use self::add_chat_member::*;
@@ -1555,3 +1557,5 @@ mod story_types;
 mod message_chat_boost;
 mod forum_topic;
 mod get_forum_topics;
+mod message_properties;
+mod get_message_properties;

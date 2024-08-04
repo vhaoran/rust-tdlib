@@ -19,7 +19,8 @@ pub struct ForumTopic {
     #[serde(default)]
     unread_reaction_count: i64,
     #[serde(default)]
-    notification_settings: ChatNotificationSettings,
+    // notification_settings: ChatNotificationSettings,
+    notification_settings: serde_json::Value,
     last_message: Option<Message>,
     draft_message: Option<DraftMessage>,
     #[serde(default)]
@@ -44,9 +45,9 @@ impl ForumTopic {
     pub fn unread_reaction_count(&self) -> i64 {
         self.unread_reaction_count
     }
-    pub fn notification_settings(&self) -> &ChatNotificationSettings {
-        &self.notification_settings
-    }
+    // pub fn notification_settings(&self) -> &ChatNotificationSettings {
+    //     &self.notification_settings
+    // }
     pub fn last_message(&self) -> &Option<Message> {
         &self.last_message
     }
@@ -85,10 +86,10 @@ pub struct ForumTopicInfo {
     is_hidden: bool,
 }
 impl ForumTopicInfo {
-    fn message_thread_id(&self) -> i64 {
+    pub fn message_thread_id(&self) -> i64 {
         self.message_thread_id
     }
-    fn name(&self) -> &String {
+    pub fn name(&self) -> &String {
         &self.name
     }
 
@@ -123,14 +124,14 @@ pub struct ForumTopicIcon {
     #[serde(default)]
     color: i32,
     #[serde(default)]
-    custom_emoji_id: i64,
+    custom_emoji_id: String,
 }
 impl ForumTopicIcon {
     fn color(&self) -> i32 {
         self.color
     }
-    fn custom_emoji_id(&self) -> i64 {
-        self.custom_emoji_id
+    fn custom_emoji_id(&self) -> &String {
+        &self.custom_emoji_id
     }
 }
 
@@ -151,19 +152,19 @@ pub struct ForumTopics {
     next_offset_message_thread_id: i64,
 }
 impl ForumTopics {
-    fn total_count(&self) -> i32 {
+    pub fn total_count(&self) -> i32 {
         self.total_count
     }
-    fn topics(&self) -> &Vec<ForumTopic> {
+    pub fn topics(&self) -> &Vec<ForumTopic> {
         &self.topics
     }
-    fn next_offset_date(&self) -> i32 {
+    pub fn next_offset_date(&self) -> i32 {
         self.next_offset_date
     }
-    fn next_offset_message_id(&self) -> i64 {
+    pub fn next_offset_message_id(&self) -> i64 {
         self.next_offset_message_id
     }
-    fn next_offset_message_thread_id(&self) -> i64 {
+    pub fn next_offset_message_thread_id(&self) -> i64 {
         self.next_offset_message_thread_id
     }
 }
