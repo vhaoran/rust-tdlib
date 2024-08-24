@@ -194,6 +194,13 @@ pub enum MessageContent {
     ChatSetBackground(serde_json::Value),
     #[serde(rename = "messageBotWriteAccessAllowed")]
     BotWriteAccessAllowed(serde_json::Value),
+    //
+    #[serde(rename = "messageGiftedPremiums")]
+    MessageGiftedPremium(serde_json::Value),
+    //
+    #[serde(rename = "messagePremiumGiveawayCompleted")]
+    PremiumGiveawayCompleted(serde_json::Value),
+    //
 }
 
 impl Default for MessageContent {
