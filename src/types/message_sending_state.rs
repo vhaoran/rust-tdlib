@@ -220,6 +220,8 @@ pub struct MessageSendingStatePending {
     extra: Option<String>,
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
+    #[serde(default)]
+    sending_id: i64,
 }
 
 impl RObject for MessageSendingStatePending {
@@ -244,6 +246,9 @@ impl MessageSendingStatePending {
         inner.extra = Some(Uuid::new_v4().to_string());
 
         MessageSendingStatePendingBuilder { inner }
+    }
+    pub fn sending_id(&self)->i64{
+        self.sending_id
     }
 }
 

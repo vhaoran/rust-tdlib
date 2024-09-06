@@ -15,6 +15,8 @@ pub struct MessageSendOptions {
     #[serde(default)]
     disable_notification: bool,
     /// Pass true if the message is sent from the background
+    #[serde(default)]
+    sending_id: i64,
 
     #[serde(default)]
     from_background: bool,
@@ -53,6 +55,9 @@ impl MessageSendOptions {
     pub fn from_background(&self) -> bool {
         self.from_background
     }
+    pub fn sending_id(&self) -> i64 {
+        self.sending_id
+    }
 
     pub fn scheduling_state(&self) -> &MessageSchedulingState {
         &self.scheduling_state
@@ -79,6 +84,10 @@ impl MessageSendOptionsBuilder {
 
     pub fn from_background(&mut self, from_background: bool) -> &mut Self {
         self.inner.from_background = from_background;
+        self
+    }
+    pub fn sending_id(&mut self, sending_id: i64) -> &mut Self {
+        self.inner.sending_id = sending_id;
         self
     }
 
