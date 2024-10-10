@@ -3,30 +3,55 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Default, Debug)]
 pub struct MessageProperties {
-    can_be_deleted_only_for_self: bool,//v
-    can_be_deleted_for_all_users: bool,//v
-    can_be_edited: bool,//v
-    can_be_forwarded: bool,//v
+    #[serde(default)]
+    can_be_deleted_only_for_self: bool, //v
+    #[serde(default)]
+    can_be_deleted_for_all_users: bool, //v
+    #[serde(default)]
+    can_be_edited: bool, //v
+    #[serde(default)]
+    can_be_forwarded: bool, //v
+    #[serde(default)]
     can_be_paid: bool,
+    #[serde(default)]
     can_be_pinned: bool,
+    #[serde(default)]
     can_be_replied: bool,
+    #[serde(default)]
     can_be_replied_in_another_chat: bool,
-    can_be_saved: bool,//v
+    #[serde(default)]
+    can_be_saved: bool, //v
+    #[serde(default)]
     can_be_shared_in_story: bool,
+    #[serde(default)]
     can_edit_scheduling_state: bool,
+    #[serde(default)]
     can_get_added_reactions: bool,
+    #[serde(default)]
     can_get_embedding_code: bool,
+    #[serde(default)]
     can_get_link: bool,
-    can_get_media_timestamp_links: bool,//v
-    can_get_message_thread: bool,//v
+    #[serde(default)]
+    can_get_media_timestamp_links: bool, //v
+    #[serde(default)]
+    can_get_message_thread: bool, //v
+    #[serde(default)]
     can_get_read_date: bool,
-    can_get_statistics: bool,//v
-    can_get_viewers: bool,//v
+    #[serde(default)]
+    can_get_statistics: bool, //v
+    #[serde(default)]
+    can_get_viewers: bool, //v
+    #[serde(default)]
     can_recognize_speech: bool,
+    #[serde(default)]
     can_report_chat: bool,
+    #[serde(default)]
     can_report_reactions: bool,
+    #[serde(default)]
     can_report_supergroup_spam: bool,
+    #[serde(default)]
     can_set_fact_check: bool,
+    #[serde(default)]
     need_show_statistics: bool,
 }
 

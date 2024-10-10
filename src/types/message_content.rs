@@ -201,6 +201,10 @@ pub enum MessageContent {
     //
     #[serde(rename = "messagePremiumGiveawayCompleted")]
     PremiumGiveawayCompleted(serde_json::Value),
+    #[serde(rename = "messageGiftedPremium")]
+    GiftedPremium(serde_json::Value),
+    #[serde(rename = "messageForumTopicIsClosedToggled")]
+    ForumTopicIsClosedToggled(serde_json::Value),
     //
 }
 

@@ -335,14 +335,24 @@ pub enum Update {
     ChatIsTranslatable(UpdateChatIsTranslatable),
     #[serde(rename = "updateSavedMessagesTopic")]
     SavedMessagesTopic(UpdateSavedMessagesTopic),
-    //
+    //add for not error
     #[serde(rename = "updateMessageReaction")]
     MessageReaction(serde_json::Value),
-    //for bot
-    // #[serde(rename = "updateMessageReactions")]
-    // MessageReactions(serde_json::Value),
-    //
-    //
+    //add for not error
+    #[serde(rename = "updateProfileAccentColors")]
+    ProfileAccentColors(serde_json::Value),
+    //add for not error
+    #[serde(rename = "updateSpeechRecognitionTrial")]
+    SpeechRecognitionTrial(serde_json::Value),
+    //add for not error
+    #[serde(rename = "updateDefaultBackground")]
+    DefaultBackground(serde_json::Value),
+    //add for not error
+    #[serde(rename = "updateAvailableMessageEffects")]
+    AvailableMessageEffects(serde_json::Value),
+    //add for not error
+    #[serde(rename = "updateReactionNotificationSettings")]
+    ReactionNotificationSettings(serde_json::Value),
 }
 
 impl Default for Update {

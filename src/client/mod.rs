@@ -260,7 +260,7 @@ where
                             Ok(v)
                         }
                         Err(e) => {
-                            log::error!("response serialization error: {:?}", e);
+                            log::error!("response serialization error: {:?} ->{raw_str}", e);
                             let err = format!(
                                 "cannot deserialize error,receive invalid response,{e:?} {raw_str}"
                             );
