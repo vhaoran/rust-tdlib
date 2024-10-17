@@ -241,7 +241,13 @@ where
                 if error_received(&v) {
                     match serde_json::from_value::<TDLibError>(v.clone()) {
                         Ok(v) => {
-                            log::error!("tdlib_error: {raw_str}");
+                            //exclude msg not found
+                            if !((v.code() == 400 || v.code() == 404)
+                                && (v.message().contains("Message not found")
+                                    || v.message().contains("Not Found")))
+                            {
+                                log::error!("tdlib_error: {raw_str}");
+                            }
                             Err(Error::TDLibError(v))
                         }
                         Err(e) => {

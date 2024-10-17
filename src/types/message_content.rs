@@ -3660,7 +3660,7 @@ pub struct LinkPreviewOptions {
 }
 impl LinkPreviewOptions {
     pub fn builder() -> LinkPreviewOptionsBuilder {
-        let mut inner = LinkPreviewOptions::default();
+        let  inner = LinkPreviewOptions::default();
         LinkPreviewOptionsBuilder { inner }
     }
     pub fn is_disabled_(&self) -> bool {
