@@ -1,0 +1,334 @@
+{
+  "@type": "chat ",
+  "id": 6540868849,
+  "type": {
+    "@type": "chatTypePrivate",
+    "user_id": 6540868849
+  },
+  "title": "PG电子🎰立博财神娱乐",
+  "photo": {
+    "@type": "chatPhotoInfo",
+    "small": {
+      "@type": "file",
+      "id": 1872,
+      "size": 0,
+      "expected_size": 0,
+      "local": {
+        "@type": "localFile",
+        "path": "",
+        "can_be_downloaded": true,
+        "can_be_deleted": false,
+        "is_downloading_active ": false,
+        "is_downloading_completed": false,
+        "download_offset": 0,
+        "downloaded_prefix_siz e": 0,
+        "downloaded_size": 0
+      },
+      "remote": {
+        "@type": "remoteFile",
+        "id": "AQACAgUAAxUAAW dj-UJqrhIG2AmUyn-vRrjMP5OyAAIYvzEb0rUgVI6DF2q_8RWNAgAD8bzdhQEAA8G7WEFhc5OkNgQ",
+        "unique_ id": "AQADGL8xG9K1IFQAAQ",
+        "is_uploading_active": false,
+        "is_uploading_completed": true,
+        "uploaded_size": 0
+      }
+    },
+    "big": {
+      "@type": "file",
+      "id": 1873,
+      "size": 0,
+      "expected_size ": 0,
+      "local": {
+        "@type": "localFile",
+        "path": "",
+        "can_be_downloaded": true,
+        "can_be _deleted": false,
+        "is_downloading_active": false,
+        "is_downloading_completed": false,
+        "dow nload_offset": 0,
+        "downloaded_prefix_size": 0,
+        "downloaded_size": 0
+      },
+      "remote": {
+        "@type  ": "remoteFile",
+        "id": "AQACAgUAAxUAAWdj-UJqrhIG2AmUyn-vRrjMP5OyAAIYvzEb0rUgVI6DF2q_8RW NAwAD8bzdhQEAA8G7WEFhc5OkNgQ",
+        "unique_id": "AQADGL8xG9K1IFQB",
+        "is_uploading_active": false,
+        "is_uploading_completed": true,
+        "uploaded_size": 0
+      }
+    },
+    "minithumbnail": {
+      "@type": "minithumbnail",
+      "width": 8,
+      "height": 8,
+      "data": "/9j/4AAP09fb3+Pn6/9oADAMBAAIRAxEAPwADReR 0UcdM85ooorGx6KjY/9k="
+    },
+    "has_animation": false,
+    "is_personal": false
+  },
+  "accent_color_id ": 4,
+  "background_custom_emoji_id": "0",
+  "profile_accent_color_id": -1,
+  "profile_backgr ound_custom_emoji_id": "0",
+  "permissions": {
+    "@type": "chatPermissions",
+    "can_send_ba sic_messages": true,
+    "can_send_audios": true,
+    "can_send_documents": true,
+    "can_send_photo s": true,
+    "can_send_videos": true,
+    "can_send_video_notes": true,
+    "can_send_voice_notes": true,
+    "can_send_polls": true,
+    "can_send_other_messages": true,
+    "can_add_link_previews": t
+    rue,
+    "can_change_info": false,
+    "can_invite_users": false,
+    "can_pin_messages": true,
+    "can_ create_topics": false
+  },
+  "last_message": {
+    "@type": "message",
+    "id": 472513511424,
+    "send er_id": {
+      "@type": "messageSenderUser",
+      "user_id": 6540868849
+    },
+    "chat_id": 6540868849,
+    "is_outgoing": false,
+    "is_pinned": false,
+    "is_from_offline": false,
+    "can_be_saved": true,
+    "has_timestamped_media": true,
+    "is_channel_post": false,
+    "is_topic_message": false,
+    "con tains_unread_mention": false,
+    "date": 1721042207,
+    "edit_date": 0,
+    "unread_reactions": [ ],
+    "message_thread_id": 0,
+    "saved_messages_topic_id": 0,
+    "self_destruct_in": 0.0,
+    "auto_del ete_in": 0.0,
+    "via_bot_user_id": 0,
+    "sender_business_bot_user_id": 0,
+    "sender_boost_count ": 0,
+    "author_signature": "",
+    "media_album_id": "0",
+    "effect_id": "0",
+    "has_sensiti ve_content": false,
+    "restriction_reason": "",
+    "content": {
+      "@type": "messageText",
+      "text": {
+        "@type": "formattedText",
+        "text": "👋Hi, 大师兄™-商务洽谈 🆔 5216941809  ---- -------------------------------------  💰钱包余额: 0 💴  🕹PG电子余额: 0",
+        "entities": [
+          {
+            "@type": "textEntity",
+            "offset": 6,
+            "length": 9,
+            "type": {
+              "@type": "textEntityType MentionName",
+              "user_id": 5216941809
+            }
+          },
+          {
+            "@type": "textEntity",
+            "offset": 19,
+            "length": 10,
+            "type": {
+              "@type": "textEntityTypeCode"
+            }
+          }
+        ]
+      }
+    },
+    "reply_markup": {
+      "@type": "replyMarkupInlineKeyboard",
+      "rows": [
+        [
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "⬆ u{fe0f} 转入游戏",
+            "type": {
+              "@type": "inlineKeyboardButtonTypeCallback",
+              "data": "cGdEZXBvc2 l0R28tLTA="
+            }
+          },
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "💰转回钱包",
+            "type": {
+              "@t ype": "inlineKeyboardButtonTypeCallback",
+              "data": "cGdEZXBvc2l0R28tLTEtLQ=="
+            }
+          }
+        ],
+        [
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "🎰开始游戏",
+            "type": {
+              "@type": "inlineKeyboardButtonTypeWebApp",
+              "url": "https://pg.keji.me/index.php?ops=7106_fc6fc451a564531a9b3 d3c9a2c55683c_pgcaishen&auth=e4343c911ae4c9d4454f36793d5c55c2&lang=zh"
+            }
+          }
+        ],
+        [
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "🔁刷新",
+            "type": {
+              "@type": "inlineKeyboardButtonType Callback",
+              "data": "cmVwbGFjZS0tcGdfaW5kZXg="
+            }
+          },
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "👥 官方群组",
+            "type": {
+              "@type": "inlineKeyboardButtonTypeUrl",
+              "url": "http s://t.me/+lFYYRJoCVEYwZGJh"
+            }
+          }
+        ],
+        [
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "💰 充值提 现",
+            "type": {
+              "@type": "inlineKeyboardButtonTypeCallback",
+              "data": "d2FsbGV0"
+            }
+          }
+        ],
+        [
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "🙋 客服支持",
+            "type": {
+              "@type": "inlineK eyboardButtonTypeCallback",
+              "data": "c3VwcG9ydA=="
+            }
+          },
+          {
+            "@type": "inlineKeyboardButton ",
+            "text": "👋 邀请好友",
+            "type": {
+              "@type": "inlineKeyboardButtonTypeCallback",
+              "data": "aW52aXRlX2ZyaWVuZHM="
+            }
+          }
+        ],
+        [
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "🔀 分享 领奖",
+            "type": {
+              "@type": "inlineKeyboardButtonTypeSwitchInline",
+              "query": "Invite",
+              "target_chat": {
+                "@type": "targetChatChosen",
+                "types": {
+                  "@type": "targetChatTypes",
+                  "allow_user_chats": true,
+                  "allow_bot_chats": true,
+                  "allow_group_chats": true,
+                  "allow_cha nnel_chats": true
+                }
+              }
+            }
+          },
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "🌐Language",
+            "type  ": {
+              "@type": "inlineKeyboardButtonTypeCallback",
+              "data": "c2V0X2xhbmd1YWdl"
+            }
+          }
+        ],
+        [
+          {
+            "@type": "inlineKeyboardButton",
+            "text": "🧧 发红包",
+            "type": {
+              "@type": "inlineKeyboar dButtonTypeCallback",
+              "data": "bXlfbHVja3lfbGlzdC0tMS0taW5n"
+            }
+          }
+        ]
+      ]
+    }
+  },
+  "positions": [
+    {
+      "@ type": "chatPosition",
+      "list": {
+        "@type": "chatListMain"
+      },
+      "order": "739181999410111 2896",
+      "is_pinned": false
+    }
+  ],
+  "chat_lists": [
+    {
+      "@type": "chatListMain"
+    }
+  ],
+  "has_protecte d_content": false,
+  "is_translatable": true,
+  "is_marked_as_unread": false,
+  "view_as_topics ": false,
+  "has_scheduled_messages": false,
+  "can_be_deleted_only_for_self": true,
+  "can_be_ deleted_for_all_users": false,
+  "can_be_reported": true,
+  "default_disable_notification": false,
+  "unread_count": 0,
+  "last_read_inbox_message_id": 472513511424,
+  "last_read_outbox_me ssage_id": 472512462848,
+  "unread_mention_count": 0,
+  "unread_reaction_count": 0,
+  "notification_settings": {
+    "@type": "chatNotificationSettings",
+    "use_default_mute_for": true,
+    "m ute_for": 0,
+    "use_default_sound": true,
+    "sound_id": "-1",
+    "use_default_mute_for": true,
+    "m ute_for": 0,
+    "use_default_sound": true,
+    "sound_id": "-1",
+    "use_default_show_preview": true,
+    "show_preview": false,
+    "use_default_mute_stories": true,
+    "mute_stories": false,
+    "use _default_story_sound": true,
+    "story_sound_id": "-1",
+    "use_default_show_story_sender": true,
+    "show_story_sender": true,
+    "use_default_disable_pinned_message_notifications": true,
+    "disable_pinned_message_notifications": false,
+    "use_default_disable_mention_notification s": true,
+    "disable_mention_notifications": false
+  },
+  "available_reactions": {
+    "@type": "ch atAvailableReactionsAll",
+    "max_reaction_count": 11
+  },
+  "message_auto_delete_time": 0,
+  "the me_name": "",
+  "video_chat": {
+    "@type": "videoChat",
+    "group_call_id": 0,
+    "has_particip ants": false
+  },
+  "reply_markup_message_id": 0,
+  "client_data": "",
+  "@extra": "93a5c72d-5d 6a-4269-8ebe-2bcf8b4877d6",
+  "@client_id": 1
+}

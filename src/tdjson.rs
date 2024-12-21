@@ -72,3 +72,11 @@ pub fn set_log_file_path(path: Option<&str>) -> bool {
 pub fn set_log_max_file_size(size: i64) {
     unsafe { td_set_log_max_file_size(size as c_long) };
 }
+
+mod t {
+    #[test]
+    fn xxx() {
+        //---------------------
+        println!("-----------ok-----------",);
+    }
+}

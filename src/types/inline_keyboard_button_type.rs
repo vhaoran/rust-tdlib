@@ -37,6 +37,11 @@ pub enum InlineKeyboardButtonType {
     /// A button with a user reference to be handled in the same way as textEntityTypeMentionName entities
     #[serde(rename = "inlineKeyboardButtonTypeUser")]
     User(InlineKeyboardButtonTypeUser),
+    //-------------------------------------
+    // inlineKeyboardButtonTypeCopyText,
+    // inlineKeyboardButtonTypeWebApp
+    App(InlineKeyboardButtonTypeWebApp),
+    CopyText(InlineKeyboardButtonTypeCopyText),
 }
 
 impl Default for InlineKeyboardButtonType {
@@ -632,6 +637,7 @@ impl AsRef<InlineKeyboardButtonTypeUrl> for InlineKeyboardButtonTypeUrlBuilder {
     }
 }
 
+//-------------------------------------
 /// A button with a user reference to be handled in the same way as textEntityTypeMentionName entities
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct InlineKeyboardButtonTypeUser {
@@ -705,3 +711,152 @@ impl AsRef<InlineKeyboardButtonTypeUser> for InlineKeyboardButtonTypeUserBuilder
         &self.inner
     }
 }
+//-------------------------------------
+/// A button with a user reference to be handled in the same way as textEntityTypeMentionName entities
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct InlineKeyboardButtonTypeWebApp {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    /// User identifier
+
+    #[serde(default)]
+    url: String,
+}
+
+impl RObject for InlineKeyboardButtonTypeWebApp {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDInlineKeyboardButtonType for InlineKeyboardButtonTypeWebApp {}
+
+impl InlineKeyboardButtonTypeWebApp {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> InlineKeyboardButtonTypeWebAppBuilder {
+        let mut inner = InlineKeyboardButtonTypeWebApp::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        InlineKeyboardButtonTypeWebAppBuilder { inner }
+    }
+
+    pub fn url(&self) -> &String {
+        &self.url
+    }
+}
+
+#[doc(hidden)]
+pub struct InlineKeyboardButtonTypeWebAppBuilder {
+    inner: InlineKeyboardButtonTypeWebApp,
+}
+
+#[deprecated]
+pub type RTDInlineKeyboardButtonTypeWebAppBuilder = InlineKeyboardButtonTypeWebAppBuilder;
+
+impl InlineKeyboardButtonTypeWebAppBuilder {
+    pub fn build(&self) -> InlineKeyboardButtonTypeWebApp {
+        self.inner.clone()
+    }
+
+    pub fn url(&mut self, url: String) -> &mut Self {
+        self.inner.url = url;
+        self
+    }
+}
+
+impl AsRef<InlineKeyboardButtonTypeWebApp> for InlineKeyboardButtonTypeWebApp {
+    fn as_ref(&self) -> &InlineKeyboardButtonTypeWebApp {
+        self
+    }
+}
+
+impl AsRef<InlineKeyboardButtonTypeWebApp> for InlineKeyboardButtonTypeWebAppBuilder {
+    fn as_ref(&self) -> &InlineKeyboardButtonTypeWebApp {
+        &self.inner
+    }
+}
+//-------------------------------------
+/// A button with a user reference to be handled in the same way as textEntityTypeMentionName entities
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct InlineKeyboardButtonTypeCopyText {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    /// User identifier
+
+    #[serde(default)]
+    text: String,
+}
+
+impl RObject for InlineKeyboardButtonTypeCopyText {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDInlineKeyboardButtonType for InlineKeyboardButtonTypeCopyText {}
+
+impl InlineKeyboardButtonTypeCopyText {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> InlineKeyboardButtonTypeCopyTextBuilder {
+        let mut inner = InlineKeyboardButtonTypeCopyText::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        InlineKeyboardButtonTypeCopyTextBuilder { inner }
+    }
+
+    pub fn text(&self) -> &String {
+        &self.text
+    }
+}
+
+#[doc(hidden)]
+pub struct InlineKeyboardButtonTypeCopyTextBuilder {
+    inner: InlineKeyboardButtonTypeCopyText,
+}
+
+#[deprecated]
+pub type RTDInlineKeyboardButtonTypeCopyTextBuilder = InlineKeyboardButtonTypeCopyTextBuilder;
+
+impl InlineKeyboardButtonTypeCopyTextBuilder {
+    pub fn build(&self) -> InlineKeyboardButtonTypeCopyText {
+        self.inner.clone()
+    }
+
+    pub fn text(&mut self, text: String) -> &mut Self {
+        self.inner.text = text;
+        self
+    }
+}
+
+impl AsRef<InlineKeyboardButtonTypeCopyText> for InlineKeyboardButtonTypeCopyText {
+    fn as_ref(&self) -> &InlineKeyboardButtonTypeCopyText {
+        self
+    }
+}
+
+impl AsRef<InlineKeyboardButtonTypeCopyText> for InlineKeyboardButtonTypeCopyTextBuilder {
+    fn as_ref(&self) -> &InlineKeyboardButtonTypeCopyText {
+        &self.inner
+    }
+}
+//-------------------------------------

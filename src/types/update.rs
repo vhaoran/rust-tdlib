@@ -353,6 +353,8 @@ pub enum Update {
     //add for not error
     #[serde(rename = "updateReactionNotificationSettings")]
     ReactionNotificationSettings(serde_json::Value),
+    #[serde(rename = "updateForumTopicInfo")]
+    ForumTopicInfo(serde_json::Value),
 }
 
 impl Default for Update {
