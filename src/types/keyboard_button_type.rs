@@ -25,6 +25,13 @@ pub enum KeyboardButtonType {
     /// A simple button, with text that must be sent when the button is pressed
     #[serde(rename = "keyboardButtonTypeText")]
     Text(KeyboardButtonTypeText),
+    #[serde(rename = "keyboardButtonTypeRequestUsers")]
+    RequestUsers(KeyboardButtonTypeRequestUsers),
+
+    #[serde(rename = "keyboardButtonTypeRequestChat")]
+    RequestChats(serde_json::Value),
+    #[serde(rename = "keyboardButtonTypeWebApp")]
+    RequestWebApp(serde_json::Value),
 }
 
 impl Default for KeyboardButtonType {
@@ -41,7 +48,8 @@ impl RObject for KeyboardButtonType {
             KeyboardButtonType::RequestPhoneNumber(t) => t.extra(),
             KeyboardButtonType::RequestPoll(t) => t.extra(),
             KeyboardButtonType::Text(t) => t.extra(),
-
+            KeyboardButtonType::RequestUsers(t) => t.extra(),
+            //
             _ => None,
         }
     }
@@ -52,6 +60,7 @@ impl RObject for KeyboardButtonType {
             KeyboardButtonType::RequestPhoneNumber(t) => t.client_id(),
             KeyboardButtonType::RequestPoll(t) => t.client_id(),
             KeyboardButtonType::Text(t) => t.client_id(),
+            KeyboardButtonType::RequestUsers(t) => t.client_id(),
 
             _ => None,
         }
@@ -344,3 +353,82 @@ impl AsRef<KeyboardButtonTypeText> for KeyboardButtonTypeTextBuilder {
         &self.inner
     }
 }
+//-------------------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct KeyboardButtonTypeRequestUsers {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    #[serde(default)]
+    id: i64,
+    #[serde(default)]
+    restrict_user_is_bot: bool,
+    #[serde(default)]
+    user_is_bot: bool,
+    #[serde(default)]
+    restrict_user_is_premium: bool,
+    #[serde(default)]
+    user_is_premium: bool,
+    #[serde(default)]
+    max_quantity: i64,
+    #[serde(default)]
+    request_name: bool,
+    #[serde(default)]
+    request_username: bool,
+    #[serde(default)]
+    request_photo: bool,
+}
+
+impl RObject for KeyboardButtonTypeRequestUsers {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDKeyboardButtonType for KeyboardButtonTypeRequestUsers {}
+
+impl KeyboardButtonTypeRequestUsers {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> KeyboardButtonTypeRequestUsersBuilder {
+        let mut inner = KeyboardButtonTypeRequestUsers::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        KeyboardButtonTypeRequestUsersBuilder { inner }
+    }
+}
+
+#[doc(hidden)]
+pub struct KeyboardButtonTypeRequestUsersBuilder {
+    inner: KeyboardButtonTypeRequestUsers,
+}
+
+#[deprecated]
+pub type RTDKeyboardButtonTypeRequestUsersBuilder = KeyboardButtonTypeRequestUsersBuilder;
+
+impl KeyboardButtonTypeRequestUsersBuilder {
+    pub fn build(&self) -> KeyboardButtonTypeRequestUsers {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<KeyboardButtonTypeRequestUsers> for KeyboardButtonTypeRequestUsers {
+    fn as_ref(&self) -> &KeyboardButtonTypeRequestUsers {
+        self
+    }
+}
+
+impl AsRef<KeyboardButtonTypeRequestUsers> for KeyboardButtonTypeRequestUsersBuilder {
+    fn as_ref(&self) -> &KeyboardButtonTypeRequestUsers {
+        &self.inner
+    }
+}
+//-------------------------------------

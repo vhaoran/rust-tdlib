@@ -3640,7 +3640,7 @@ impl MessageSupergroupChatCreate {
 }
 
 //-------------------------------------
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LinkPreviewOptions {
     #[serde(default)]
     // #[serde(rename="is_disabled")]
@@ -3658,9 +3658,21 @@ pub struct LinkPreviewOptions {
     // #[serde(rename="show_above_text")]
     show_above_text: bool,
 }
+impl Default for LinkPreviewOptions {
+    fn default() -> Self {
+        Self {
+            is_disabled: false,
+            url: "".to_string(),
+            force_small_media: false,
+            force_large_media: true,
+            show_above_text: false,
+        }
+    }
+}
+
 impl LinkPreviewOptions {
     pub fn builder() -> LinkPreviewOptionsBuilder {
-        let  inner = LinkPreviewOptions::default();
+        let inner = LinkPreviewOptions::default();
         LinkPreviewOptionsBuilder { inner }
     }
     pub fn is_disabled_(&self) -> bool {
@@ -5020,4 +5032,3 @@ impl AsRef<MessageStory> for MessageStoryBuilder {
         &self.inner
     }
 }
-//-------------------------------------

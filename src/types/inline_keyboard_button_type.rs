@@ -40,7 +40,9 @@ pub enum InlineKeyboardButtonType {
     //-------------------------------------
     // inlineKeyboardButtonTypeCopyText,
     // inlineKeyboardButtonTypeWebApp
+    #[serde(rename = "inlineKeyboardButtonTypeWebApp")]
     App(InlineKeyboardButtonTypeWebApp),
+    #[serde(rename = "inlineKeyboardButtonTypeCopyText")]
     CopyText(InlineKeyboardButtonTypeCopyText),
 }
 
