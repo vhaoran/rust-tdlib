@@ -827,6 +827,13 @@ where
         self.make_request(edit_message_text).await
     }
 
+    // pub async fn edit_message_scheduling_state<C: AsRef<EditMessageSchedulingState>>(
+    //     &self,
+    //     edit_message_st: C,
+    // ) -> Result<Ok> {
+    //     self.make_request(edit_message_st).await
+    // }
+    //
     // Edits an existing proxy server for network requests. Can be called before authorization
     pub async fn edit_proxy<C: AsRef<EditProxy>>(&self, edit_proxy: C) -> Result<Proxy> {
         self.make_request(edit_proxy).await

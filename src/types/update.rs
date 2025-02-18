@@ -355,6 +355,53 @@ pub enum Update {
     ReactionNotificationSettings(serde_json::Value),
     #[serde(rename = "updateForumTopicInfo")]
     ForumTopicInfo(serde_json::Value),
+    #[serde(rename = "updateVideoPublished")]
+    VideoPublished(UpdateVideoPublished),
+    // 2025-02-11
+    #[serde(rename = "updateWebAppMessageSent")]
+    WebAppMessageSent(serde_json::Value),
+    #[serde(rename = "updateStorySendSucceeded")]
+    StorySendSucceeded(serde_json::Value),
+    #[serde(rename = "updateStorySendFailed")]
+    StorySendFailed(serde_json::Value),
+    #[serde(rename = "updateStoryListChatCount")]
+    StoryListChatCount(serde_json::Value),
+    #[serde(rename = "updateStoryDeleted")]
+    StoryDeleted(serde_json::Value),
+    #[serde(rename = "updateStory")]
+    Story(serde_json::Value),
+    #[serde(rename = "updateStarRevenueStatus")]
+    StarRevenueStatus(serde_json::Value),
+    #[serde(rename = "updateSpeedLimitNotification")]
+    SpeedLimitNotification(serde_json::Value),
+    #[serde(rename = "updateSavedNotificationSounds")]
+    SavedNotificationSounds(serde_json::Value),
+    #[serde(rename = "updateSavedMessagesTopicCount")]
+    SavedMessagesTopicCount(serde_json::Value),
+    #[serde(rename = "updateSavedMessagesTags")]
+    SavedMessagesTags(serde_json::Value),
+    #[serde(rename = "updateQuickReplyShortcuts")]
+    QuickReplyShortcuts(serde_json::Value),
+    #[serde(rename = "updateQuickReplyShortcutMessages")]
+    QuickReplyShortcutMessages(serde_json::Value),
+    #[serde(rename = "updateQuickReplyShortcutDeleted")]
+    QuickReplyShortcutDeleted(serde_json::Value),
+    #[serde(rename = "updateQuickReplyShortcut")]
+    QuickReplyShortcut(serde_json::Value),
+    #[serde(rename = "updatePaidMediaPurchased")]
+    PaidMediaPurchased(serde_json::Value),
+    #[serde(rename = "updateOwnedStarCount")]
+    OwnedStarCount(serde_json::Value),
+    #[serde(rename = "updateNewBusinessMessage")]
+    NewBusinessMessage(serde_json::Value),
+    #[serde(rename = "updateNewBusinessCallbackQuery")]
+    NewBusinessCallbackQuery(serde_json::Value),
+    #[serde(rename = "updateMessageReactions")]
+    MessageReactions(serde_json::Value),
+    #[serde(rename = "updateMessageFactCheck")]
+    MessageFactCheck(serde_json::Value),
+    #[serde(rename = "updateFileRemovedFromDownloads")]
+    FileRemovedFromDownloads(serde_json::Value),
 }
 
 impl Default for Update {
@@ -9877,6 +9924,76 @@ impl AsRef<UpdateSavedMessagesTopic> for UpdateSavedMessagesTopic {
 
 impl AsRef<UpdateSavedMessagesTopic> for UpdateSavedMessagesTopicBuilder {
     fn as_ref(&self) -> &UpdateSavedMessagesTopic {
+        &self.inner
+    }
+}
+//-----------aaa--------------------------
+//-----------aaa--------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateVideoPublished {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    chat_id: i64,
+    message_id: i64,
+}
+
+impl RObject for UpdateVideoPublished {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateVideoPublished {}
+
+impl UpdateVideoPublished {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateVideoPublishedBuilder {
+        let mut inner = UpdateVideoPublished::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateVideoPublishedBuilder { inner }
+    }
+    pub fn chat_id(&self) -> i64 {
+        self.chat_id
+    }
+    pub fn message_id(&self) -> i64 {
+        self.message_id
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateVideoPublishedBuilder {
+    inner: UpdateVideoPublished,
+}
+
+#[deprecated]
+pub type RTDUpdateVideoPublishedBuilder = UpdateVideoPublishedBuilder;
+
+impl UpdateVideoPublishedBuilder {
+    pub fn build(&self) -> UpdateVideoPublished {
+        self.inner.clone()
+    }
+}
+
+impl AsRef<UpdateVideoPublished> for UpdateVideoPublished {
+    fn as_ref(&self) -> &UpdateVideoPublished {
+        self
+    }
+}
+
+impl AsRef<UpdateVideoPublished> for UpdateVideoPublishedBuilder {
+    fn as_ref(&self) -> &UpdateVideoPublished {
         &self.inner
     }
 }

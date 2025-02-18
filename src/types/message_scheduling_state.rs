@@ -19,6 +19,8 @@ pub enum MessageSchedulingState {
     /// The message will be sent when the peer will be online. Applicable to private chats only and when the exact online status of the peer is known
     #[serde(rename = "messageSchedulingStateSendWhenOnline")]
     SendWhenOnline(MessageSchedulingStateSendWhenOnline),
+    #[serde(rename = "messageSchedulingStateSendWhenVideoProcessed")]
+    SendWhenVideoProcessed(MessageSchedulingStateSendWhenVideoProcessed),
 }
 
 impl Default for MessageSchedulingState {
@@ -33,6 +35,7 @@ impl RObject for MessageSchedulingState {
         match self {
             MessageSchedulingState::SendAtDate(t) => t.extra(),
             MessageSchedulingState::SendWhenOnline(t) => t.extra(),
+            MessageSchedulingState::SendWhenVideoProcessed(t) => t.extra(),
 
             _ => None,
         }
@@ -42,6 +45,7 @@ impl RObject for MessageSchedulingState {
         match self {
             MessageSchedulingState::SendAtDate(t) => t.client_id(),
             MessageSchedulingState::SendWhenOnline(t) => t.client_id(),
+            MessageSchedulingState::SendWhenVideoProcessed(t) => t.client_id(),
 
             _ => None,
         }
@@ -196,6 +200,82 @@ impl AsRef<MessageSchedulingStateSendWhenOnline> for MessageSchedulingStateSendW
 
 impl AsRef<MessageSchedulingStateSendWhenOnline> for MessageSchedulingStateSendWhenOnlineBuilder {
     fn as_ref(&self) -> &MessageSchedulingStateSendWhenOnline {
+        &self.inner
+    }
+}
+
+//-------------------------------------
+/// The message will be sent when the peer will be online. Applicable to private chats only and when the exact online status of the peer is known
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MessageSchedulingStateSendWhenVideoProcessed {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+    #[serde(default)]
+    send_date: i32,
+}
+
+impl RObject for MessageSchedulingStateSendWhenVideoProcessed {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDMessageSchedulingState for MessageSchedulingStateSendWhenVideoProcessed {}
+
+impl MessageSchedulingStateSendWhenVideoProcessed {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> MessageSchedulingStateSendWhenVideoProcessedBuilder {
+        let mut inner = MessageSchedulingStateSendWhenVideoProcessed::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        MessageSchedulingStateSendWhenVideoProcessedBuilder { inner }
+    }
+    pub fn send_date(&self) -> i32 {
+        self.send_date
+    }
+}
+
+#[doc(hidden)]
+pub struct MessageSchedulingStateSendWhenVideoProcessedBuilder {
+    inner: MessageSchedulingStateSendWhenVideoProcessed,
+}
+
+#[deprecated]
+pub type RTDMessageSchedulingStateSendWhenVideoProcessedBuilder =
+    MessageSchedulingStateSendWhenVideoProcessedBuilder;
+
+impl MessageSchedulingStateSendWhenVideoProcessedBuilder {
+    pub fn build(&self) -> MessageSchedulingStateSendWhenVideoProcessed {
+        self.inner.clone()
+    }
+    pub fn send_date(&mut self, send_date: i32) -> &mut Self {
+        self.inner.send_date = send_date;
+        self
+    }
+}
+
+impl AsRef<MessageSchedulingStateSendWhenVideoProcessed>
+    for MessageSchedulingStateSendWhenVideoProcessed
+{
+    fn as_ref(&self) -> &MessageSchedulingStateSendWhenVideoProcessed {
+        self
+    }
+}
+
+impl AsRef<MessageSchedulingStateSendWhenVideoProcessed>
+    for MessageSchedulingStateSendWhenVideoProcessedBuilder
+{
+    fn as_ref(&self) -> &MessageSchedulingStateSendWhenVideoProcessed {
         &self.inner
     }
 }

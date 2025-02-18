@@ -2,6 +2,7 @@ use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
+use crate::types::alternative_video::AlternativeVideo;
 use crate::types::message_chat_boost::{MessageChatBoost, MessageChatShared};
 use std::fmt::Debug;
 
@@ -205,7 +206,42 @@ pub enum MessageContent {
     GiftedPremium(serde_json::Value),
     #[serde(rename = "messageForumTopicIsClosedToggled")]
     ForumTopicIsClosedToggled(serde_json::Value),
-    //
+    #[serde(rename = "messageExpiredVideoNote")]
+    ExpiredVideoNote(serde_json::Value),
+    #[serde(rename = "messageExpiredVoiceNote")]
+    ExpiredVoiceNote(serde_json::Value),
+    #[serde(rename = "messageForumTopicIsHiddenToggled")]
+    ForumTopicIsHiddenToggled(serde_json::Value),
+    #[serde(rename = "messageGift")]
+    Gift(serde_json::Value),
+    #[serde(rename = "messageGiftedStars")]
+    GiftedStars(serde_json::Value),
+    #[serde(rename = "messageGiveaway")]
+    Giveaway(serde_json::Value),
+    #[serde(rename = "messageGiveawayCompleted")]
+    GiveawayCompleted(serde_json::Value),
+    #[serde(rename = "messageGiveawayCreated")]
+    GiveawayCreated(serde_json::Value),
+    #[serde(rename = "messageGiveawayPrizeStars")]
+    GiveawayPrizeStars(serde_json::Value),
+    #[serde(rename = "messageGiveawayWinners")]
+    GiveawayWinners(serde_json::Value),
+    #[serde(rename = "messagePaymentRefunded")]
+    PaymentRefunded(serde_json::Value),
+    #[serde(rename = "messagePremiumGiftCode")]
+    PremiumGiftCode(serde_json::Value),
+    #[serde(rename = "messageRefundedUpgradedGift")]
+    RefundedUpgradedGift(serde_json::Value),
+    #[serde(rename = "messageSuggestProfilePhoto")]
+    SuggestProfilePhoto(serde_json::Value),
+    #[serde(rename = "messageUpgradedGift")]
+    UpgradedGift(serde_json::Value),
+    #[serde(rename = "messageUsersShared")]
+    UsersShared(serde_json::Value),
+    #[serde(rename = "messageWebAppDataReceived")]
+    WebAppDataReceived(serde_json::Value),
+    #[serde(rename = "messageWebAppDataSent")]
+    WebAppDataSent(serde_json::Value),
 }
 
 impl Default for MessageContent {
@@ -4004,10 +4040,17 @@ pub struct MessageVideo {
     video: Video,
     /// Video caption
     caption: FormattedText,
-    /// True, if the video thumbnail must be blurred and the video must be shown only while tapped
 
     #[serde(default)]
+    /// True, if the video thumbnail must be blurred and the video must be shown only while tapped
     is_secret: bool,
+
+    #[serde(default)]
+    alternative_videos: Vec<AlternativeVideo>,
+    #[serde(default)]
+    show_caption_above_media: bool,
+    #[serde(default)]
+    has_spoiler: bool,
 }
 
 impl RObject for MessageVideo {
@@ -4042,6 +4085,16 @@ impl MessageVideo {
         &self.caption
     }
 
+    pub fn alternative_videos(&self) -> &Vec<AlternativeVideo> {
+        &self.alternative_videos
+    }
+    pub fn has_spiler(&self) -> bool {
+        self.has_spoiler
+    }
+    pub fn show_caption_above_media(&self) -> bool {
+        self.show_caption_above_media
+    }
+
     pub fn is_secret(&self) -> bool {
         self.is_secret
     }
@@ -4072,6 +4125,14 @@ impl MessageVideoBuilder {
 
     pub fn is_secret(&mut self, is_secret: bool) -> &mut Self {
         self.inner.is_secret = is_secret;
+        self
+    }
+    pub fn show_above_media(&mut self, show_above: bool) -> &mut Self {
+        self.inner.show_caption_above_media = show_above;
+        self
+    }
+    pub fn alternative_videos(&mut self, l: Vec<AlternativeVideo>) -> &mut Self {
+        self.inner.alternative_videos = l;
         self
     }
 }

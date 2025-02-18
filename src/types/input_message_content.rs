@@ -1852,6 +1852,11 @@ pub struct InputMessageVideo {
 
     #[serde(default)]
     ttl: i32,
+
+    #[serde(default)]
+    show_caption_above_media: bool,
+    #[serde(default)]
+    has_spoiler: bool,
 }
 
 impl RObject for InputMessageVideo {
@@ -1904,6 +1909,12 @@ impl InputMessageVideo {
 
     pub fn supports_streaming(&self) -> bool {
         self.supports_streaming
+    }
+    pub fn has_spiler(&self) -> bool {
+        self.has_spoiler
+    }
+    pub fn show_caption_above_media(&self) -> bool {
+        self.show_caption_above_media
     }
 
     pub fn caption(&self) -> &FormattedText {
@@ -1960,6 +1971,14 @@ impl InputMessageVideoBuilder {
 
     pub fn supports_streaming(&mut self, supports_streaming: bool) -> &mut Self {
         self.inner.supports_streaming = supports_streaming;
+        self
+    }
+    pub fn show_caption_above_media(&mut self, show_caption_above_media: bool) -> &mut Self {
+        self.inner.show_caption_above_media = show_caption_above_media;
+        self
+    }
+    pub fn has_spiller(&mut self, has_spiller: bool) -> &mut Self {
+        self.inner.has_spoiler = has_spiller;
         self
     }
 
