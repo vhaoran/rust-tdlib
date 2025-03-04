@@ -1586,6 +1586,18 @@ where
         self.make_request(get_forum_topics).await
     }
 
+    ///Returns information about a forum topic.
+    // Returns object_ptr<ForumTopic>.
+    // Public Fields
+    // int53 	chat_id_     	    Identifier of the chat.
+    // int53 	message_thread_id_ 	Message thread identifier of the forum topic.
+    pub async fn get_forum_topic<C: AsRef<GetForumTopic>>(
+        &self,
+        get_forum_topic: C,
+    ) -> Result<ForumTopic> {
+        self.make_request(get_forum_topic).await
+    }
+
     // Returns an HTML code for embedding the message. Available only for messages in supergroups and channels with a username
     pub async fn get_message_embedding_code<C: AsRef<GetMessageEmbeddingCode>>(
         &self,
