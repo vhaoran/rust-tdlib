@@ -1586,6 +1586,13 @@ where
         self.make_request(get_forum_topics).await
     }
 
+    pub async fn create_forum_topic<C: AsRef<CreateForumTopic>>(
+        &self,
+        create_forum_topic: C,
+    ) -> Result<ForumTopicInfo> {
+        self.make_request(create_forum_topic).await
+    }
+
     ///Returns information about a forum topic.
     // Returns object_ptr<ForumTopic>.
     // Public Fields

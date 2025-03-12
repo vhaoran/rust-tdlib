@@ -93,26 +93,26 @@ impl ForumTopicInfo {
         &self.name
     }
 
-    fn icon(&self) -> &Option<ForumTopicIcon> {
+    pub  fn icon(&self) -> &Option<ForumTopicIcon> {
         &self.icon
     }
-    fn creation_date(&self) -> i64 {
+    pub  fn creation_date(&self) -> i64 {
         self.creation_date
     }
 
-    fn creator_id(&self) -> &MessageSender {
+    pub fn creator_id(&self) -> &MessageSender {
         &self.creator_id
     }
-    fn is_general(&self) -> bool {
+    pub fn is_general(&self) -> bool {
         self.is_general
     }
-    fn is_outgoing(&self) -> bool {
+    pub fn is_outgoing(&self) -> bool {
         self.is_outgoing
     }
-    fn is_closed(&self) -> bool {
+    pub fn is_closed(&self) -> bool {
         self.is_closed
     }
-    fn is_hidden(&self) -> bool {
+    pub fn is_hidden(&self) -> bool {
         self.is_hidden
     }
 }

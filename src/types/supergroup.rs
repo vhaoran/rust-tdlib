@@ -141,6 +141,9 @@ impl Supergroup {
     pub fn is_fake(&self) -> bool {
         self.is_fake
     }
+    pub fn is_forum(&self) -> bool {
+        self.is_forum
+    }
 }
 
 #[doc(hidden)]

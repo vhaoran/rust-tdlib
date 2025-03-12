@@ -783,6 +783,7 @@ pub use self::voice_note::*;
 pub use self::web_page::*;
 pub use self::web_page_instant_view::*;
 pub use self::write_generated_file_part::*;
+pub use self::create_forum_topic::*;
 
 mod accept_call;
 mod accept_terms_of_service;
@@ -1565,3 +1566,4 @@ mod voice_note;
 mod web_page;
 mod web_page_instant_view;
 mod write_generated_file_part;
+mod create_forum_topic;
