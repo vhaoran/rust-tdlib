@@ -258,7 +258,7 @@ pub enum Update {
     StickerSet(UpdateStickerSet),
     /// The list of suggested to the user actions has changed
     #[serde(rename = "updateSuggestedActions")]
-    SuggestedActions(UpdateSuggestedActions),
+    SuggestedActions(serde_json::Value),
     /// Some data of a supergroup or a channel has changed. This update is guaranteed to come before the supergroup identifier is returned to the application
     #[serde(rename = "updateSupergroup")]
     Supergroup(UpdateSupergroup),
@@ -297,6 +297,9 @@ pub enum Update {
     */
     #[serde(rename = "updateFileDownloads")]
     FileDownloads(UpdateFileDownloads),
+    #[serde(rename = "updateFileDownload")]
+    FileDownload(serde_json::Value),
+
     #[serde(rename = "updateAttachmentMenuBots")]
     AttachmentMenuBots(UpdateAttachmentMenuBots),
 
@@ -402,6 +405,56 @@ pub enum Update {
     MessageFactCheck(serde_json::Value),
     #[serde(rename = "updateFileRemovedFromDownloads")]
     FileRemovedFromDownloads(serde_json::Value),
+    #[serde(rename = "updateActiveLiveLocationMessages")]
+    ActiveLiveLocationMessages(serde_json::Value),
+    #[serde(rename = "updateApplicationRecaptchaVerificationRequired")]
+    ApplicationRecaptchaVerificationRequired(serde_json::Value),
+    #[serde(rename = "updateApplicationVerificationRequired")]
+    ApplicationVerificationRequired(serde_json::Value),
+    #[serde(rename = "updateAutosaveSettings")]
+    AutosaveSettings(serde_json::Value),
+    #[serde(rename = "updateBusinessConnection")]
+    BusinessConnection(serde_json::Value),
+    #[serde(rename = "updateBusinessMessageEdited")]
+    BusinessMessageEdited(serde_json::Value),
+    #[serde(rename = "updateBusinessMessagesDeleted")]
+    BusinessMessagesDeleted(serde_json::Value),
+    #[serde(rename = "updateChatAccentColors")]
+    ChatAccentColors(serde_json::Value),
+    #[serde(rename = "updateChatActiveStories")]
+    ChatActiveStories(serde_json::Value),
+    #[serde(rename = "updateChatBackground")]
+    ChatBackground(serde_json::Value),
+    #[serde(rename = "updateChatBlockList")]
+    ChatBlockList(serde_json::Value),
+    #[serde(rename = "updateChatBoost")]
+    ChatBoost(serde_json::Value),
+    #[serde(rename = "updateChatBusinessBotManageBar")]
+    ChatBusinessBotManageBar(serde_json::Value),
+    #[serde(rename = "updateChatEmojiStatus")]
+    ChatEmojiStatus(serde_json::Value),
+    #[serde(rename = "updateChatRemovedFromList")]
+    ChatRemovedFromList(serde_json::Value),
+    #[serde(rename = "updateChatRevenueAmount")]
+    ChatRevenueAmount(serde_json::Value),
+    #[serde(rename = "updateChatViewAsTopics")]
+    ChatViewAsTopics(serde_json::Value),
+    #[serde(rename = "updateContactCloseBirthdays")]
+    ContactCloseBirthdays(serde_json::Value),
+    #[serde(rename = "updateDefaultPaidReactionType")]
+    DefaultPaidReactionType(serde_json::Value),
+    #[serde(rename = "updateFileAddedToDownloads")]
+    FileAddedToDownloads(serde_json::Value),
+    #[serde(rename = "updateFreezeState")]
+    FreezeState(serde_json::Value),
+    #[serde(rename = "updateGroupCallParticipants")]
+    GroupCallParticipants(serde_json::Value),
+    #[serde(rename = "updateGroupCallVerificationState")]
+    GroupCallVerificationState(serde_json::Value),
+    #[serde(rename = "updateStoryPostFailed")]
+    StoryPostFailed(serde_json::Value),
+    #[serde(rename = "updateStoryPostSucceeded")]
+    StoryPostSucceeded(serde_json::Value),
 }
 
 impl Default for Update {
@@ -495,7 +548,7 @@ impl RObject for Update {
             Update::SelectedBackground(t) => t.extra(),
             Update::ServiceNotification(t) => t.extra(),
             Update::StickerSet(t) => t.extra(),
-            Update::SuggestedActions(t) => t.extra(),
+            // Update::SuggestedActions(t) => t.extra(),
             Update::Supergroup(t) => t.extra(),
             Update::SupergroupFullInfo(t) => t.extra(),
             Update::TermsOfService(t) => t.extra(),
@@ -611,7 +664,7 @@ impl RObject for Update {
             Update::SelectedBackground(t) => t.client_id(),
             Update::ServiceNotification(t) => t.client_id(),
             Update::StickerSet(t) => t.client_id(),
-            Update::SuggestedActions(t) => t.client_id(),
+            // Update::SuggestedActions(t) => t.client_id(),
             Update::Supergroup(t) => t.client_id(),
             Update::SupergroupFullInfo(t) => t.client_id(),
             Update::TermsOfService(t) => t.client_id(),
@@ -8963,7 +9016,9 @@ pub struct UpdateFileDownloads {
     /// The new list of users nearby
     #[serde(default)]
     total_size: u64,
+    #[serde(default)]
     total_count: u32,
+    #[serde(default)]
     downloaded_size: u64,
 }
 

@@ -1593,6 +1593,13 @@ where
         self.make_request(create_forum_topic).await
     }
 
+    pub async fn get_forum_topic_link<C: AsRef<GetForumTopicLink>>(
+        &self,
+        body: C,
+    ) -> Result<MessageLink> {
+        self.make_request(body).await
+    }
+
     ///Returns information about a forum topic.
     // Returns object_ptr<ForumTopic>.
     // Public Fields

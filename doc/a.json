@@ -1,12 +1,125 @@
 {
-  "@type" : "keyboardButtonTypeRequestUsers",
-  "id" : 370256232,
-  "restrict_user_is_bot" : true,
-  "user_is_bot" : false,
-  "restrict_user_is_premium" : false,
-  "user_is_premium" : false,
-  "max_quantity" : 1,
-  "request_name" : false,
-  "request_username" : false,
-  "request_photo" : false
+  "@type":"message" ,
+  "id":1217396736 ,
+  "sender_id":{
+    "@type":"messageSenderChat" ,
+    "chat_id":-1002275739481
+  } ,
+  "chat_id":-1002275739481 ,
+  "is_outgoing":false ,
+  "is_pinned":false ,
+  "is_from_  offline":false ,
+  "can_be_saved":true ,
+  "has_timestamped_media":true ,
+  "is_channel_post":true ,
+  "is_topic_message":false ,
+  "contains_unread_mention":false ,
+  "date":1746388582 ,
+  "edit_date":0 ,
+  "interaction_info":{
+    "@type":"messageInteractionInfo" ,
+    "view_count":20671 ,
+    "forward_count":96
+  } ,
+  "unread_reactions":[ ] ,
+  "message_thread_id":0 ,
+  "saved_messages_topic_id":0 ,
+  "self_destruct_in":0.0 ,
+  "auto_delete_in":0.0 ,
+  "via_bot_user_id":0 ,
+  "sender_business_bot_user_id":0 ,
+  "sender_boost_count":0 ,
+  "paid_message_star_count":0 ,  ---------------------
+  "author_signature":"" ,
+  "media_album_id":"-3104702589684764638" ,
+  "effect_id":"0" ,
+  "has_sensitive_content":false ,
+  "restriction_reason":"" ,
+  "content":{
+    "@type":"messageVideo" ,
+    "video":{
+      "@type":"video" ,
+      "duration":5 ,
+      "width":596 ,
+      "height":684 ,
+      "file_name":"" ,
+      "mime_type":"video/mp4" ,
+      "has_stickers":false ,
+      "supports_streaming":true ,
+      "minithumbnail":{
+        "@type":"minithumbnail" ,
+        "width":35 ,
+        "height":40 ,
+        "data":"/9j/4AAQSkZJRgABAQA  AAQABAAD/2wBDACgcHiMeGSgjISMtKygwPGRBPDc3PHtYXUlkkYCZlo+AjIqgtObDoKrarYqMyP/L2u71////m8H/  ///6/+b9//j/2wBDASstLTw1PHZBQXb4pYyl+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+Pj4+  Pj4+Pj4+Pj4+Pj/wAARCAAoACMDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtR  AAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo  0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKz  tLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAA  AECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYn  LRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpO  UlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMB  AAIRAxEAPwAbR34xMvPTIqrdafJbLudkx7GkivZYwo+9tPGT0p8jvfS75OAOAB0oBakMFnLcKWiAYD3FOezuI+Wib  A74pVaSzmbymxkVbtNXIyLo5HYgUBYpGIdxzRSS3W6RmCYB7UUANeMA5FXLBXAYFDtboTTtPiE0uW6KM1qOoSInIx  2zSY0ZV+4aZVA+6MEiqGwBsHIHrWjPCu+SRWOMZFRCJ3jHmIeehxSWhT1Km1P74FFSi0ZhnIHtRVEWL2lx/unYng/  0pl/KUjXYxyr+vtRRSAhE26GONQegrTtmDIEYAgjrRRQMqy2cwlYIgZc8HFFFFIfMf//Z"
+      } ,
+      "thumbnail":{
+        "@type":"thumbnail" ,
+        "format":{
+          "@type":"thumbnailFormatJpeg"
+        } ,
+        "width":279 ,
+        "height":320 ,
+        "file":{
+          "@type":"file" ,
+          "id":1567 ,
+          "size":14946 ,
+          "expected_size":14946 ,
+          "local":{
+            "@type":"localFile" ,
+            "path":"" ,
+            "can_be_downloaded":true ,
+            "can_be_deleted":false ,
+            "is_downloading_active":false ,
+            "is_downloading_completed":false ,
+            "download_offset":0 ,
+            "downloaded_prefix_size":0 ,
+            "download  ed_size":0
+          } ,
+          "remote":{
+            "@type":"remoteFile" ,
+            "id":"AAMCBQADIQUABIelB1kAAgSJaB70KnMRDsqcDeUX  ZuAi5gvt1hMAApYXAAJpb8BUbutOBPBpV68BAAdtAAM2BA" ,
+            "unique_id":"AQADlhcAAmlvwFRy" ,
+            "is_upload  ing_active":false ,
+            "is_uploading_completed":true ,
+            "uploaded_size":14946
+          }
+        }
+      } ,
+      "video":{
+        "@type":"file" ,
+        "id":1568 ,
+        "size":2694171 ,
+        "expected_size":2694171 ,
+        "local":{
+          "@type":"localFile" ,
+          "path":"" ,
+          "can_be_downloaded":true ,
+          "can_be_deleted":false ,
+          "is_downloading_active":false ,
+          "is_downloading_completed":false ,
+          "download_offset":0 ,
+          "downloaded_prefix_size":0 ,
+          "downloaded_s    ize":0
+        } ,
+        "remote":{
+          "@type":"remoteFile" ,
+          "id":"BAACAgUAAyEFAASHpQdZAAIEiWge9CpzEQ7KnA3lF2bg    IuYL7dYTAAKWFwACaW_AVG7rTgTwaVevNgQ" ,
+          "unique_id":"AgADlhcAAmlvwFQ" ,
+          "is_uploading_active":false ,
+          "is_uploading_completed":true ,
+          "uploaded_size":2694171
+        }
+      }
+    } ,
+    "alternative_videos":[ ] ,
+    "start_timestamp":0 ,
+    "caption":{
+      "@type":"formattedText" ,
+      "text":"" ,
+      "entities":[ ]
+    } ,
+    "show_caption_above_media":false ,
+    "has_spoiler":false ,
+    "is_secret":false
+  }
 }

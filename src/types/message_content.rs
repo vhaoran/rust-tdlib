@@ -242,6 +242,8 @@ pub enum MessageContent {
     WebAppDataReceived(serde_json::Value),
     #[serde(rename = "messageWebAppDataSent")]
     WebAppDataSent(serde_json::Value),
+    #[serde(rename = "messageChecklistTasksDone")]
+    ChecklistTasksDone(serde_json::Value),
 }
 
 impl Default for MessageContent {
