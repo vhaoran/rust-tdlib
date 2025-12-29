@@ -16,6 +16,7 @@ pub struct Supergroup {
     /// Username of the supergroup or channel; empty for private supergroups or channels
     #[serde(default)]
     username: String,
+
     /// Point in time (Unix timestamp) when the current user joined, or the point in time when the supergroup or channel was created, in case the user is not a member
     #[serde(default)]
     date: i32,

@@ -455,6 +455,13 @@ pub enum Update {
     StoryPostFailed(serde_json::Value),
     #[serde(rename = "updateStoryPostSucceeded")]
     StoryPostSucceeded(serde_json::Value),
+    #[serde(rename = "updateTrustedMiniAppBots")]
+    TrustedMiniAppBots(serde_json::Value),
+    #[serde(rename = "updateGroupCallMessageLevels")]
+    GroupCallMessageLevels(serde_json::Value),
+    #[serde(rename = "updateEmojiChatThemes")]
+    EmojiChatThemes(serde_json::Value),
+
 }
 
 impl Default for Update {

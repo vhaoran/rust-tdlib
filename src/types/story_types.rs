@@ -20,7 +20,7 @@ pub struct StoryContentVideo {
 //-------------------------------------
 #[derive(Clone, Default, Debug)]
 pub struct StoryVideo {
-    duration: i64,
+    duration: f64,
     width: i32,
     height: i32,
     preload_prefix_size: i32,

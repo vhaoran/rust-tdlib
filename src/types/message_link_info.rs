@@ -18,6 +18,13 @@ pub struct MessageLinkInfo {
 
     #[serde(default)]
     chat_id: i64,
+    // add by whr now: 2015-12-28
+    /// If found, identifier of the message topic to which the message belongs; 0 otherwise
+    topic_id: Option<MessageTopic>,
+
+    #[serde(default)]
+    message_thread_id: i64,
+
     /// If found, the linked message; may be null
     message: Option<Message>,
     /// Timestamp from which the video/audio/video note/voice note playing must start, in seconds; 0 if not specified. The media can be in the message content or in its web page preview
@@ -29,7 +36,6 @@ pub struct MessageLinkInfo {
     #[serde(default)]
     for_album: bool,
     /// True, if the message is linked as a channel post comment or from a message thread
-
     #[serde(default)]
     for_comment: bool,
 }

@@ -29,34 +29,6 @@ pub struct Message {
     /// True, if the message is pinned
     #[serde(default)]
     is_pinned: bool,
-    /// True, if the message can be edited. For live location and poll messages this fields shows whether editMessageLiveLocation or stopPoll can be used with this message by the application
-    // #[serde(default)]
-    // can_be_edited: bool,
-    /// True, if the message can be forwarded
-    // #[serde(default)]
-    // can_be_forwarded: bool,
-    /// True, if content of the message can be saved locally or copied
-    // #[serde(default)]
-    // can_be_saved: bool,
-    /// True, if the message can be deleted only for the current user while other users will continue to see it
-    // #[serde(default)]
-    // can_be_deleted_only_for_self: bool,
-    /// True, if the message can be deleted for all users
-    // #[serde(default)]
-    // can_be_deleted_for_all_users: bool,
-    /// True, if the message statistics are available
-    // #[serde(default)]
-    // can_get_statistics: bool,
-    /// True, if the message thread info is available
-    // #[serde(default)]
-    // can_get_message_thread: bool,
-    /// True, if chat members already viewed the message can be received through getMessageViewers
-    // #[serde(default)]
-    // can_get_viewers: bool,
-    /// True, if media timestamp links can be generated for media timestamp entities in the message text, caption or web page description
-    // #[serde(default)]
-    // can_get_media_timestamp_links: bool,
-    /// True, if media timestamp entities refers to a media in this message as opposed to a media in the replied message
     #[serde(default)]
     has_timestamped_media: bool,
     /// True, if the message is a channel post. All messages to channels are channel posts, all other messages are not channel posts
@@ -79,6 +51,8 @@ pub struct Message {
     forward_info: Option<MessageForwardInfo>,
     /// Information about interactions with the message; may be null
     interaction_info: Option<MessageInteractionInfo>,
+    import_info: Option<MessageImportInfo>,
+
     /// If non-zero, the identifier of the chat to which the replied message belongs; Currently, only messages in the Replies chat can have different reply_in_chat_id and chat_id
     #[serde(default)]
     reply_in_chat_id: i64,
@@ -88,6 +62,7 @@ pub struct Message {
     /// If non-zero, the identifier of the message thread the message belongs to; unique within the chat to which the message belongs
     #[serde(default)]
     message_thread_id: i64,
+    topic_id: Option<MessageTopic>,
     /// For self-destructing messages, the message's TTL (Time To Live), in seconds; 0 if none. TDLib will send updateDeleteMessages or updateMessageContent once the TTL expires
     #[serde(default)]
     ttl: i32,
@@ -254,6 +229,9 @@ impl Message {
     pub fn forward_info(&self) -> &Option<MessageForwardInfo> {
         &self.forward_info
     }
+    pub fn topic_id(&self) -> &Option<MessageTopic> {
+        &self.topic_id
+    }
 
     pub fn interaction_info(&self) -> &Option<MessageInteractionInfo> {
         &self.interaction_info
@@ -268,7 +246,27 @@ impl Message {
     }
 
     pub fn message_thread_id(&self) -> i64 {
-        self.message_thread_id
+        if self.message_thread_id != 0 {
+            return self.message_thread_id;
+        }
+        self.message_thread_id_x()
+    }
+
+    fn message_thread_id_x(&self) -> i64 {
+        if self.message_thread_id != 0 {
+            return self.message_thread_id;
+        }
+
+        match &self.topic_id {
+            Some(a) => match a {
+                MessageTopic::MessageTopicThread(a) => a.message_thread_id,
+                MessageTopic::MessageTopicSavedMessages(a) => a.saved_messages_topic_id,
+                MessageTopic::MessageTopicForum(a) => a.forum_topic_id,
+                MessageTopic::MessageTopicDirectMessages(a) => a.direct_messages_chat_topic_id,
+                _ => 0_i64,
+            },
+            _ => 0_i64,
+        }
     }
 
     pub fn ttl(&self) -> i32 {

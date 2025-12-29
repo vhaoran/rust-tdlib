@@ -127,13 +127,13 @@ pub struct ForwardSource {
     // "message_id" :10989076480 ,
     #[serde(default)]
     message_id: i64,
-    // "sender_name" :"" ,
+
+    /// #[serde(default)]
+    sender_id: Option<MessageSender>,
     #[serde(default)]
     sender_name: String,
-    // "date" :0 ,
     #[serde(default)]
     date: i32,
-    // "is_outgoing" :false
     #[serde(default)]
     is_outgoing: bool,
 }
