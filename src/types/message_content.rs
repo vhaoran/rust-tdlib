@@ -244,6 +244,31 @@ pub enum MessageContent {
     WebAppDataSent(serde_json::Value),
     #[serde(rename = "messageChecklistTasksDone")]
     ChecklistTasksDone(serde_json::Value),
+    // current_date:2025-12-30
+    #[serde(rename = "messageChecklist")]
+    Checklist(serde_json::Value),
+    #[serde(rename = "messageChecklistTasksAdded")]
+    ChecklistTasksAdded(serde_json::Value),
+    #[serde(rename = "messageDirectMessagePriceChanged")]
+    DirectMessagePriceChanged(serde_json::Value),
+    #[serde(rename = "messageGiftedTon")]
+    GiftedTon(serde_json::Value),
+    #[serde(rename = "messageGroupCall")]
+    GroupCall(serde_json::Value),
+    #[serde(rename = "messagePaidMessagePriceChanged")]
+    PaidMessagePriceChanged(serde_json::Value),
+    #[serde(rename = "messagePaidMessagesRefunded")]
+    PaidMessagesRefunded(serde_json::Value),
+    #[serde(rename = "messageSuggestedPostApprovalFailed")]
+    SuggestedPostApprovalFailed(serde_json::Value),
+    #[serde(rename = "messageSuggestedPostApproved")]
+    SuggestedPostApproved(serde_json::Value),
+    #[serde(rename = "messageSuggestedPostDeclined")]
+    SuggestedPostDeclined(serde_json::Value),
+    #[serde(rename = "messageSuggestedPostPaid")]
+    SuggestedPostPaid(serde_json::Value),
+    #[serde(rename = "messageSuggestedPostRefunded")]
+    SuggestedPostRefunded(serde_json::Value),
 }
 
 impl Default for MessageContent {
