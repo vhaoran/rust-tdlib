@@ -461,7 +461,12 @@ pub enum Update {
     GroupCallMessageLevels(serde_json::Value),
     #[serde(rename = "updateEmojiChatThemes")]
     EmojiChatThemes(serde_json::Value),
-
+    #[serde(rename = "updateDirectMessagesChatTopic")]
+    DirectMessagesChatTopic(serde_json::Value),
+    #[serde(rename = "updateTonRevenueStatus")]
+    TonRevenueStatus(serde_json::Value),
+    #[serde(rename = "updateTopicMessageCount")]
+    TopicMessageCount(serde_json::Value),
 }
 
 impl Default for Update {
