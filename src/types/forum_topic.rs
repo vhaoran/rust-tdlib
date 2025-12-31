@@ -68,6 +68,11 @@ pub struct ForumTopicInfo {
     //forumTopicInfo
     #[serde(default)]
     message_thread_id: i64,
+
+    #[serde(default)]
+    forum_topic_id: i64,
+
+
     #[serde(default)]
     name: String,
 
@@ -86,9 +91,9 @@ pub struct ForumTopicInfo {
     is_hidden: bool,
 }
 impl ForumTopicInfo {
-    pub fn message_thread_id(&self) -> i64 {
-        self.message_thread_id
-    }
+    // pub fn message_thread_id(&self) -> i64 {
+    //     self.message_thread_id
+    // }
     pub fn name(&self) -> &String {
         &self.name
     }
@@ -114,6 +119,10 @@ impl ForumTopicInfo {
     }
     pub fn is_hidden(&self) -> bool {
         self.is_hidden
+    }
+    
+    pub fn forum_topic_id(&self) -> i64 {
+        self.forum_topic_id
     }
 }
 //-------------------------------------

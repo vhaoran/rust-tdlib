@@ -14,7 +14,7 @@ pub struct GetForumTopic {
     #[serde(default)]
     chat_id: i64,
     #[serde(default)]
-    message_thread_id: i64,
+    forum_topic_id: i64,
 
     #[serde(rename(serialize = "@type"))]
     td_type: String,
@@ -49,8 +49,8 @@ impl GetForumTopic {
     pub fn chat_id(&self) -> i64 {
         self.chat_id
     }
-    pub fn message_thread_id(&self) -> i64 {
-        self.message_thread_id
+    pub fn forum_topic_id(&self) -> i64 {
+        self.forum_topic_id
     }
 }
 
@@ -71,8 +71,13 @@ impl GetForumTopicBuilder {
         self.inner.chat_id = chat_id;
         self
     }
-    pub fn message_thread_id(&mut self, message_thread_id: i64) -> &mut Self {
-        self.inner.message_thread_id = message_thread_id;
+    // pub fn message_thread_id(&mut self, message_thread_id: i64) -> &mut Self {
+    //     self.inner.message_thread_id = message_thread_id;
+    //     self
+    // }
+
+    pub fn forum_topic_id(&mut self, forum_topic_id: i64) -> &mut Self {
+        self.inner.forum_topic_id = forum_topic_id;
         self
     }
 }

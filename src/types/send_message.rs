@@ -14,6 +14,8 @@ pub struct SendMessage {
 
     #[serde(default)]
     chat_id: i64,
+
+    topic_id: Option<MessageTopic>,
     /// If not 0, a message thread identifier in which the message will be sent
 
     #[serde(default)]
@@ -71,6 +73,10 @@ impl SendMessage {
         self.message_thread_id
     }
 
+    pub fn topic_id(&self) -> Option<&MessageTopic> {
+        self.topic_id.as_ref()
+    }
+
     pub fn reply_to_message_id(&self) -> i64 {
         self.reply_to_message_id
     }
@@ -103,6 +109,10 @@ impl SendMessageBuilder {
 
     pub fn chat_id(&mut self, chat_id: i64) -> &mut Self {
         self.inner.chat_id = chat_id;
+        self
+    }
+    pub fn topic_id(&mut self, topic_id: Option<MessageTopic>) -> &mut Self {
+        self.inner.topic_id = topic_id;
         self
     }
 
