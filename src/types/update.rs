@@ -292,13 +292,10 @@ pub enum Update {
     /// The list of users nearby has changed. The update is guaranteed to be sent only 60 seconds after a successful searchChatsNearby request
     #[serde(rename = "updateUsersNearby")]
     UsersNearby(UpdateUsersNearby),
-    /*
-    {\"@type\":\"updateFileDownloads\",\"total_size\":0,\"total_count\":0,\"downloaded_size\":0,\"@client_id\":1}
-    */
     #[serde(rename = "updateFileDownloads")]
     FileDownloads(UpdateFileDownloads),
     #[serde(rename = "updateFileDownload")]
-    FileDownload(serde_json::Value),
+    FileDownload(UpdateFileDownload),
 
     #[serde(rename = "updateAttachmentMenuBots")]
     AttachmentMenuBots(UpdateAttachmentMenuBots),
@@ -10064,4 +10061,138 @@ impl AsRef<UpdateVideoPublished> for UpdateVideoPublishedBuilder {
         &self.inner
     }
 }
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct DownloadedFileCounts {
+    // int32 	active_count_
+    // Number of active file downloads found, including paused.
+    active_count: i32,
+
+    // int32 	paused_count_
+    // Number of paused file downloads found.
+    paused_count: i32,
+    // int32 	completed_count_
+    // Number of completed file downloads found.
+    completed_count: i32,
+}
+impl DownloadedFileCounts {
+    pub fn active_count(&self) -> i32 {
+        self.active_count
+    }
+    pub fn paused_count(&self) -> i32 {
+        self.paused_count
+    }
+    pub fn completed_count(&self) -> i32 {
+        self.completed_count
+    }
+}
+
 //-----------aaa--------------------------
+/// UpdateFileDownload
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateFileDownload {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    // int32 	file_id_
+    // File identifier.
+    file_id: i32,
+
+    /// int32 	complete_date_
+    /// Point in time (Unix timestamp) when the file downloading was completed;
+    /// 0 if the file downloading isn't completed.
+    complete_date: i32,
+
+    // bool 	is_paused_
+    // True, if downloading of the file is paused.
+    is_paused: bool,
+
+    // object_ptr< downloadedFileCounts > 	counts_
+    // New number of being downloaded and recently downloaded files found.
+    counts: Option<DownloadedFileCounts>,
+}
+
+
+impl RObject for UpdateFileDownload {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+
+}
+
+impl TDUpdate for UpdateFileDownload {}
+
+impl UpdateFileDownload {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateFileDownloadBuilder {
+        let mut inner = UpdateFileDownload::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateFileDownloadBuilder { inner }
+    }
+
+    pub fn file_id(&self) -> i32 {
+        self.file_id
+    }
+    pub fn complete_date(&self) -> i32 {
+        self.complete_date
+    }
+    pub fn is_paused(&self) -> bool {
+        self.is_paused
+    }
+    pub fn counts(&self) -> Option<DownloadedFileCounts> {
+        self.counts.clone()
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateFileDownloadBuilder {
+    inner: UpdateFileDownload,
+}
+
+#[deprecated]
+pub type RTDUpdateFileDownloadBuilder = UpdateFileDownloadBuilder;
+
+impl UpdateFileDownloadBuilder {
+    pub fn build(&self) -> UpdateFileDownload {
+        self.inner.clone()
+    }
+
+    pub fn file_id(&mut self, file_id: i32) -> &mut Self {
+        self.inner.file_id = file_id;
+        self
+    }
+    pub fn complete_date(&mut self, complete_date: i32) -> &mut Self {
+        self.inner.complete_date = complete_date;
+        self
+    }
+    pub fn is_paused(&mut self, is_paused: bool) -> &mut Self {
+        self.inner.is_paused = is_paused;
+        self
+    }
+    pub fn counts(&mut self, counts: DownloadedFileCounts) -> &mut Self {
+        self.inner.counts = Some(counts);
+        self
+    }
+}
+
+impl AsRef<UpdateFileDownload> for UpdateFileDownload {
+    fn as_ref(&self) -> &UpdateFileDownload {
+        self
+    }
+}
+
+impl AsRef<UpdateFileDownload> for UpdateFileDownloadBuilder {
+    fn as_ref(&self) -> &UpdateFileDownload {
+        &self.inner
+    }
+}

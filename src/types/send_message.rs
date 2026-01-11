@@ -112,8 +112,23 @@ impl SendMessageBuilder {
         self
     }
     pub fn topic_id(&mut self, topic_id: Option<MessageTopic>) -> &mut Self {
+        let tid = Self::get_topic_id(&topic_id);
+        if tid != 0 {
+            self.inner.message_thread_id = tid;
+        }
+
+
         self.inner.topic_id = topic_id;
+        //
+        //
         self
+    }
+
+    fn get_topic_id(tid: &Option<MessageTopic>) -> i64 {
+        match tid {
+            Some(v) => v.id(),
+            _ => 0_i64,
+        }
     }
 
     pub fn message_thread_id(&mut self, message_thread_id: i64) -> &mut Self {
