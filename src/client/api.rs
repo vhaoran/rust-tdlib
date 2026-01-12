@@ -189,6 +189,13 @@ where
         self.make_request(cancel_download_file).await
     }
 
+    pub async fn add_file_to_downloads<C: AsRef<AddFileToDownloads>>(
+        &self,
+        body: C,
+    ) -> Result<File> {
+        self.make_request(body).await
+    }
+
     // Cancels reset of 2-step verification password. The method can be called if passwordState.pending_reset_date > 0
     pub async fn cancel_password_reset<C: AsRef<CancelPasswordReset>>(
         &self,
