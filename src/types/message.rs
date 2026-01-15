@@ -251,7 +251,7 @@ impl Message {
         }
         self.message_thread_id_x()
     }
-    
+
 
     fn message_thread_id_x(&self) -> i64 {
         if self.message_thread_id != 0 {

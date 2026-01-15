@@ -15,7 +15,6 @@ pub struct NotificationGroup {
     #[serde(default)]
     id: i32,
     /// Type of the group
-
     #[serde(rename(serialize = "type", deserialize = "type"))]
     #[serde(skip_serializing_if = "NotificationGroupType::_is_default")]
     type_: NotificationGroupType,

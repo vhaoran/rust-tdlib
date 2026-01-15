@@ -21,12 +21,6 @@ pub enum ChatSource {
     PublicServiceAnnouncement(ChatSourcePublicServiceAnnouncement),
 }
 
-impl Default for ChatSource {
-    fn default() -> Self {
-        ChatSource::_Default
-    }
-}
-
 impl RObject for ChatSource {
     #[doc(hidden)]
     fn extra(&self) -> Option<&str> {

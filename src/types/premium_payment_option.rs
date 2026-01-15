@@ -1,7 +1,7 @@
 #[allow(unused_imports)]
 use std::collections::HashSet;
 
-use bson::Document;
+// use bson::Document;
 use serde::{Deserialize, Serialize};
 
 #[derive( Serialize, Deserialize, Clone, Default, Debug)]
@@ -15,7 +15,7 @@ pub struct PremiumPaymentOption {
     pub payment_link: InternalLinkType,
 }
 
-type InternalLinkType=Document;
+type InternalLinkType=serde_json::Value;
 
 
 

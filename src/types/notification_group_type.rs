@@ -29,7 +29,7 @@ pub enum NotificationGroupType {
 
 impl Default for NotificationGroupType {
     fn default() -> Self {
-        NotificationGroupType::_Default
+        Self::_Default
     }
 }
 

@@ -16,9 +16,9 @@ pub struct SendMessageAlbum {
     chat_id: i64,
     /// If not 0, a message thread identifier in which the messages will be sent
 
-    
+
     topic_id: Option<MessageTopic>,
-    
+
     #[serde(default)]
     message_thread_id: i64,
     /// Identifier of a message to reply to or 0
@@ -77,7 +77,7 @@ impl SendMessageAlbum {
     pub fn topic_id(&self) -> Option<&MessageTopic> {
         self.topic_id.as_ref()
     }
-    
+
     pub fn options(&self) -> &MessageSendOptions {
         &self.options
     }
