@@ -1,4 +1,4 @@
-use crate::types::{ChatNotificationSettings, DraftMessage, Message, MessageSender};
+use crate::types::{DraftMessage, Message, MessageSender};
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 // #[serde(tag = "forum_topic")]
@@ -136,10 +136,10 @@ pub struct ForumTopicIcon {
     custom_emoji_id: String,
 }
 impl ForumTopicIcon {
-    fn color(&self) -> i32 {
+    pub fn color(&self) -> i32 {
         self.color
     }
-    fn custom_emoji_id(&self) -> &String {
+    pub fn custom_emoji_id(&self) -> &String {
         &self.custom_emoji_id
     }
 }

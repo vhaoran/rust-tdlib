@@ -14,7 +14,6 @@ pub mod auth_handler;
 pub mod tdlib_client;
 
 pub use auth_handler::{AuthStateHandler, ConsoleAuthStateHandler, SignalAuthStateHandler};
-use log::debug;
 use observer::OBSERVER;
 use serde::de::DeserializeOwned;
 pub use worker::{Worker, WorkerBuilder};
@@ -29,6 +28,7 @@ use tokio::sync::mpsc;
 
 const CLIENT_NOT_AUTHORIZED: Error = Error::Internal("client not authorized yet");
 const CLOSED_RECEIVER_ERROR: Error = Error::Internal("receiver already closed");
+#[allow(dead_code)]
 const INVALID_RESPONSE_ERROR: Error = Error::Internal("receive invalid response");
 const NO_EXTRA: Error = Error::Internal("invalid tdlib response type, not have `extra` field");
 
