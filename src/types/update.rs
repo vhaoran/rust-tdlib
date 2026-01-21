@@ -443,7 +443,7 @@ pub enum Update {
     #[serde(rename = "updateFileAddedToDownloads")]
     FileAddedToDownloads(serde_json::Value),
     #[serde(rename = "updateFreezeState")]
-    FreezeState(serde_json::Value),
+    FreezeState(UpdateFreezeState),
     #[serde(rename = "updateGroupCallParticipants")]
     GroupCallParticipants(serde_json::Value),
     #[serde(rename = "updateGroupCallVerificationState")]
@@ -486,6 +486,9 @@ impl RObject for Update {
             Update::Call(t) => t.extra(),
             Update::ChatAction(t) => t.extra(),
             Update::ChatActionBar(t) => t.extra(),
+            //
+            Update::FreezeState(t) => t.extra(),
+            //
             Update::ChatDefaultDisableNotification(t) => t.extra(),
             Update::ChatDraftMessage(t) => t.extra(),
             Update::ChatFilters(t) => t.extra(),
@@ -602,6 +605,9 @@ impl RObject for Update {
             Update::Call(t) => t.client_id(),
             Update::ChatAction(t) => t.client_id(),
             Update::ChatActionBar(t) => t.client_id(),
+            //
+            Update::FreezeState(t) => t.client_id(),
+            //
             Update::ChatDefaultDisableNotification(t) => t.client_id(),
             Update::ChatDraftMessage(t) => t.client_id(),
             Update::ChatFilters(t) => t.client_id(),
@@ -10114,7 +10120,6 @@ pub struct UpdateFileDownload {
     counts: Option<DownloadedFileCounts>,
 }
 
-
 impl RObject for UpdateFileDownload {
     #[doc(hidden)]
     fn extra(&self) -> Option<&str> {
@@ -10124,7 +10129,6 @@ impl RObject for UpdateFileDownload {
     fn client_id(&self) -> Option<i32> {
         self.client_id
     }
-
 }
 
 impl TDUpdate for UpdateFileDownload {}
@@ -10196,3 +10200,129 @@ impl AsRef<UpdateFileDownload> for UpdateFileDownloadBuilder {
         &self.inner
     }
 }
+
+//-------------------------------------
+/*
+declare this strut UpdateFreezeState ,use the same logic as
+UpdateAnimatedEmojiMessageClicked  .
+bool 	is_frozen_
+     True, if the account is frozen.
+
+int32 	freezing_date_
+     Point in time (Unix timestamp) when the account was frozen; 0 if the account isn't frozen.
+
+int32 	deletion_date_
+     Point in time (Unix timestamp) when the account will be deleted and can't be unfrozen; 0 if the account isn't frozen.
+
+string 	appeal_link_
+     The link to open to send an appeal to unfreeze the account.
+this is c++ comment:
+ */
+
+// ... existing code ...
+
+/// Contains information about account freeze state
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct UpdateFreezeState {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// True, if the account is frozen
+    #[serde(default)]
+    pub is_frozen: bool,
+
+    /// Point in time (Unix timestamp) when account freezing happens (or happened)
+    #[serde(default)]
+    pub freezing_date: i32,
+
+    /// Point in time (Unix timestamp) when account will be (or was) automatically deleted
+    #[serde(default)]
+    pub deletion_date: i32,
+
+    /// URL for appealing account freeze
+    #[serde(default)]
+    pub appeal_link: String,
+}
+
+impl RObject for UpdateFreezeState {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDUpdate for UpdateFreezeState {}
+
+impl UpdateFreezeState {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> UpdateFreezeStateBuilder {
+        let mut inner = UpdateFreezeState::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        UpdateFreezeStateBuilder { inner }
+    }
+    pub fn is_frozen(&self) -> bool {
+        self.is_frozen
+    }
+    pub fn freezing_date(&self) -> i32 {
+        self.freezing_date
+    }
+    pub fn deletion_date(&self) -> i32 {
+        self.deletion_date
+    }
+    pub fn appeal_link(&self) -> &str {
+        self.appeal_link.as_str()
+    }
+}
+
+#[doc(hidden)]
+pub struct UpdateFreezeStateBuilder {
+    inner: UpdateFreezeState,
+}
+
+#[deprecated]
+pub type RTDUpdateFreezeStateBuilder = UpdateFreezeStateBuilder;
+
+impl UpdateFreezeStateBuilder {
+    pub fn build(&self) -> UpdateFreezeState {
+        self.inner.clone()
+    }
+    pub fn is_frozen(&mut self, is_frozen: bool) -> &mut Self {
+        self.inner.is_frozen = is_frozen;
+        self
+    }
+    pub fn freezing_date(&mut self, freezing_date: i32) -> &mut Self {
+        self.inner.freezing_date = freezing_date;
+        self
+    }
+    pub fn deletion_date(&mut self, deletion_date: i32) -> &mut Self {
+        self.inner.deletion_date = deletion_date;
+        self
+    }
+    pub fn appeal_link(&mut self, appeal_link: String) -> &mut Self {
+        self.inner.appeal_link = appeal_link;
+        self
+    }
+}
+
+impl AsRef<UpdateFreezeState> for UpdateFreezeState {
+    fn as_ref(&self) -> &UpdateFreezeState {
+        self
+    }
+}
+
+impl AsRef<UpdateFreezeState> for UpdateFreezeStateBuilder {
+    fn as_ref(&self) -> &UpdateFreezeState {
+        &self.inner
+    }
+}
+// ... existing code ...
