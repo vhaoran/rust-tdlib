@@ -25,6 +25,7 @@ use crate::{
 };
 use tdlib_client::{TdJson, TdLibClient};
 use tokio::sync::mpsc;
+use uuid::Uuid;
 
 const CLIENT_NOT_AUTHORIZED: Error = Error::Internal("client not authorized yet");
 const CLOSED_RECEIVER_ERROR: Error = Error::Internal("receiver already closed");
@@ -50,6 +51,7 @@ pub struct Client<S>
 where
     S: TdLibClient + Clone,
 {
+    uuid: String,
     tdlib_client: S,
     client_id: Option<i32>,
     is_started: bool,
@@ -62,6 +64,11 @@ impl<S> Client<S>
 where
     S: TdLibClient + Clone,
 {
+    pub fn uuid(&self)->&String{
+        &self.uuid
+    }
+
+
     pub(crate) fn get_auth_state_channel_size(&self) -> Option<usize> {
         self.auth_state_channel_size
     }
@@ -195,6 +202,7 @@ where
         auth_state_channel_size: Option<usize>,
     ) -> Self {
         Self {
+            uuid: Uuid::new_v4().to_string(),
             tdlib_client,
             updates_sender,
             tdlib_parameters,
