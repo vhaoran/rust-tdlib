@@ -9,19 +9,34 @@ fn main() {
         if lib_dir.exists() {
             println!("cargo:rustc-link-search=native={}", lib_dir.display());
         } else {
-            panic!("TDLIB_DIR is set to '{}', but the 'lib' directory was not found.", tdlib_dir);
+            panic!(
+                "TDLIB_DIR is set to '{}', but the 'lib' directory was not found.",
+                tdlib_dir
+            );
         }
     } else {
         if cfg!(target_os = "macos") {
             println!("cargo:rustc-link-search=native=/opt/homebrew/lib");
             println!("cargo:rustc-link-search=native=/usr/local/lib");
+
+            // ---------->
+            //     later add lines
+            // 禁用 macOS 多余动态链接选项，减小二进制体积
+            println!("cargo:rustc-link-arg=-Wl,-no_compact_unwind");
+            println!("cargo:rustc-link-arg=-Wl,-dead_strip");
+            // 静态链接 C++ 运行时（若项目包含 C++ 依赖，可选）
+            println!("cargo:rustc-link-arg=-static-libstdc++");
         } else if cfg!(target_os = "linux") {
             println!("cargo:rustc-link-search=native=/usr/local/lib");
             println!("cargo:rustc-link-search=native=/usr/lib");
         } else if cfg!(target_os = "windows") {
             println!("cargo:warning=TDLIB_DIR environment variable not set. Please set it to your TDLib installation directory (e.g., C:\\path\\to\\tdlib).");
+
+            // ---------later add----
+            println!("cargo:warning=TDLIB_DIR environment variable not set. Please set it to your TDLib installation directory (e.g., C:\\path\\to\\tdlib).");
         }
     }
 
     println!("cargo:rustc-link-lib=tdjson");
+    // println!("cargo:rustc-link-lib=static=tdjson");
 }

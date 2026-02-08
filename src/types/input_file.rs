@@ -66,6 +66,18 @@ impl InputFile {
     pub fn _is_default(&self) -> bool {
         matches!(self, InputFile::_Default)
     }
+    
+    pub fn is_local_file(&self)->bool{
+        matches!(self, InputFile::Local(_))
+    }
+    
+    /// maybe is empty string
+    pub fn local_path(&self)->String{
+        match &self{
+            Self::Local(f)=>f.path().clone(),
+            _=> "".to_string()
+        }
+    }
 }
 
 impl AsRef<InputFile> for InputFile {

@@ -84,6 +84,9 @@ impl SendMessage {
     pub fn options(&self) -> &MessageSendOptions {
         &self.options
     }
+    pub fn options_mut(&mut self) -> &mut MessageSendOptions {
+        &mut self.options
+    }
 
     pub fn reply_markup(&self) -> &ReplyMarkup {
         &self.reply_markup
@@ -116,7 +119,6 @@ impl SendMessageBuilder {
         if tid != 0 {
             self.inner.message_thread_id = tid;
         }
-
 
         self.inner.topic_id = topic_id;
         //

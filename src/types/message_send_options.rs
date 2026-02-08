@@ -62,6 +62,10 @@ impl MessageSendOptions {
     pub fn scheduling_state(&self) -> &MessageSchedulingState {
         &self.scheduling_state
     }
+
+    pub fn set_sending_id(&mut self, sending_id: i64) {
+        self.sending_id = sending_id;
+    }
 }
 
 #[doc(hidden)]

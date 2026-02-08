@@ -48,3 +48,46 @@ dyn-clone = { version = "1.0.11", optional = true }
 tokio = {version = "1", features = ["macros", "rt-multi-thread", "sync", "time"]}
 log = { version = "0.4" }
 env_logger = "0.10.0"
+
+
+
+#[links]
+#tdjson = "tdjson"
+#[build]
+#rustflags = ["-C", "link-arg=-static"]
+#
+##---------------------------------------
+#[profile.release]
+## 发布模式优化（静态链接推荐开启，减小二进制体积）
+#opt-level = 3  # 最高优化级别
+#lto = true     # 链接时优化，进一步减小体积
+#codegen-units = 1  # 单代码生成单元，配合 LTO 效果更好
+#panic = "abort"    # 恐慌时直接终止，不生成 unwind 信息，减小体积
+#strip = true       # 剥离调试信息（Windows/macOS 均支持）
+##rustflags = ["-C", "link-static", "-C", "target-feature=+crt-static"]  # 合并 crt-static（MSVC）和 link-static（全局）
+#
+## 跨平台构建配置（针对不同目标平台的额外设置）
+#[target.'cfg(windows)'.dependencies]
+#winapi = { version = "^0.3", features = ["winbase", "processenv"] }
+#
+#
+#[target.'cfg(target_os = "macos")'.dependencies]
+#core-foundation = "0.9"
+## macOS 核心框架（按需添加，无法静态链接，系统自带）
+#
+#
+#[target.x86_64-pc-windows-msvc]
+#ustflags = [
+#  "-C", "link-static",          # 强制静态链接所有可静态的库
+#  "-C", "target-feature=+crt-static"  # 静态链接 MSVC C 运行时
+#]
+#
+##可选：为 arm64 Windows MSVC 工具链配置（适配现代 Windows 设备）
+#[target.aarch64-pc-windows-msvc]
+#rustflags = [
+#  "-C", "link-static",
+#  "-C", "target-feature=+crt-static"
+#]
+#
+#[target.aarch64-apple-darwin]
+#rustflags = ["-C", "link-static", "-C", "link-arg=-Wl,-dead_strip"]

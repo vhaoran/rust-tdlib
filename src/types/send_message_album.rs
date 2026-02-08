@@ -15,8 +15,6 @@ pub struct SendMessageAlbum {
     #[serde(default)]
     chat_id: i64,
     /// If not 0, a message thread identifier in which the messages will be sent
-
-
     topic_id: Option<MessageTopic>,
 
     #[serde(default)]
@@ -80,6 +78,9 @@ impl SendMessageAlbum {
 
     pub fn options(&self) -> &MessageSendOptions {
         &self.options
+    }
+    pub fn options_mut(&mut self) -> &mut MessageSendOptions {
+        &mut self.options
     }
 
     pub fn input_message_contents(&self) -> &Vec<InputMessageContent> {
