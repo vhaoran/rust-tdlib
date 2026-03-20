@@ -25,7 +25,7 @@ pub struct User {
     /// Username of the user
 
     #[serde(default)]
-    username: String,
+    usernames: UserNames,
     /// Phone number of the user
 
     #[serde(default)]
@@ -116,8 +116,12 @@ impl User {
         &self.last_name
     }
 
-    pub fn username(&self) -> &String {
-        &self.username
+    pub fn usernames(&self) -> &UserNames {
+        &self.usernames
+    }
+
+    pub fn username(&self) -> String {
+        self.usernames().editable_username().clone()
     }
 
     pub fn phone_number(&self) -> &String {
@@ -204,8 +208,8 @@ impl UserBuilder {
         self
     }
 
-    pub fn username<T: AsRef<str>>(&mut self, username: T) -> &mut Self {
-        self.inner.username = username.as_ref().to_string();
+    pub fn usernames(&mut self, usernames: UserNames) -> &mut Self {
+        self.inner.usernames = usernames;
         self
     }
 

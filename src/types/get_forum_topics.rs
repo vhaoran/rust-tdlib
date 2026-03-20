@@ -20,7 +20,7 @@ pub struct GetForumTopics {
     #[serde(default)]
     offset_message_id: i64,
     #[serde(default)]
-    offset_message_thread_id: i64,
+    offset_forum_topic_id: i64,
     #[serde(default)]
     limit: i32,
 
@@ -66,8 +66,8 @@ impl GetForumTopics {
     pub fn offset_message_id(&self) -> i64 {
         self.offset_message_id
     }
-    pub fn offset_message_thread_id(&self) -> i64 {
-        self.offset_message_thread_id
+    pub fn offset_forum_topic_id(&self) -> i64 {
+        self.offset_forum_topic_id
     }
     pub fn limit(&self) -> i32 {
         self.limit
@@ -103,8 +103,8 @@ impl GetForumTopicsBuilder {
         self.inner.offset_message_id = offset_message_id;
         self
     }
-    pub fn offset_message_thread_id(&mut self, offset_message_thread_id: i64) -> &mut Self {
-        self.inner.offset_message_thread_id = offset_message_thread_id;
+    pub fn offset_forum_topic_id(&mut self, offset_forum_topic_id: i64) -> &mut Self {
+        self.inner.offset_forum_topic_id = offset_forum_topic_id;
         self
     }
     pub fn limit(&mut self, limit: i32) -> &mut Self {

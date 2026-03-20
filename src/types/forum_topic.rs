@@ -66,12 +66,11 @@ impl ForumTopic {
 // #[serde(tag = "forumTopics")]
 pub struct ForumTopicInfo {
     //forumTopicInfo
-    #[serde(default)]
-    message_thread_id: i64,
+    // #[serde(default)]
+    // message_thread_id: i64,
 
     #[serde(default)]
     forum_topic_id: i64,
-
 
     #[serde(default)]
     name: String,
@@ -98,10 +97,10 @@ impl ForumTopicInfo {
         &self.name
     }
 
-    pub  fn icon(&self) -> &Option<ForumTopicIcon> {
+    pub fn icon(&self) -> &Option<ForumTopicIcon> {
         &self.icon
     }
-    pub  fn creation_date(&self) -> i64 {
+    pub fn creation_date(&self) -> i64 {
         self.creation_date
     }
 
@@ -120,7 +119,7 @@ impl ForumTopicInfo {
     pub fn is_hidden(&self) -> bool {
         self.is_hidden
     }
-    
+
     pub fn forum_topic_id(&self) -> i64 {
         self.forum_topic_id
     }
@@ -159,6 +158,8 @@ pub struct ForumTopics {
     next_offset_message_id: i64,
     #[serde(default)]
     next_offset_message_thread_id: i64,
+    #[serde(default)]
+    next_offset_forum_topic_id: i64,
 }
 impl ForumTopics {
     pub fn total_count(&self) -> i32 {
@@ -173,8 +174,13 @@ impl ForumTopics {
     pub fn next_offset_message_id(&self) -> i64 {
         self.next_offset_message_id
     }
-    pub fn next_offset_message_thread_id(&self) -> i64 {
-        self.next_offset_message_thread_id
+    // pub fn next_offset_message_thread_id(&self) -> i64 {
+    //
+    //     self.next_offset_message_thread_id
+    // }
+
+    pub fn next_offset_forum_topic_id(&self) -> i64 {
+        self.next_offset_forum_topic_id
     }
 }
 //-------------------------------------

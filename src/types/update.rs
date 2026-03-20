@@ -355,6 +355,9 @@ pub enum Update {
     ReactionNotificationSettings(serde_json::Value),
     #[serde(rename = "updateForumTopicInfo")]
     ForumTopicInfo(serde_json::Value),
+    #[serde(rename = "updateForumTopic")]
+    ForumTopic(serde_json::Value),
+
     #[serde(rename = "updateVideoPublished")]
     VideoPublished(UpdateVideoPublished),
     // 2025-02-11

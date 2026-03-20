@@ -64,10 +64,9 @@ impl<S> Client<S>
 where
     S: TdLibClient + Clone,
 {
-    pub fn uuid(&self)->&String{
+    pub fn uuid(&self) -> &String {
         &self.uuid
     }
-
 
     pub(crate) fn get_auth_state_channel_size(&self) -> Option<usize> {
         self.auth_state_channel_size

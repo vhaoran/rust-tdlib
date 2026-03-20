@@ -17,15 +17,15 @@ fn main() {
     } else {
         if cfg!(target_os = "macos") {
             println!("cargo:rustc-link-search=native=/opt/homebrew/lib");
-            println!("cargo:rustc-link-search=native=/usr/local/lib");
+            // println!("cargo:rustc-link-search=native=/usr/local/lib");
 
             // ---------->
             //     later add lines
             // 禁用 macOS 多余动态链接选项，减小二进制体积
-            println!("cargo:rustc-link-arg=-Wl,-no_compact_unwind");
-            println!("cargo:rustc-link-arg=-Wl,-dead_strip");
+            // println!("cargo:rustc-link-arg=-Wl,-no_compact_unwind");
+            // println!("cargo:rustc-link-arg=-Wl,-dead_strip");
             // 静态链接 C++ 运行时（若项目包含 C++ 依赖，可选）
-            println!("cargo:rustc-link-arg=-static-libstdc++");
+            // println!("cargo:rustc-link-arg=-static-libstdc++");
         } else if cfg!(target_os = "linux") {
             println!("cargo:rustc-link-search=native=/usr/local/lib");
             println!("cargo:rustc-link-search=native=/usr/lib");
