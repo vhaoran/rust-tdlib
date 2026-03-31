@@ -227,6 +227,7 @@ impl InputMessageAnimation {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageAnimationBuilder {
     inner: InputMessageAnimation,
 }
@@ -367,6 +368,7 @@ impl InputMessageAudio {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageAudioBuilder {
     inner: InputMessageAudio,
 }
@@ -467,6 +469,7 @@ impl InputMessageContact {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageContactBuilder {
     inner: InputMessageContact,
 }
@@ -549,6 +552,7 @@ impl InputMessageDice {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageDiceBuilder {
     inner: InputMessageDice,
 }
@@ -648,6 +652,7 @@ impl InputMessageDocument {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageDocumentBuilder {
     inner: InputMessageDocument,
 }
@@ -762,6 +767,7 @@ impl InputMessageForwarded {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageForwardedBuilder {
     inner: InputMessageForwarded,
 }
@@ -859,6 +865,7 @@ impl InputMessageGame {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageGameBuilder {
     inner: InputMessageGame,
 }
@@ -1016,6 +1023,7 @@ impl InputMessageInvoice {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageInvoiceBuilder {
     inner: InputMessageInvoice,
 }
@@ -1162,6 +1170,7 @@ impl InputMessageLocation {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageLocationBuilder {
     inner: InputMessageLocation,
 }
@@ -1295,6 +1304,7 @@ impl InputMessagePhoto {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessagePhotoBuilder {
     inner: InputMessagePhoto,
 }
@@ -1448,6 +1458,7 @@ impl InputMessagePoll {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessagePollBuilder {
     inner: InputMessagePoll,
 }
@@ -1582,6 +1593,7 @@ impl InputMessageSticker {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageStickerBuilder {
     inner: InputMessageSticker,
 }
@@ -1695,7 +1707,9 @@ impl InputMessageText {
     }
 }
 
+
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageTextBuilder {
     inner: InputMessageText,
 }
@@ -1782,6 +1796,7 @@ impl InputMessageVenue {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageVenueBuilder {
     inner: InputMessageVenue,
 }
@@ -1927,6 +1942,7 @@ impl InputMessageVideo {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageVideoBuilder {
     inner: InputMessageVideo,
 }
@@ -2071,6 +2087,7 @@ impl InputMessageVideoNote {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageVideoNoteBuilder {
     inner: InputMessageVideoNote,
 }
@@ -2182,6 +2199,7 @@ impl InputMessageVoiceNote {
 }
 
 #[doc(hidden)]
+#[derive(Debug, Clone)]
 pub struct InputMessageVoiceNoteBuilder {
     inner: InputMessageVoiceNote,
 }
