@@ -243,7 +243,7 @@ where
             Ok(v) => {
                 let vv = v.clone();
                 let raw_str = vv.to_string();
-                log::debug!("raw_result_str: {raw_str}");
+                log::debug!("_raw_result_str: {raw_str}");
 
                 if error_received(&v) {
                     match serde_json::from_value::<TDLibError>(v.clone()) {

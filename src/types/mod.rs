@@ -6,6 +6,7 @@ pub(crate) use self::_common::{RFunction, RObject};
 mod _common;
 
 pub use self::accept_call::*;
+pub use self::invite_link_chat_type::*;
 pub use self::accept_terms_of_service::*;
 pub use self::account_ttl::*;
 pub use self::get_forum_topic_link::*;
@@ -1577,3 +1578,4 @@ mod message_import_info;
 mod message_topic;
 mod add_file_to_downloads;
 mod user_names;
+mod invite_link_chat_type;

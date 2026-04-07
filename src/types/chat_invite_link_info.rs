@@ -21,8 +21,8 @@ pub struct ChatInviteLinkInfo {
     /// Type of the chat
 
     #[serde(rename(serialize = "type", deserialize = "type"))]
-    #[serde(skip_serializing_if = "ChatType::_is_default")]
-    type_: ChatType,
+    #[serde(skip_serializing_if = "InviteLinkChatType::_is_default")]
+    type_: InviteLinkChatType,
     /// Title of the chat
 
     #[serde(default)]
@@ -81,7 +81,7 @@ impl ChatInviteLinkInfo {
         self.accessible_for
     }
 
-    pub fn type_(&self) -> &ChatType {
+    pub fn type_(&self) -> &InviteLinkChatType{
         &self.type_
     }
 
@@ -137,7 +137,7 @@ impl ChatInviteLinkInfoBuilder {
         self
     }
 
-    pub fn type_<T: AsRef<ChatType>>(&mut self, type_: T) -> &mut Self {
+    pub fn type_<T: AsRef<InviteLinkChatType>>(&mut self, type_: T) -> &mut Self {
         self.inner.type_ = type_.as_ref().clone();
         self
     }
