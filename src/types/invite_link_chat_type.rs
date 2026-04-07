@@ -1,11 +1,8 @@
 use crate::errors::Result;
-use crate::types::*;
-use uuid::Uuid;
+// use crate::types::*;
 
 use std::fmt::Debug;
 
-/// Describes the type of a chat
-pub trait TDChatType: Debug + RObject {}
 
 /// Describes the type of a chat
 #[derive(Debug, Clone, Deserialize, Serialize)]
