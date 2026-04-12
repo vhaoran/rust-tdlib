@@ -13,28 +13,28 @@ pub struct Proxy {
     /// Unique identifier of the proxy
 
     #[serde(default)]
-    id: i32,
+    pub (crate) id: i32,
     /// Proxy server IP address
 
     #[serde(default)]
-    server: String,
+    pub (crate) server: String,
     /// Proxy server port
 
     #[serde(default)]
-    port: i32,
+    pub (crate) port: i32,
     /// Point in time (Unix timestamp) when the proxy was last used; 0 if never
 
-    #[serde(default)]
-    last_used_date: i32,
-    /// True, if the proxy is enabled now
-
-    #[serde(default)]
-    is_enabled: bool,
+    // #[serde(default)]
+    // last_used_date: i32,
+    // /// True, if the proxy is enabled now
+    //
+    // #[serde(default)]
+    // is_enabled: bool,
     /// Type of the proxy
 
     #[serde(rename(serialize = "type", deserialize = "type"))]
     #[serde(skip_serializing_if = "ProxyType::_is_default")]
-    type_: ProxyType,
+    pub (crate) type_: ProxyType,
 }
 
 impl RObject for Proxy {
@@ -71,13 +71,13 @@ impl Proxy {
         self.port
     }
 
-    pub fn last_used_date(&self) -> i32 {
-        self.last_used_date
-    }
-
-    pub fn is_enabled(&self) -> bool {
-        self.is_enabled
-    }
+    // pub fn last_used_date(&self) -> i32 {
+    //     self.last_used_date
+    // }
+    //
+    // pub fn is_enabled(&self) -> bool {
+    //     self.is_enabled
+    // }
 
     pub fn type_(&self) -> &ProxyType {
         &self.type_
@@ -112,15 +112,15 @@ impl ProxyBuilder {
         self
     }
 
-    pub fn last_used_date(&mut self, last_used_date: i32) -> &mut Self {
-        self.inner.last_used_date = last_used_date;
-        self
-    }
-
-    pub fn is_enabled(&mut self, is_enabled: bool) -> &mut Self {
-        self.inner.is_enabled = is_enabled;
-        self
-    }
+    // pub fn last_used_date(&mut self, last_used_date: i32) -> &mut Self {
+    //     self.inner.last_used_date = last_used_date;
+    //     self
+    // }
+    //
+    // pub fn is_enabled(&mut self, is_enabled: bool) -> &mut Self {
+    //     self.inner.is_enabled = is_enabled;
+    //     self
+    // }
 
     pub fn type_<T: AsRef<ProxyType>>(&mut self, type_: T) -> &mut Self {
         self.inner.type_ = type_.as_ref().clone();

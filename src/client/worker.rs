@@ -242,7 +242,7 @@ where
         }
     }
 
-    async fn set_proxy(&mut self, client: Client<T>, proxy: Option<AddProxy>) -> Result<()> {
+    async fn set_proxy(&mut self, client: &Client<T>, proxy: Option<AddProxy>) -> Result<()> {
         if proxy.is_none() {
             let _ = client.disable_proxy(DisableProxy::builder().build()).await;
             log::debug!("bind_client proxy is none,and not set");
@@ -257,24 +257,27 @@ where
             proxy.type_()
         );
 
-        log::debug!("--bind_client_before set proxy-------");
+        log::debug!("bind_client_proxy_param: {proxy:#?}",);
+
+        // log::debug!("--bind_client_before get proxy-------");
         //-----------only for show old proxies--------------------------
-        match client.get_proxies(GetProxies::builder().build()).await {
-            Ok(v) => {
-                for p in v.proxies() {
-                    log::debug!(
-                        "--bind_client exists proxy: {} {}-------",
-                        p.server(),
-                        p.port()
-                    );
-                }
-            }
-            _ => {
-                log::error!("bind_client_not get proxies ");
-            }
-        }
+        // match client.get_proxies(GetProxies::builder().build()).await {
+        //     Ok(v) => {
+        //         for p in v.proxies() {
+        //             log::debug!(
+        //                 "--bind_client exists proxy: {} {}-------",
+        //                 p.server(),
+        //                 p.port()
+        //             );
+        //         }
+        //     }
+        //     _ => {
+        //         log::error!("bind_client_not get proxies ");
+        //     }
+        // }
 
         //-------------------------------------
+        log::debug!("--bind_client_before add proxy-------");
         let p = client.add_proxy(proxy).await.map_err(|e| {
             log::error!("---bind_client_添加代理失败---{}-", e.to_string());
             e
@@ -284,11 +287,11 @@ where
         client
             .test_proxy(
                 TestProxy::builder()
-                    .server(p.server())
-                    .port(p.port())
+                    .server(p.proxy().server())
+                    .port(p.proxy().port())
                     .timeout(20_f32)
                     .dc_id(1_i32)
-                    .type_(p.type_())
+                    .type_(p.proxy().type_())
                     .build(),
             )
             .await
@@ -303,7 +306,7 @@ where
                 log::debug!("--bind_client_test_proxy_ok ---{:?}---", data);
                 data
             })?;
-        log::debug!("--bind_client_after_set_proxy-------");
+        // log::debug!("--bind_client_after_set_proxy-------");
         let _ = client
             .enable_proxy(EnableProxy::builder().proxy_id(p.id()).build())
             .await
@@ -333,8 +336,6 @@ where
         log::debug!("bind_client_new client created: {}", client_id);
         client.set_client_id(client_id)?;
 
-        log::debug!("--bind_client_before_--get_auth_state_channel_size-----");
-
         let (sx, rx) = match client.get_auth_state_channel_size() {
             None => (None, None),
             Some(size) => {
@@ -354,12 +355,13 @@ where
 
         self.clients.write().await.insert(client_id, ctx);
         log::debug!("bind_client_new_client_added and insert,and will send_first request");
+        //-----------proxy ok--------------------------
         //-----------proxy start--------------------------
-        let _ = self.set_proxy(client.clone(), proxy).await.map_err(|e| {
-            log::error!("---bind_client_set_proxy_error---{}-", e.to_string());
+        let _ = self.set_proxy(&client, proxy).await.map_err(|e| {
+            log::error!("---bind_client_1_set_proxy_error---{}-", e.to_string());
             e
         })?;
-        //-----------proxy ok--------------------------
+        log::debug!("bind_client_2_after set proxy: {}", client_id);
 
         // We need to call any tdlib method to retrieve first response.
         // Otherwise client can't be authorized: no `UpdateAuthorizationState` send by TDLib.

@@ -68,6 +68,13 @@ where
         &self.uuid
     }
 
+    pub fn client_id(&self) -> i32 {
+        match &self.client_id {
+            Some(ref id) => id.clone(),
+            _ => 0_i32,
+        }
+    }
+
     pub(crate) fn get_auth_state_channel_size(&self) -> Option<usize> {
         self.auth_state_channel_size
     }

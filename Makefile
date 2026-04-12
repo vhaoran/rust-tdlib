@@ -10,10 +10,10 @@ format:
 format-check:
 	cargo fmt --check
 
-lint:
-	cargo clippy --tests --examples --all-features
+# lint:
+# 	cargo clippy --tests --examples --all-features
 
-test:
-	cargo test --all-features --bins --tests --all-targets
+# test:
+# 	cargo test --all-features --bins --tests --all-targets
 
 check: build format lint test

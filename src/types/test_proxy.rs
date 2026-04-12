@@ -13,17 +13,8 @@ pub struct TestProxy {
     /// Proxy server IP address
 
     #[serde(default)]
-    server: String,
+    proxy: Proxy,
     /// Proxy server port
-
-    #[serde(default)]
-    port: i32,
-    /// Proxy type
-
-    #[serde(rename(serialize = "type", deserialize = "type"))]
-    #[serde(skip_serializing_if = "ProxyType::_is_default")]
-    type_: ProxyType,
-    /// Identifier of a datacenter, with which to test connection
 
     #[serde(default)]
     dc_id: i32,
@@ -63,15 +54,15 @@ impl TestProxy {
     }
 
     pub fn server(&self) -> &String {
-        &self.server
+        self.proxy.server()
     }
 
     pub fn port(&self) -> i32 {
-        self.port
+        self.proxy.port()
     }
 
     pub fn type_(&self) -> &ProxyType {
-        &self.type_
+        self.proxy.type_()
     }
 
     pub fn dc_id(&self) -> i32 {
@@ -97,17 +88,17 @@ impl TestProxyBuilder {
     }
 
     pub fn server<T: AsRef<str>>(&mut self, server: T) -> &mut Self {
-        self.inner.server = server.as_ref().to_string();
+        self.inner.proxy.server = server.as_ref().to_string();
         self
     }
 
     pub fn port(&mut self, port: i32) -> &mut Self {
-        self.inner.port = port;
+        self.inner.proxy.port = port;
         self
     }
 
     pub fn type_<T: AsRef<ProxyType>>(&mut self, type_: T) -> &mut Self {
-        self.inner.type_ = type_.as_ref().clone();
+        self.inner.proxy.type_ = type_.as_ref().clone();
         self
     }
 

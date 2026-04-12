@@ -2,7 +2,6 @@ use crate::errors::Result;
 use crate::types::*;
 use uuid::Uuid;
 
-/// Adds a proxy server for network requests. Can be called before authorization
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct AddProxy {
     #[doc(hidden)]
@@ -11,23 +10,13 @@ pub struct AddProxy {
     #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
     client_id: Option<i32>,
     /// Proxy server IP address
-
     #[serde(default)]
-    server: String,
-    /// Proxy server port
+    proxy: Proxy,
 
-    #[serde(default)]
-    port: i32,
     /// True, if the proxy needs to be enabled
 
     #[serde(default)]
     enable: bool,
-    skip_validation: bool,
-    /// Proxy type
-
-    #[serde(rename(serialize = "type", deserialize = "type"))]
-    #[serde(skip_serializing_if = "ProxyType::_is_default")]
-    type_: ProxyType,
 
     #[serde(rename(serialize = "@type"))]
     td_type: String,
@@ -60,11 +49,11 @@ impl AddProxy {
     }
 
     pub fn server(&self) -> &String {
-        &self.server
+        &self.proxy.server
     }
 
     pub fn port(&self) -> i32 {
-        self.port
+        self.proxy.port
     }
 
     pub fn enable(&self) -> bool {
@@ -72,7 +61,7 @@ impl AddProxy {
     }
 
     pub fn type_(&self) -> &ProxyType {
-        &self.type_
+        &self.proxy.type_
     }
 }
 
@@ -90,12 +79,12 @@ impl AddProxyBuilder {
     }
 
     pub fn server<T: AsRef<str>>(&mut self, server: T) -> &mut Self {
-        self.inner.server = server.as_ref().to_string();
+        self.inner.proxy.server = server.as_ref().to_string();
         self
     }
 
     pub fn port(&mut self, port: i32) -> &mut Self {
-        self.inner.port = port;
+        self.inner.proxy.port = port;
         self
     }
 
@@ -103,13 +92,9 @@ impl AddProxyBuilder {
         self.inner.enable = enable;
         self
     }
-    pub fn skip_validation(&mut self, skip_validation: bool) -> &mut Self {
-        self.inner.skip_validation = skip_validation;
-        self
-    }
 
     pub fn type_<T: AsRef<ProxyType>>(&mut self, type_: T) -> &mut Self {
-        self.inner.type_ = type_.as_ref().clone();
+        self.inner.proxy.type_ = type_.as_ref().clone();
         self
     }
 }
