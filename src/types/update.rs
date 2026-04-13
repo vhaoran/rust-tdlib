@@ -467,6 +467,9 @@ pub enum Update {
     TonRevenueStatus(serde_json::Value),
     #[serde(rename = "updateTopicMessageCount")]
     TopicMessageCount(serde_json::Value),
+    //
+    #[serde(rename = "updateTextCompositionStyles")]
+    TextCompositionStyles(serde_json::Value),
 }
 
 impl Default for Update {
