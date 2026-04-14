@@ -77,6 +77,8 @@ pub enum TextEntityType {
     BlockQuote(TextEntityTypeBlockQuote),
     #[serde(rename = "textEntityTypeExpandableBlockQuote")]
     ExpandableBlockQuote(TextEntityTypeExpandableBlockQuote),
+    #[serde(rename = "textEntityTypeDateTime")]
+    DateTime(TextEntityTypeDateTime),
 }
 
 impl Default for TextEntityType {
@@ -110,6 +112,7 @@ impl RObject for TextEntityType {
             TextEntityType::CustomEmoji(t) => t.extra(),
             TextEntityType::Spoiler(t) => t.extra(), //
             TextEntityType::BlockQuote(t) => t.extra(),
+            TextEntityType::DateTime(t) => t.extra(),
 
             _ => None,
         }
@@ -138,6 +141,7 @@ impl RObject for TextEntityType {
             TextEntityType::CustomEmoji(t) => t.client_id(),
             TextEntityType::Spoiler(t) => t.client_id(),
             TextEntityType::BlockQuote(t) => t.client_id(),
+            TextEntityType::DateTime(t) => t.client_id(),
 
             _ => None,
         }
@@ -1569,11 +1573,247 @@ impl AsRef<TextEntityTypeExpandableBlockQuote> for TextEntityTypeExpandableBlock
     }
 }
 
-#[test]
-fn aa() {
-    //---------------------
-    let s = r#"
-"㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️㊗️\n\n【采集猫】V2.1.0版本已发布，请及时更新！\n\n🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️🏃‍♂️\n\n更新内容如下（更新后无需做任何其他设置）：\n\n1️⃣优化了登陆流程，解决了登陆过程的一个BUG；\n2️⃣优化了重启软件后恢复缓冲区数据的逻辑，大大降低了软件请求飞机服务器的频次（图一）；\n3️⃣规则设置增加了模板，新增一条规则以后，将该条规则选中（整条规则变蓝色即为选中，鼠标点击一下该条规则的空白处即可选中），点击新增规则，那么新增加的规则将以选中的规则作为模板复制其“爬取类型”“历史还是当前还是所有”“替换规则”“转发群”，方便规则很多的用户快速复用规则参数，同时也新增了【全部删除】按钮，可以一键清空“来源群”或者“目标群”的所有内容；（图二）\n4️⃣将自动下载的受保护资源的保存期限延长到了一周（基于 恢复发送记录逻辑的更改 导致的）。\n5️⃣软件页面增加了一些操作提示，对新用户更友好。\n6️⃣规则设置底部增加了一个【查找】功能，支持模糊匹配，方便规则很多的用户快速定位想要修改的规则（图二）。\n7️⃣优化了合辑发送的逻辑，合辑发送功能更强大，进一步降低了合并合辑的时候的割裂可能；\n8️⃣其他更多细节，请更新软件后体验；\n\n❤️❤️本次更新针对了一些功能性缺失的修复，如无必要，可不用更新，🎯🎯\n推荐大家更新！\n❤️❤️\n\n============================\n\n更新方式：\n\n直接关闭采集猫软件，点击软件目录下的 update-crawler.exe，将会自动开始更新，更新结束后会提示已更新完成，完成后关闭更新软件，双击 软件目录下的ui-crawler.exe即可正常启动采集猫！\n\n============================\n\n新用户如何下载采集猫软件呢？\n\n点击 置顶 的消息，附件里面有个 update- crawler.exe，下载下来，在电脑某个盘新建一个文件夹，将该附件 移动进去，双击即可开始更新，更新完毕后，双击同目录下的 ui-cralwer.exe即可正常启动采集猫！（所有路径暂不支持中文，新建的文件夹名字请使用英文或数字）\n\n\n🔴🔴🔴唯一客服👍👍👍： @TGcaiji\n🔴🔴🔴官方群组：@aodipay (如果无法私聊客服，请加入群组@我们）\n🔴🔴🔴技术团队👍👍👍： @shixiong_da","entities":
-    "#;
-    println!("-----------{}-----------", s.len());
+//-------------------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(tag = "@type")]
+pub enum DateTimeFormattingType {
+    #[serde(rename = "dateTimeFormattingTypeAbsolute")]
+    Absolute(DateTimeFormattingTypeAbsolute),
+    #[default]
+    #[serde(rename = "dateTimeFormattingTypeRelative")]
+    Relative,
+}
+//-------------------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(tag = "@type")]
+pub struct DateTimeFormattingTypeAbsolute {
+    /// object_ptr< DateTimePartPrecision > 	time_precision_
+    /// The precision with which hours, minutes and seconds are shown.
+    #[serde(default)]
+    time_precision: DateTimePartPrecision,
+    /// object_ptr< DateTimePartPrecision > 	date_precision_
+    /// The precision with which the date is shown.
+    #[serde(default)]
+    date_precision: DateTimePartPrecision,
+    /// bool 	show_day_of_week_
+    /// True, if the day of week must be shown.
+    #[serde(default)]
+    show_day_of_week: bool,
+}
+impl DateTimeFormattingTypeAbsolute {
+    pub fn time_precision(&self) -> &DateTimePartPrecision {
+        &self.time_precision
+    }
+    pub fn date_precision(&self) -> &DateTimePartPrecision {
+        &self.date_precision
+    }
+    pub fn show_day_of_week(&self) -> bool {
+        self.show_day_of_week
+    }
+}
+
+pub struct DateTimeFormattingTypeAbsoluteBuilder {
+    inner: DateTimeFormattingTypeAbsolute,
+}
+impl DateTimeFormattingTypeAbsoluteBuilder {
+    pub fn build(&self) -> DateTimeFormattingTypeAbsolute {
+        self.inner.clone()
+    }
+    pub fn time_precision(&mut self, time_precision: DateTimePartPrecision) -> &mut Self {
+        self.inner.time_precision = time_precision;
+        self
+    }
+    pub fn date_precision(&mut self, date_precision: DateTimePartPrecision) -> &mut Self {
+        self.inner.date_precision = date_precision;
+        self
+    }
+    pub fn show_day_of_week(&mut self, show_day_of_week: bool) -> &mut Self {
+        self.inner.show_day_of_week = show_day_of_week;
+        self
+    }
+}
+
+//-------------------------------------
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(tag = "@type")]
+pub enum DateTimePartPrecision {
+    #[serde(rename = "dateTimePartPrecisionLong")]
+    Long,
+    #[serde(rename = "dateTimePartPrecisionShort")]
+    Short,
+    #[default]
+    #[serde(rename = "dateTimePartPrecisionNone")]
+    None,
+}
+
+//-------------------------------------
+/// A bold text
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(tag = "@type")]
+pub struct TextEntityTypeDateTime {
+    #[doc(hidden)]
+    #[serde(rename(serialize = "@extra", deserialize = "@extra"))]
+    extra: Option<String>,
+    #[serde(rename(serialize = "@client_id", deserialize = "@client_id"))]
+    client_id: Option<i32>,
+
+    /// int32 	unix_time_
+    /// Point in time (Unix timestamp) representing the date and time.
+    #[serde(default)]
+    unix_time: i32,
+    /// object_ptr< DateTimeFormattingType > 	formatting_type_
+    /// Date and time formatting type; may be null if none and the original text must not be changed.
+    #[serde(default)]
+    formatting_type: DateTimeFormattingType,
+}
+
+impl RObject for TextEntityTypeDateTime {
+    #[doc(hidden)]
+    fn extra(&self) -> Option<&str> {
+        self.extra.as_deref()
+    }
+    #[doc(hidden)]
+    fn client_id(&self) -> Option<i32> {
+        self.client_id
+    }
+}
+
+impl TDTextEntityType for TextEntityTypeDateTime {}
+
+impl TextEntityTypeDateTime {
+    pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
+        Ok(serde_json::from_str(json.as_ref())?)
+    }
+    pub fn builder() -> TextEntityTypeDateTimeBuilder {
+        let mut inner = TextEntityTypeDateTime::default();
+        inner.extra = Some(Uuid::new_v4().to_string());
+
+        TextEntityTypeDateTimeBuilder { inner }
+    }
+    pub fn unix_time(&self) -> i32 {
+        self.unix_time
+    }
+    pub fn formatting_type(&self) -> &DateTimeFormattingType {
+        &self.formatting_type
+    }
+}
+
+#[doc(hidden)]
+pub struct TextEntityTypeDateTimeBuilder {
+    inner: TextEntityTypeDateTime,
+}
+
+#[deprecated]
+pub type RTDTextEntityTypeDateTimeBuilder = TextEntityTypeDateTimeBuilder;
+
+impl TextEntityTypeDateTimeBuilder {
+    pub fn build(&self) -> TextEntityTypeDateTime {
+        self.inner.clone()
+    }
+    pub fn unix_time(&mut self, unix_time: i32) -> &mut Self {
+        self.inner.unix_time = unix_time;
+        self
+    }
+    pub fn formatting_type(&mut self, formatting_type: DateTimeFormattingType) -> &mut Self {
+        self.inner.formatting_type = formatting_type;
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeDateTime> for TextEntityTypeDateTime {
+    fn as_ref(&self) -> &TextEntityTypeDateTime {
+        self
+    }
+}
+
+impl AsRef<TextEntityTypeDateTime> for TextEntityTypeDateTimeBuilder {
+    fn as_ref(&self) -> &TextEntityTypeDateTime {
+        &self.inner
+    }
+}
+
+//-------------------------------------
+mod t {
+    use crate::types::{TextEntities, TextEntity, UpdateChatLastMessage};
+
+    #[test]
+    fn test_ft_time() {
+        let s = r#"
+{
+  "@type" : "updateChatLastMessage" ,
+  "chat_id" : 8285504561 ,
+  "last_message" : {
+    "@type" : "message" ,
+    "id" : 3184091201536 ,
+    "sender_id" : {
+      "@type" : "messageSenderUser" ,
+      "user_id" : 1607726842
+    } ,
+    "chat_id" : 8285504561 ,
+    "is_outgoing" : true ,
+    "is_pinned" : false ,
+    "is_from_offline" : false ,
+    "can_be_saved" : true ,
+    "has_timestamped_media" : true ,
+    "is_channel_post" : false ,
+    "is_paid_star_suggested_post" : false ,
+    "is_paid_ton_suggested_post" : false ,
+    "contains_unread_mention" : false ,
+    "date" : 1776075196 ,
+    "edit_date" : 0 ,
+    "unread_reactions" : [] ,
+    "self_destruct_in" : 0.000000 ,
+    "auto_delete_in" : 0.000000 ,
+    "via_bot_user_id" : 0 ,
+    "sender_business_bot_user_id" : 0 ,
+    "sender_boost_count" : 0 ,
+    "sender_tag" : "" ,
+    "paid_message_star_count" : 0 ,
+    "author_signature" : "" ,
+    "media_album_id" : "0" ,
+    "effect_id" : "0" ,
+    "summary_language_code" : "" ,
+    "content" : {
+      "@type" : "messageText" ,
+      "text" : {
+        "@type" : "formattedText" ,
+        "text" : "asDAdasda." ,
+        "entities" : [
+          {
+            "@type" : "textEntity" ,
+            "offset" : 2 ,
+            "length" : 5 ,
+            "type" : {
+              "@type" : "textEntityTypeDateTime" ,
+              "unix_time" : 1776251586 ,
+              "formatting_type" : {
+                "@type" : "dateTimeFormattingTypeAbsolute" ,
+                "time_precision" : {
+                  "@type" : "dateTimePartPrecisionShort"
+                } ,
+                "date_precision" : {
+                  "@type" : "dateTimePartPrecisionShort"
+                } ,
+                "show_day_of_week" : false
+              }
+            }
+          }
+        ]
+      }
+    }
+  } ,
+  "positions" : [],
+  "@client_id" : 5
+}
+
+        "#;
+        let r: UpdateChatLastMessage = match serde_json::from_str(s) {
+            Ok(v) => v,
+            Err(e) => {
+                println!("-----------{e:#?}-----------",);
+                return;
+            }
+        };
+        println!("-----------{r:?}-----------",);
+    }
 }

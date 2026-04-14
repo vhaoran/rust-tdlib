@@ -2100,7 +2100,7 @@ pub struct UpdateChatLastMessage {
     /// The new last message in the chat; may be null
     last_message: Option<Message>,
     /// The new chat positions in the chat lists
-    #[serde(default)]
+    // #[serde(default)]
     positions: Option<Vec<ChatPosition>>,
 }
 

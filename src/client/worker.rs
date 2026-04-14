@@ -19,6 +19,7 @@ use crate::{
         SetAuthenticationPhoneNumber, SetTdlibParameters, Update, UpdateAuthorizationState,
     },
 };
+use log::error;
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
@@ -357,10 +358,18 @@ where
         log::debug!("bind_client_new_client_added and insert,and will send_first request");
         //-----------proxy ok--------------------------
         //-----------proxy start--------------------------
-        let _ = self.set_proxy(&client, proxy).await.map_err(|e| {
-            log::error!("---bind_client_1_set_proxy_error---{}-", e.to_string());
-            e
-        })?;
+        match self.set_proxy(&client, proxy).await {
+            Ok(_) => {}
+            Err(e) => {
+                let _ = self.reset_auth(&mut client).await.map_err(|e| {
+                    error!("---reset-author_error---{}-", e.to_string());
+                    e
+                });
+                log::error!("bind-client-set-proxy err: {e:?}");
+                return Err(Error::RawStr(format!("{e:?}")));
+            }
+        }
+
         log::debug!("bind_client_2_after set proxy: {}", client_id);
 
         // We need to call any tdlib method to retrieve first response.
