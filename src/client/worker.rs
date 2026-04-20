@@ -366,7 +366,7 @@ where
                     e
                 });
                 log::error!("bind-client-set-proxy err: {e:?}");
-                return Err(Error::RawStr(format!("{e:?}")));
+                return Err(Error::RawStr(format!("set-proxy {e:?}")));
             }
         }
 
