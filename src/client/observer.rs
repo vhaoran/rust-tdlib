@@ -25,19 +25,19 @@ impl Observer {
                 let mut map = self.channels.write().unwrap();
                 match map.remove(extra) {
                     None => {
-                        log::warn!("no subscribers for {}", extra);
+                        tracing::warn!("no subscribers for {}", extra);
                     }
                     Some(sender) => {
-                        log::trace!("signal send for {}", extra);
+                        tracing::trace!("signal send for {}", extra);
                         if let Err(t) = sender.send(t) {
-                            log::warn!("request already closed, received update: {:?}", t)
+                            tracing::warn!("request already closed, received update: {:?}", t)
                         };
                     }
                 }
                 None
             }
             Some(_) => {
-                log::error!("invalid type for extra, data received: {}", t);
+                tracing::error!("invalid type for extra, data received: {}", t);
                 None
             }
         }
@@ -48,10 +48,10 @@ impl Observer {
         match self.channels.write() {
             Ok(mut map) => {
                 map.insert(extra.to_string(), sender);
-                log::trace!("subscribed for {}", extra);
+                tracing::trace!("subscribed for {}", extra);
             }
             _ => {
-                log::warn!("can't acquire lock for notifier map");
+                tracing::warn!("can't acquire lock for notifier map");
             }
         };
         receiver
@@ -59,7 +59,7 @@ impl Observer {
 
     pub fn unsubscribe(&self, extra: &str) {
         if let Ok(mut map) = self.channels.write() {
-            log::trace!("remove {} subscription", &extra);
+            tracing::trace!("remove {} subscription", &extra);
             map.remove(extra);
         };
     }

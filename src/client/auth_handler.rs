@@ -135,24 +135,24 @@ impl SignalAuthStateHandler {
 #[async_trait]
 impl AuthStateHandler for SignalAuthStateHandler {
     async fn handle_wait_code(&self, _: &AuthorizationStateWaitCode) -> String {
-        log::info!("waiting for auth code");
+        tracing::info!("waiting for auth code");
         self.wait_signal().await
     }
 
     async fn handle_encryption_key(&self, _: &AuthorizationStateWaitEncryptionKey) -> String {
-        log::info!("waiting for encryption key");
+        tracing::info!("waiting for encryption key");
         let f = self.wait_signal().await;
-        log::info!("get encryption key");
+        tracing::info!("get encryption key");
         f
     }
 
     async fn handle_wait_password(&self, _: &AuthorizationStateWaitPassword) -> String {
-        log::info!("waiting for password");
+        tracing::info!("waiting for password");
         self.wait_signal().await
     }
 
     async fn handle_wait_phone_number(&self, _: &AuthorizationStateWaitPhoneNumber) -> String {
-        log::info!("waiting for phone number");
+        tracing::info!("waiting for phone number");
         self.wait_signal().await
     }
 
@@ -161,7 +161,7 @@ impl AuthStateHandler for SignalAuthStateHandler {
         _: &AuthorizationStateWaitRegistration,
     ) -> (String, String) {
         loop {
-            log::info!("waiting for first name and last name separated by comma");
+            tracing::info!("waiting for first name and last name separated by comma");
             let inp = self.wait_signal().await;
             if let Some((f, l)) = split_string(inp, ',') {
                 return (f, l);

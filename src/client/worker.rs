@@ -19,7 +19,7 @@ use crate::{
         SetAuthenticationPhoneNumber, SetTdlibParameters, Update, UpdateAuthorizationState,
     },
 };
-use log::error;
+use tracing::error;
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
@@ -246,26 +246,26 @@ where
     async fn set_proxy(&mut self, client: &Client<T>, proxy: Option<AddProxy>) -> Result<()> {
         if proxy.is_none() {
             let _ = client.disable_proxy(DisableProxy::builder().build()).await;
-            log::debug!("bind_client proxy is none,and not set");
+            tracing::debug!("bind_client proxy is none,and not set");
             return Ok(());
         }
         let proxy = proxy.unwrap();
 
-        log::debug!(
+        tracing::debug!(
             "bind_client_proxy_param: {}: {} - {:?}",
             proxy.server(),
             proxy.port(),
             proxy.type_()
         );
 
-        log::debug!("bind_client_proxy_param: {proxy:#?}",);
+        tracing::debug!("bind_client_proxy_param: {proxy:#?}",);
 
-        // log::debug!("--bind_client_before get proxy-------");
+        // tracing::debug!("--bind_client_before get proxy-------");
         //-----------only for show old proxies--------------------------
         // match client.get_proxies(GetProxies::builder().build()).await {
         //     Ok(v) => {
         //         for p in v.proxies() {
-        //             log::debug!(
+        //             tracing::debug!(
         //                 "--bind_client exists proxy: {} {}-------",
         //                 p.server(),
         //                 p.port()
@@ -273,17 +273,17 @@ where
         //         }
         //     }
         //     _ => {
-        //         log::error!("bind_client_not get proxies ");
+        //         tracing::error!("bind_client_not get proxies ");
         //     }
         // }
 
         //-------------------------------------
-        log::debug!("--bind_client_before add proxy-------");
+        tracing::debug!("--bind_client_before add proxy-------");
         let p = client.add_proxy(proxy).await.map_err(|e| {
-            log::error!("---bind_client_添加代理失败---{}-", e.to_string());
+            tracing::error!("---bind_client_添加代理失败---{}-", e.to_string());
             e
         })?;
-        log::debug!("--bind_client_has_add_proxy-------");
+        tracing::debug!("--bind_client_has_add_proxy-------");
 
         client
             .test_proxy(
@@ -297,26 +297,26 @@ where
             )
             .await
             .map_err(|e| {
-                log::error!(
+                tracing::error!(
                     "---bind_client_test_proxy_fail 代理测试失败，代理可能不可用---{}-",
                     e.to_string()
                 );
                 e
             })
             .map(|data| {
-                log::debug!("--bind_client_test_proxy_ok ---{:?}---", data);
+                tracing::debug!("--bind_client_test_proxy_ok ---{:?}---", data);
                 data
             })?;
-        // log::debug!("--bind_client_after_set_proxy-------");
+        // tracing::debug!("--bind_client_after_set_proxy-------");
         let _ = client
             .enable_proxy(EnableProxy::builder().proxy_id(p.id()).build())
             .await
             .map_err(|e| {
-                log::error!("---bind_client_enabled_proxy_error---{}-", e.to_string());
+                tracing::error!("---bind_client_enabled_proxy_error---{}-", e.to_string());
                 e
             })
             .map(|data| {
-                log::debug!("--bind_client_enabled_proxy_ok ---{:?}---", data);
+                tracing::debug!("--bind_client_enabled_proxy_ok ---{:?}---", data);
                 data
             });
 
@@ -334,7 +334,7 @@ where
             return Err(Error::BadRequest("worker not started yet"));
         };
         let client_id = client.get_tdlib_client().new_client();
-        log::debug!("bind_client_new client created: {}", client_id);
+        tracing::debug!("bind_client_new client created: {}", client_id);
         client.set_client_id(client_id)?;
 
         let (sx, rx) = match client.get_auth_state_channel_size() {
@@ -355,7 +355,7 @@ where
         };
 
         self.clients.write().await.insert(client_id, ctx);
-        log::debug!("bind_client_new_client_added and insert,and will send_first request");
+        tracing::debug!("bind_client_new_client_added and insert,and will send_first request");
         //-----------proxy ok--------------------------
         //-----------proxy start--------------------------
         match self.set_proxy(&client, proxy).await {
@@ -365,18 +365,18 @@ where
                     error!("---reset-author_error---{}-", e.to_string());
                     e
                 });
-                log::error!("bind-client-set-proxy err: {e:?}");
+                tracing::error!("bind-client-set-proxy err: {e:?}");
                 return Err(Error::RawStr(format!("set-proxy {e:?}")));
             }
         }
 
-        log::debug!("bind_client_2_after set proxy: {}", client_id);
+        tracing::debug!("bind_client_2_after set proxy: {}", client_id);
 
         // We need to call any tdlib method to retrieve first response.
         // Otherwise client can't be authorized: no `UpdateAuthorizationState` send by TDLib.
         first_internal_request(&client.get_tdlib_client(), client_id).await;
 
-        log::debug!("bind_client_step_2_received_first_internal_response");
+        tracing::debug!("bind_client_step_2_received_first_internal_response");
 
         Ok(client)
     }
@@ -390,7 +390,7 @@ where
     // Method needs for tests because we can't handle get_application_config request properly.
     pub async fn set_client(&mut self, mut client: Client<T>) -> Client<T> {
         let client_id = client.get_tdlib_client().new_client();
-        // log::debug!("new client created: {}", client_id);
+        // tracing::debug!("new client created: {}", client_id);
         client.set_client_id(client_id).unwrap();
 
         let (psx, prx) = mpsc::channel::<ClientState>(5);
@@ -440,10 +440,10 @@ where
         tokio::spawn(async move {
             tokio::select! {
                 _ = auth_handle => {
-                    log::debug!("authorization task stopped");
+                    tracing::debug!("authorization task stopped");
                 },
                 _ = updates_handle => {
-                    log::debug!("updates task_handler");
+                    tracing::debug!("updates task_handler");
                 },
             };
             run_flag.store(false, Ordering::Release);
@@ -473,7 +473,7 @@ where
                     .await
                     .unwrap()
                 {
-                    log::debug!("received_raw_json: {}", json.as_str());
+                    tracing::debug!("received_raw_json: {}", json.as_str());
                     handle_td_resp_received(json.as_str(), &auth_sx, &clients, send_timeout).await;
                 }
             }
@@ -513,11 +513,11 @@ where
 
         tokio::spawn(async move {
             while let Some(auth_state) = auth_rx.recv().await {
-                log::debug!("received new auth state: {:?}", auth_state);
+                tracing::debug!("received new auth state: {:?}", auth_state);
                 if let Some(client_id) = auth_state.client_id() {
                     let result = match clients.read().await.get(&client_id) {
                         None => {
-                            log::warn!("found auth updates for unavailable client ({})", client_id);
+                            tracing::warn!("found auth updates for unavailable client ({})", client_id);
                             continue;
                         }
                         Some(client_ctx) => {
@@ -535,12 +535,12 @@ where
 
                     match result {
                         Ok(_) => {
-                            // log::debug!("state changes handled properly")
+                            // tracing::debug!("state changes handled properly")
                         }
                         Err(err) => {
                             match clients.read().await.get(&client_id) {
                                 None => {
-                                    log::error!("client not found")
+                                    tracing::error!("client not found")
                                 }
                                 Some(cl) => match cl.pub_state_message_sender() {
                                     Some(state_sender) => {
@@ -548,11 +548,11 @@ where
                                             .send_timeout(Err((err, auth_state)), send_timeout)
                                             .await
                                         {
-                                            log::error!("cannot send client state changes: {}", err)
+                                            tracing::error!("cannot send client state changes: {}", err)
                                         }
                                     }
                                     None => {
-                                        log::error!("error received and possibly cannot be handled because of empty state receiver: {err}")
+                                        tracing::error!("error received and possibly cannot be handled because of empty state receiver: {err}")
                                     }
                                 },
                             };
@@ -571,7 +571,7 @@ async fn handle_td_resp_received<S: TdLibClient + Send + Sync + Clone>(
     send_timeout: Duration,
 ) {
     match serde_json::from_str::<serde_json::Value>(response) {
-        Err(e) => log::error!(
+        Err(e) => tracing::error!(
             "raw_json_error_can't deserialize tdlib data: {},{response:#?}",
             e
         ),
@@ -579,39 +579,39 @@ async fn handle_td_resp_received<S: TdLibClient + Send + Sync + Clone>(
             if let Some(t) = OBSERVER.notify(t) {
                 match serde_json::from_value::<Update>(t) {
                     Err(err) => {
-                        log::error!("author_raw_json_error_cannot deserialize to update: {err:?}, raw_json_data: {response:?}")
+                        tracing::error!("author_raw_json_error_cannot deserialize to update: {err:?}, raw_json_data: {response:?}")
                     }
                     Ok(update) => {
                         if let Update::AuthorizationState(auth_state) = update {
-                            log::trace!("auth state send: {:?}", auth_state);
+                            tracing::trace!("auth state send: {:?}", auth_state);
                             match auth_sx.send_timeout(auth_state, send_timeout).await {
                                 Ok(_) => {
-                                    log::trace!("auth state sent");
+                                    tracing::trace!("auth state sent");
                                 }
                                 Err(err) => {
-                                    log::error!("can't send auth state update: {}", err)
+                                    tracing::error!("can't send auth state update: {}", err)
                                 }
                             };
                         } else if let Some(client_id) = update.client_id() {
                             match clients.read().await.get(&client_id) {
                                 None => {
-                                    log::warn!(
+                                    tracing::warn!(
                                         "found updates for unavailable client ({})",
                                         client_id
                                     )
                                 }
                                 Some(ctx) => {
                                     if let Some(sender) = ctx.client().updates_sender() {
-                                        log::trace!("sending update to client");
+                                        tracing::trace!("sending update to client");
                                         match sender
                                             .send_timeout(Box::new(update), send_timeout)
                                             .await
                                         {
                                             Ok(_) => {
-                                                log::trace!("update sent");
+                                                tracing::trace!("update sent");
                                             }
                                             Err(err) => {
-                                                log::error!("can't send update: {}", err)
+                                                tracing::error!("can't send update: {}", err)
                                             }
                                         };
                                     }
@@ -643,7 +643,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
     state: &AuthorizationState,
     send_state_timeout: time::Duration,
 ) -> Result<()> {
-    // log::debug!("handling new auth state: {:?}", state);
+    // tracing::debug!("handling new auth state: {:?}", state);
     let mut result_state = None;
     let res = match state {
         AuthorizationState::_Default => Ok(()),
@@ -654,7 +654,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
             Ok(())
         }
         AuthorizationState::Ready(_) => {
-            // log::debug!("ready state received, send signal");
+            // tracing::debug!("ready state received, send signal");
             result_state = Some(ClientState::Opened);
             Ok(())
         }
@@ -669,7 +669,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
             let key = auth_state_handler
                 .handle_encryption_key(wait_encryption_key)
                 .await;
-            // log::debug!("checking encryption key");
+            // tracing::debug!("checking encryption key");
             client
                 .check_database_encryption_key(
                     CheckDatabaseEncryptionKey::builder()
@@ -677,20 +677,20 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
                         .build(),
                 )
                 .await?;
-            // log::debug!("encryption key check done");
+            // tracing::debug!("encryption key check done");
             Ok(())
         }
         AuthorizationState::WaitOtherDeviceConfirmation(wait_device_confirmation) => {
-            // log::debug!("handling other device confirmation");
+            // tracing::debug!("handling other device confirmation");
             auth_state_handler
                 .handle_other_device_confirmation(wait_device_confirmation)
                 .await;
-            // log::debug!("handled other device confirmation");
+            // tracing::debug!("handled other device confirmation");
             Ok(())
         }
         AuthorizationState::WaitPassword(wait_password) => {
             let password = auth_state_handler.handle_wait_password(wait_password).await;
-            // log::debug!("checking password");
+            // tracing::debug!("checking password");
             client
                 .check_authentication_password(
                     CheckAuthenticationPassword::builder()
@@ -698,7 +698,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
                         .build(),
                 )
                 .await?;
-            // log::debug!("password checked");
+            // tracing::debug!("password checked");
             Ok(())
         }
         AuthorizationState::WaitPhoneNumber(wait_phone_number) => {
@@ -715,7 +715,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
             Ok(())
         }
         AuthorizationState::WaitRegistration(wait_registration) => {
-            log::debug!("handling wait registration");
+            tracing::debug!("handling wait registration");
             let (first_name, last_name) = auth_state_handler
                 .handle_wait_registration(wait_registration)
                 .await;
@@ -724,12 +724,12 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
                 .last_name(last_name)
                 .build();
             client.register_user(register).await?;
-            log::debug!("handled register user");
+            tracing::debug!("handled register user");
             Ok(())
         }
         AuthorizationState::WaitTdlibParameters(_) => {
-            log::debug!("going to set tdlib_parameters");
-            log::debug!(
+            tracing::debug!("going to set tdlib_parameters");
+            tracing::debug!(
                 "--params_of_client: {:#?}-------",
                 client.tdlib_parameters()
             );
@@ -742,14 +742,14 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
                 )
                 .await
                 .map_err(|e| {
-                    log::error!("---set_param_error---{}-", e.to_string());
+                    tracing::error!("---set_param_error---{}-", e.to_string());
                     e
                 })
                 .map(|data| {
-                    log::debug!("--set_param_ok ---{:?}---", data);
+                    tracing::debug!("--set_param_ok ---{:?}---", data);
                     data
                 });
-            log::debug!("tdlib parameters set");
+            tracing::debug!("tdlib parameters set");
             Ok(())
         }
         AuthorizationState::GetAuthorizationState(_) => Err(Error::Internal(
@@ -762,7 +762,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
         Some(state) => {
             if let Err(err) = private_state_sender.send(state.clone()).await {
                 {
-                    log::error!(
+                    tracing::error!(
                         "can't send state update, but state changed; error: {:?}, state: {:?}",
                         err,
                         state
@@ -775,7 +775,7 @@ async fn handle_auth_state<A: AuthStateHandler + Sync, R: TdLibClient + Clone>(
                     .send_timeout(Ok(state.clone()), send_state_timeout)
                     .await
                 {
-                    log::error!(
+                    tracing::error!(
                         "can't send state update, but state changed; error: {:?}, state: {:?}",
                         err,
                         state
@@ -794,25 +794,25 @@ async fn first_internal_request<S: TdLibClient>(tdlib_client: &S, client_id: Cli
     )) {
         Ok(v) => v,
         Err(err) => {
-            log::error!("{}", err);
+            tracing::error!("{}", err);
             return;
         }
     };
     let signal = OBSERVER.subscribe(extra);
     if let Err(err) = tdlib_client.send(client_id, req.as_ref()) {
-        log::error!("{}", err);
+        tracing::error!("{}", err);
         return;
     };
 
     let received = signal.await;
     OBSERVER.unsubscribe(extra);
     match received {
-        Err(_) => log::error!("receiver already closed"),
+        Err(_) => tracing::error!("receiver already closed"),
         Ok(v) => {
-            log::debug!("--raw_json_recevie: {v:#?}-------");
+            tracing::debug!("--raw_json_recevie: {v:#?}-------");
 
             if let Err(e) = serde_json::from_value::<JsonValue>(v) {
-                log::error!("invalid response received: {}", e)
+                tracing::error!("invalid response received: {}", e)
             }
         }
     };
@@ -836,7 +836,7 @@ async fn first_internal_request<S: TdLibClient>(tdlib_client: &S, client_id: Cli
 //
 //     impl MockedRawApi {
 //         pub fn set_to_receive(&mut self, value: String) {
-//             log::trace!("delayed to receive: {}", value);
+//             tracing::trace!("delayed to receive: {}", value);
 //             self.to_receive = Some(value);
 //         }
 //
@@ -930,7 +930,7 @@ async fn first_internal_request<S: TdLibClient>(tdlib_client: &S, client_id: Cli
 //         );
 //         let to_receive = serde_json::to_string(&chats_object).unwrap();
 //         mocked_raw_api.set_to_receive(to_receive);
-//         log::trace!("chats objects: {:?}", chats_object);
+//         tracing::trace!("chats objects: {:?}", chats_object);
 //
 //         let mut worker = Worker::builder()
 //             .with_tdlib_client(mocked_raw_api.clone())

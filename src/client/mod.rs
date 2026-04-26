@@ -250,7 +250,7 @@ where
             Ok(v) => {
                 let vv = v.clone();
                 let raw_str = vv.to_string();
-                log::debug!("_raw_result_str: {raw_str}");
+                tracing::debug!("_raw_result_str: {raw_str}");
 
                 if error_received(&v) {
                     match serde_json::from_value::<TDLibError>(v.clone()) {
@@ -260,12 +260,12 @@ where
                                 && (v.message().contains("Message not found")
                                     || v.message().contains("Not Found")))
                             {
-                                log::error!("tdlib_error: {raw_str}");
+                                tracing::error!("tdlib_error: {raw_str}");
                             }
                             Err(Error::TDLibError(v))
                         }
                         Err(e) => {
-                            log::error!("cannot deserialize error response: {:?}", e);
+                            tracing::error!("cannot deserialize error response: {:?}", e);
                             // Err(INVALID_RESPONSE_ERROR)
                             let err = format!("cannot deserialize error,receive invalid response,{e:?} {raw_str:?}");
                             let e = Error::RawStr(err);
@@ -276,11 +276,11 @@ where
                 } else {
                     match serde_json::from_value::<Q>(v.clone()) {
                         Ok(v) => {
-                            log::debug!("raw_json_result: {}", vv.to_string());
+                            tracing::debug!("raw_json_result: {}", vv.to_string());
                             Ok(v)
                         }
                         Err(e) => {
-                            log::error!("response serialization error: {:?} ->{raw_str}", e);
+                            tracing::error!("response serialization error: {:?} ->{raw_str}", e);
                             let err = format!(
                                 "cannot deserialize error,receive invalid response,{e:?} {raw_str}"
                             );
