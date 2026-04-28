@@ -3,8 +3,8 @@
 
 rm -rf ./target
 
-ssh whr@w2 "cd /D d:\rust\; rmdir rust-tdlib /D /Q"
+ssh whr@w3 "cd /D d:\rust\; rmdir rust-tdlib /D /Q"
 
-scp -r ../rust-tdlib  whr@w2:/d:/rust/
+scp -r ../rust-tdlib  whr@w3:/d:/rust/
 
 
