@@ -49,6 +49,15 @@ impl RObject for MessageSender {
 }
 
 impl MessageSender {
+    pub fn id(&self) -> i64 {
+        match &self {
+            Self::Chat(c) => c.chat_id(),
+            Self::User(c) => c.user_id(),
+            _ => 0_i64,
+        }
+    }
+}
+impl MessageSender {
     pub fn from_json<S: AsRef<str>>(json: S) -> Result<Self> {
         Ok(serde_json::from_str(json.as_ref())?)
     }
