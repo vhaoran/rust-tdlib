@@ -16,13 +16,16 @@ pub mod tdlib_client;
 pub use auth_handler::{AuthStateHandler, ConsoleAuthStateHandler, SignalAuthStateHandler};
 use observer::OBSERVER;
 use serde::de::DeserializeOwned;
+use std::any::Any;
 pub use worker::{Worker, WorkerBuilder};
 
 use crate::types::{Close, Ok, RFunction, TdlibParameters, Update};
 use crate::{
     errors::{Error, Result},
     types::Error as TDLibError,
+    VFnStats,
 };
+use log::info;
 use tdlib_client::{TdJson, TdLibClient};
 use tokio::sync::mpsc;
 use uuid::Uuid;
@@ -239,6 +242,11 @@ where
         &self,
         param: P,
     ) -> Result<Q> {
+        let p_str = param.as_ref().to_json().unwrap_or_default();
+        let _ = VFnStats::push_json(&self.uuid, p_str).await;
+        // tracing::debug!("raw_json_request: {p_str}",);
+        // serde_json::parse()
+
         let extra = param.as_ref().extra().ok_or(NO_EXTRA)?;
         let signal = OBSERVER.subscribe(extra);
         self.tdlib_client
