@@ -797,6 +797,34 @@ pub struct ChatAdministratorRights {
 
     #[serde(default)]
     is_anonymous: bool,
+
+    // bool 	can_manage_topics_
+    // True, if the administrator can
+    #[serde(default)]
+    can_manage_topics: bool,
+    // bool 	can_post_stories_
+    // True, if the administrator can create new chat stories, or edit and delete posted stories; applicable to supergroups and channels only.
+    #[serde(default)]
+    can_post_stories: bool,
+    // bool 	can_edit_stories_
+    // True, if the administrator can edit stories posted by other users, post stories to the chat page, pin chat stories, and access story archive; applicable to supergroups and channels only.
+    #[serde(default)]
+    can_edit_stories: bool,
+    // bool 	can_delete_stories_
+    // True, if the administrator can delete stories posted by other users; applicable to supergroups and channels only.
+    #[serde(default)]
+    can_delete_stories: bool,
+
+    // bool 	can_manage_direct_messages_
+    // True, if the administrator can answer to channel direct messages; applicable to channels only.
+    #[serde(default)]
+    can_manage_direct_messages: bool,
+
+    // // bool 	can_manage_tags_
+    // True, if the administrator can create and delete chat tags; applicable to supergroups and channels only.
+    #[serde(default)]
+    can_manage_tags: bool,
+
 }
 
 impl ChatAdministratorRights {
@@ -880,6 +908,31 @@ impl ChatAdministratorRightsBuilder {
 
     pub fn is_anonymous(&mut self, is_anonymous: bool) -> &mut Self {
         self.inner.is_anonymous = is_anonymous;
+        self
+    }
+
+    pub fn can_manage_topics(&mut self, can_manage_topics: bool) -> &mut Self {
+        self.inner.can_manage_topics = can_manage_topics;
+        self
+    }
+    pub fn can_post_stories(&mut self, can_post_stories: bool) -> &mut Self {
+        self.inner.can_post_stories = can_post_stories;
+        self
+    }
+    pub fn can_edit_stories(&mut self, can_edit_stories: bool) -> &mut Self {
+        self.inner.can_edit_stories = can_edit_stories;
+        self
+    }
+    pub fn can_delete_stories(&mut self, can_delete_stories: bool) -> &mut Self {
+        self.inner.can_delete_stories = can_delete_stories;
+        self
+    }
+    pub fn can_manage_direct_messages(&mut self, can_manage_direct_messages: bool) -> &mut Self {
+        self.inner.can_manage_direct_messages = can_manage_direct_messages;
+        self
+    }
+    pub fn can_manage_tags(&mut self, can_manage_tags: bool) -> &mut Self {
+        self.inner.can_manage_tags = can_manage_tags;
         self
     }
 }
