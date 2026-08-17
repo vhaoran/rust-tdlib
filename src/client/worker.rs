@@ -209,6 +209,13 @@ where
         self.clients.write().await.remove(&client_id);
         Ok(())
     }
+    pub async fn reset_auth_force(&mut self, client: &mut Client<T>) -> Result<()> {
+        let _ = client.stop().await;
+
+        let client_id = client.take_client_id()?;
+        self.clients.write().await.remove(&client_id);
+        Ok(())
+    }
 
     /// Method waits for client state changes.
     /// If an error occured during authorization flow, you receive [AuthorizationState](crate::types::authorization_state::AuthorizationState) on which it happened.
